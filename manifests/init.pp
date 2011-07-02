@@ -1,1 +1,7 @@
-include *.pp
+import 'packages.pp'
+import 'config.pp'
+import 'service.pp'
+import 'passenger.pp'
+import 'prefork.pp'
+import 'mod-php.pp'
+import 'xsendfile.pp'

@@ -8,16 +8,6 @@ class apache::packages {
 		},
 	}
 
-	service { apache_daemon:
-		ensure => running,
-		enable => true,
-		name => $operatingsystem ? {
-			/Debian|Ubuntu/ => 'apache2',
-			/Centos|Fedora/ => 'httpd',
-		},
-		require => Package['apache'],
-	}
-
 	package { 'apache-dev':
 		ensure => installed,
 		name => $operatingsystem ? {

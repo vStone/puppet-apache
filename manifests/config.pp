@@ -8,7 +8,7 @@ class apache::config {
 			/Debian|Ubuntu/ => '/etc/apache2/apache2.conf',
 			/Centos|Fedora/ => '/etc/httpd/conf/httpd.conf',
 		},
-		source => 'puppet:///config/httpd',
+		content => template('apache/httpd.conf'),
 		notify => Service['apache'],
 	}
 }

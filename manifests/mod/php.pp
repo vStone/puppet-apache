@@ -1,4 +1,4 @@
-class apache_mod_php {
+class apache::mod::php {
 	package { "apache_mod_php":
 		ensure => installed,
 		name => $operatingsystem ? {

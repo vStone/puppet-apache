@@ -1,4 +1,4 @@
-class apache_mod_xsendfile {
+class apache::mod::xsendfile {
 	package { "mod-xsendfile":
 		ensure => installed,
 		name => $operatingsystem ? {

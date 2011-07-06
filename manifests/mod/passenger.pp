@@ -1,4 +1,4 @@
-class apache_mod_passenger {
+class apache::mod::passenger {
 	package { passenger:
 		ensure => installed,
 		name => $operatingsystem ? {

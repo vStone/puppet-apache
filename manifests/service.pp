@@ -1,10 +1,10 @@
 class apache::service {
-	service { 'apache-daemon':
+	service { 'apache':
 		ensure => running,
 		enable => true,
 		name => $operatingsystem ? {
 			/Debian|Ubuntu/ => 'apache2',
-			/Centos|Fedora/ => 'httpd',
+			Centos => 'httpd',
 		},
 		require => Package['apache'],
 	}

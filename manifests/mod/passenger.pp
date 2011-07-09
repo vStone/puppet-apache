@@ -3,11 +3,11 @@ class apache::mod::passenger {
 		ensure => installed,
 		name => $operatingsystem ? {
 			/Debian|Ubuntu/ => "libapache2-mod-passenger",
-			/Centos|Fedora/ => "passenger",
+			Centos => "passenger",
 		},
 		provider => $operatingsystem ? {
 			/Debian|Ubuntu/ => 'apt',
-			/Centos|Fedora/ => 'gem',
+			Centos => 'gem',
 		},
 		require => Package['apache'],
 	}

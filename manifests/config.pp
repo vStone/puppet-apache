@@ -13,7 +13,7 @@ class apache::config {
 				'6.0' => template('apache/apache.conf-centos6.erb'),
 				'*' => template('apache/apache.conf'),
 			},
-			'*' => template('apache/apache.conf'),
+			default => template('apache/apache.conf.erb'),
 		},
 		notify => Service['apache'],
 	}

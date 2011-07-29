@@ -10,10 +10,10 @@ class apache::config {
 		},
 		content => $operatingsystem ? {
 			'Centos' => $operatingsystemrelease ? {
-				'6.0' => template('apache/apache.conf-centos6.erb'),
-				'*' => template('apache/apache.conf'),
+				'6.0' => template('apache/centos6-apache.conf.erb'),
+				'*' => template('apache/centos-apache.conf.erb'),
 			},
-			default => template('apache/apache.conf.erb'),
+			default => template('apache/debian-apache.conf.erb'),
 		},
 		notify => Service['apache'],
 	}

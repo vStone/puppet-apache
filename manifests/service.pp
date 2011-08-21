@@ -3,6 +3,7 @@ class apache::service {
 		ensure => running,
 		enable => true,
 		name => $operatingsystem ? {
+			archlinux => 'httpd',
 			/Debian|Ubuntu/ => 'apache2',
 			Centos => 'httpd',
 		},

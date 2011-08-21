@@ -5,6 +5,7 @@ class apache::config {
 		group => root,
 		mode => 0644,
 		name => $operatingsystem ? {
+			archlinux => '/etc/httpd/conf/httpd.conf',
 			/Debian|Ubuntu/ => '/etc/apache2/apache2.conf',
 			Centos => '/etc/httpd/conf/httpd.conf',
 		},

@@ -7,6 +7,10 @@ class apache::service {
 			/Debian|Ubuntu/ => 'apache2',
 			Centos => 'httpd',
 		},
+		path => $operatingsystem ? {
+			archlinux => '/etc/rc.d',
+			default => '/etc/init.d',
+		},
 		require => Package['apache'],
 	}
 }

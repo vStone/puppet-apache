@@ -10,6 +10,7 @@ class apache::config {
 			Centos => '/etc/httpd/conf/httpd.conf',
 		},
 		content => $operatingsystem ? {
+			archlinux => template('apache/archlinux-apache.conf.erb'),
 			'Centos' => $operatingsystemrelease ? {
 				'6.0' => template('apache/centos6-apache.conf.erb'),
 				'*' => template('apache/centos-apache.conf.erb'),

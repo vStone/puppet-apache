@@ -6,7 +6,8 @@ class apache::packages {
 				archlinux => "apache",
 				/Debian|Ubuntu/ => "apache2",
 				Centos => "httpd",
-			};
+			},
+			notify => Service['apache'];
 
 		'apache-devel':
 			ensure => installed,
@@ -14,7 +15,8 @@ class apache::packages {
 				archlinux => undef,
 				/Debian|Ubuntu/ => 'apache2-threaded-dev',
 				Centos => 'httpd-devel',
-			};
+			},
+			notify => Service['apache'];
 	}
 
 	realize(Package['apache'])

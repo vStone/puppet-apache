@@ -20,7 +20,7 @@ class apache::packages {
 	}
 
 	realize(Package['apache'])
-	if $devel == 'yes' {
+	if $apache::devel == 'yes' {
 		realize(Package['apache-devel'])
 	}
 }

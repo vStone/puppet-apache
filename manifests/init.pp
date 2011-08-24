@@ -7,7 +7,9 @@ import 'mod/php.pp'
 import 'mod/xsendfile.pp'
 import 'nginx/*'
 
-class apache {
+class apache (
+	$devel = 'no'
+) {
 	include apache::packages
 	include apache::config
 	include apache::service

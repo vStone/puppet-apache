@@ -3,9 +3,9 @@ class apache::packages {
 		'apache':
 			ensure => installed,
 			name => $operatingsystem ? {
-				archlinux => "apache",
+				default => "httpd",
+				archlinux => 'apache',
 				/Debian|Ubuntu/ => "apache2",
-				Centos => "httpd",
 			},
 			notify => Service['apache'];
 

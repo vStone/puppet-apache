@@ -8,6 +8,24 @@ import 'mod/xsendfile.pp'
 import 'nginx/*'
 
 class apache (
+	$apache = $::operatingsystem ? {
+		default => 'httpd',
+		debian => 'apache2',
+	},
+	$root = $::operatingsystem ? {
+		default => '/etc/httpd',
+		debian => '/etc/apache2',
+	},
+	$user = $::operatingsystem ? {
+		default => 'apache',
+		archlinux => 'http',
+		debian => 'www-data',
+	},
+	$group = $::operatingsystem ? {
+		default => 'apache',
+		archlinux => 'http',
+		debian => 'www-data',
+	},
 	$devel = 'no'
 ) {
 	include apache::packages

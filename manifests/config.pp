@@ -18,8 +18,8 @@ class apache::config {
 			content => $operatingsystem ? {
 				archlinux => template('apache/archlinux-apache.conf.erb'),
 				'Centos' => $operatingsystemrelease ? {
+					default => template('apache/centos-apache.conf.erb'),
 					'6.0' => template('apache/centos6-apache.conf.erb'),
-					'*' => template('apache/centos-apache.conf.erb'),
 				},
 				default => template('apache/debian-apache.conf.erb'),
 			},

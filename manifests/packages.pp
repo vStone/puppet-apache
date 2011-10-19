@@ -17,10 +17,17 @@ class apache::packages {
 				Centos => 'httpd-devel',
 			},
 			notify => Service['apache'];
+
+		'mod_ssl':
+			ensure => installed,
+			notify => Service['apache'];
 	}
 
 	realize(Package['apache'])
 	if $apache::devel == 'yes' {
 		realize(Package['apache-devel'])
+	}
+	if $apache::ssl == 'yes' {
+		realize(Package['mod_ssl'])
 	}
 }

@@ -26,7 +26,8 @@ class apache (
 		archlinux => 'http',
 		debian => 'www-data',
 	},
-	$devel = 'no'
+	$devel = 'no',
+	$ssl = 'yes'
 ) {
 	include apache::packages
 	include apache::config

@@ -25,7 +25,9 @@ class apache::packages {
 
 	realize(Package['apache'])
 	if $apache::devel == 'yes' {
-		realize(Package['apache-devel'])
+		if $::operatingsystem != 'archlinux' {
+			realize(Package['apache-devel'])
+		}
 	}
 	if $apache::ssl == 'yes' {
 		if $::operatingsystem != 'archlinux' {

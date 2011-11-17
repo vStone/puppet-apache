@@ -20,6 +20,10 @@ class apache::packages {
 
 		'mod_ssl':
 			ensure => installed,
+			name => $::operatingsystem ? {
+				default => 'mod_ssl',
+				debian => undef,
+			},
 			notify => Service['apache'];
 	}
 

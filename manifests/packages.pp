@@ -20,10 +20,7 @@ class apache::packages {
 
 		'mod_ssl':
 			ensure => installed,
-			name => $::operatingsystem ? {
-				default => 'mod_ssl',
-				debian => undef,
-			},
+			name => 'mod_ssl',
 			notify => Service['apache'];
 	}
 
@@ -34,7 +31,7 @@ class apache::packages {
 		}
 	}
 	if $apache::ssl == 'yes' {
-		if $::operatingsystem != 'archlinux' {
+		if $::operatingsystem == 'centos' {
 			realize(Package['mod_ssl'])
 		}
 	}

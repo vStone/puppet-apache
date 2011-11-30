@@ -1,5 +1,5 @@
 class nginx::packages {
-	package { nginx:
-		ensure => present,
-	}
+  package { 'nginx':
+    ensure => present,
+  }
 }

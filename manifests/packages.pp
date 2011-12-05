@@ -2,7 +2,7 @@ class apache::packages {
 	@package {
 		'apache':
 			ensure => installed,
-			name => $operatingsystem ? {
+			name => $::operatingsystem ? {
 				default => "httpd",
 				archlinux => 'apache',
 				/Debian|Ubuntu/ => "apache2",
@@ -11,7 +11,7 @@ class apache::packages {
 
 		'apache-devel':
 			ensure => installed,
-			name => $operatingsystem ? {
+			name => $::operatingsystem ? {
 				archlinux => undef,
 				/Debian|Ubuntu/ => 'apache2-threaded-dev',
 				Centos => 'httpd-devel',

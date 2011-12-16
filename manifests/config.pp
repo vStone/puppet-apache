@@ -16,8 +16,8 @@ class apache::config {
       mode    => '0644',
       path    => $apache::params::config_path,
       content => template($apache::params::config_template),
-      notify    => Service['apache'],
-      require   => File['apache-confdir'];
+      notify  => Service['apache'],
+      require => File['apache-confdir'];
   }
 
 }

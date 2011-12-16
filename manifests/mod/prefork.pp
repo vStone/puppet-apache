@@ -1,5 +1,13 @@
 class apache::mod::prefork {
-  package { 'apache2-prefork-dev':
-    ensure => installed,
+
+  $pkg_name = $::operatingsystem ? {
+    /CentOS|RedHat/ => [],
+    /Debian|Ubuntu/ => 'apache2-prefork-dev',
+    default => [],
+  }
+
+  package { $pkg_name:
+    ensure  => installed,
+    alias   => 'apache_mod_prefork'
   }
 }

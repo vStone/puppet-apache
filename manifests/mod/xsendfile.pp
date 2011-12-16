@@ -1,10 +1,27 @@
+# Class: apache::mod::xsendfile
+#
+# Requirements:
+#  CentOS: epel repository.
+#
 class apache::mod::xsendfile {
-  package { 'mod-xsendfile':
-    ensure  => installed,
-    name    => $::operatingsystem ? {
-      /Debian|Ubuntu/ => 'libapache2-mod-xsendfile',
-      /Centos|Fedora/ => 'mod_xsendfile',
-    },
-    require => Class['repos_centos'],
+
+  $pkg_name = $::operatingsystem ? {
+    /Debian|Ubuntu/         => 'libapache2-mod-xsendfile',
+    /CentOS|Fedora|RedHat/  => 'mod_xsendfile',
   }
+
+  package { $pkg_name:
+    ensure  => installed,
+    alias   => 'apache_mod_xsendfile',
+  }
+
+  case $::operatingsystem {
+    /CentOS/:   {
+      Package[$pkg_name] {
+        require => Yumrepo['epel'],
+      }
+    }
+    default: {}
+  }
+
 }

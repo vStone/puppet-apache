@@ -1,7 +1,9 @@
 class apache::config {
+  require apache::params
 
-  file { "${apache::root}/conf.d":
+  file { 'apache-confdir':
       ensure  => directory,
+      path    => "${apache::params::config_dir}/conf.d",
       owner   => 'root',
       group   => 'root',
       mode    => '0755',
@@ -9,22 +11,13 @@ class apache::config {
 
   file { 'apache.conf':
       ensure  => present,
-      owner   => root,
-      group   => root,
+      owner   => 'root',
+      group   => 'root',
       mode    => '0644',
-      name    => $::operatingsystem ? {
-        default         => '/etc/httpd/conf/httpd.conf',
-        /Debian|Ubuntu/ => '/etc/apache2/apache2.conf',
-      },
-      content => $::operatingsystem ? {
-        archlinux => template('apache/archlinux-apache.conf.erb'),
-        'Centos'  => $::operatingsystemrelease ? {
-          default   => template('apache/centos-apache.conf.erb'),
-          '6.0'     => template('apache/centos6-apache.conf.erb'),
-        },
-        default   => template('apache/debian-apache.conf.erb'),
-      },
+      path    => $apache::params::config_path,
+      content => template($apache::params::config_template),
       notify    => Service['apache'],
-      require   => File["${apache::root}/conf.d"];
+      require   => File['apache-confdir'];
   }
+
 }

@@ -7,28 +7,7 @@ import 'mod/php.pp'
 import 'mod/xsendfile.pp'
 import 'nginx/*'
 
-class apache (
-  $apache = $::operatingsystem ? {
-    debian    => 'apache2',
-    default   => 'httpd',
-  },
-  $root = $::operatingsystem ? {
-    debian    => '/etc/apache2',
-    default   => '/etc/httpd',
-  },
-  $user = $::operatingsystem ? {
-    archlinux => 'http',
-    debian    => 'www-data',
-    default   => 'apache',
-  },
-  $group = $::operatingsystem ? {
-    archlinux => 'http',
-    debian    => 'www-data',
-    default   => 'apache',
-  },
-  $devel = 'no',
-  $ssl = 'yes'
-) {
+class apache {
 
   include apache::packages
   include apache::config

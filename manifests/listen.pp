@@ -7,15 +7,21 @@ define apache::listen (
   require apache::params
   require apache::config::listen
 
-  if $ip == undef {
-    $content_listen = "# ${comment}
-    Listen "
+  if $comment != '' {
+    $content_comment = "# ${comment}
+"
   } else {
-    $content_listen = "# ${comment}
-    Listen ${ip}:"
+    $content_comment = ''
   }
 
-  $content = "${content_listen}${port}"
+  if $ip == undef {
+    $content_listen = "Listen "
+  } else {
+    $content_listen = "Listen ${ip}:"
+  }
+
+  $content = "${content_comment}${content_listen}${port}
+"
 
   $fname = "listen_${ip}_${port}"
 

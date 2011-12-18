@@ -88,9 +88,8 @@ ${warn_content}
     }
   }
 
-  $include = "
+  $include = "## Apache::Confd['${name}']
 ${load_content}
-
 Include conf.d/${path_name}/${includes}
 "
 

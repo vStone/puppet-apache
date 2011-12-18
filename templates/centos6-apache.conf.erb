@@ -9,7 +9,7 @@
 #
 # Do NOT simply read the instructions in here without understanding
 # what they do.  They're here only as hints or reminders.  If you are unsure
-# consult the online docs. You have been warned.  
+# consult the online docs. You have been warned.
 #
 # The configuration directives are grouped into three basic sections:
 #  1. Directives that control the operation of the Apache server process as a
@@ -54,7 +54,7 @@ ServerTokens OS
 #
 # Do NOT add a slash at the end of the directory path.
 #
-ServerRoot "/etc/httpd"
+ServerRoot <%= scope.lookupvar('apache::params::config_dir') %>
 
 #
 # PidFile: The file in which the server should record its process
@@ -119,7 +119,7 @@ MaxRequestsPerChild  4000
 StartServers         4
 MaxClients         300
 MinSpareThreads     25
-MaxSpareThreads     75 
+MaxSpareThreads     75
 ThreadsPerChild     25
 MaxRequestsPerChild  0
 </IfModule>
@@ -229,14 +229,14 @@ Include conf.d/*.conf
 
 #
 # If you wish httpd to run as a different user or group, you must run
-# httpd as root initially and it will switch.  
+# httpd as root initially and it will switch.
 #
 # User/Group: The name (or #number) of the user/group to run httpd as.
 #  . On SCO (ODT 3) use "User nouser" and "Group nogroup".
 #  . On HPUX you may not be able to use shared memory as nobody, and the
 #    suggested workaround is to create a user www and use that user.
 #  NOTE that some kernels refuse to setgid(Group) or semctl(IPC_SET)
-#  when the value of (unsigned)Group is above 60000; 
+#  when the value of (unsigned)Group is above 60000;
 #  don't use Group #-1 on these systems!
 #
 User apache

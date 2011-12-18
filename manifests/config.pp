@@ -20,4 +20,6 @@ class apache::config {
       mode    => '0755',
   }
 
+  include apache::config::listen
+
 }

@@ -79,6 +79,8 @@ class apache::params(
     default         => true,
   }
 
+
+  ## Configuration directories. Based on defined $root ##
   $config_dir = $root ? {
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => '/etc/apache2',
@@ -86,12 +88,6 @@ class apache::params(
       default         => '/etc/httpd',
     },
     default => $root,
-  }
-
-  $config_path = $::operatingsystem ? {
-    /Debian|Ubuntu/ => "${config_dir}/apache2.conf",
-    /CentOS|RedHat/ => "${config_dir}/conf/httpd.conf",
-    default         => "${config_dir}/conf/httpd.conf",
   }
 
   $config_template = $::operatingsystem ? {
@@ -104,6 +100,14 @@ class apache::params(
     /Debian|Ubuntu/ => 'apache/debian-apache.conf.erb',
     default         => 'apache/debian-apache.conf.erb',
   }
+
+  $config_file = $::operatingsystem ? {
+    /Debian|Ubuntu/ => "${config_dir}/apache2.conf",
+    /CentOS|RedHat/ => "${config_dir}/conf/httpd.conf",
+    default         => "${config_dir}/conf/httpd.conf",
+  }
+
+  $confd        = "${config_dir}/conf.d/"
 
   $daemon_user = $user ? {
     undef   => $::operatingsystem ? {

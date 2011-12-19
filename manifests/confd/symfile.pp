@@ -19,7 +19,7 @@
 #  $template:
 #     Path to template to use.
 #
-define apache::confd::file (
+define apache::confd::symfile (
   $confd,
   $enabled    = true,
   $link_name  = "${title}.conf",

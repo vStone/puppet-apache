@@ -7,6 +7,8 @@ define apache::listen (
   require apache::params
   require apache::config::listen
 
+
+
   if $comment != '' {
     $content_comment = "# ${comment}
 "
@@ -25,10 +27,15 @@ define apache::listen (
 
   $fname = "listen_${ip}_${port}"
 
-  file { $fname:
-    ensure  => present,
-    path    => "${apache::params::confd}/listen.d/${fname}.conf",
-    content => $content,
+  apache::confd::file {$fname:
+    confd     => $apache::config::listen::confd,
+    content   => $content,
   }
+
+ # file { $fname:
+ #   ensure  => present,
+ #   path    => "${apache::params::confd}/listen.d/${fname}.conf",
+ #   content => $content,
+ # }
 
 }

@@ -6,12 +6,12 @@ class apache::config::listen {
   $purge  = true
 
   apache::confd {'listen':
-    confd        => 'listen.d',
-    order        => $order,
+    confd        => $apache::config::listen::confd,
+    order        => $apache::config::listen::order,
     load_content => '',
     warn_content => '',
-    includes     => $includes,
-    purge        => $purge,
+    includes     => $apache::config::listen::includes,
+    purge        => $apache::config::listen::purge,
   }
 
 }

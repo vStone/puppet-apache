@@ -59,7 +59,7 @@ define apache::confd (
   # conf.d style folder with subconfigs.
   file {$name_dir_name:
     ensure  => directory,
-    path    => "${name_d}",
+    path    => $name_d,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

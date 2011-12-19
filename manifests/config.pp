@@ -21,5 +21,6 @@ class apache::config {
   }
 
   include apache::config::listen
+  include apache::config::namevhost
 
 }

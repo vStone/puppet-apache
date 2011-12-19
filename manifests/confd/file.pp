@@ -1,30 +1,31 @@
-# Definition: apache::confd::file
+# == Definition: apache::confd::file
 #
 # Helper definition for confd style folders
 #
-# Parameters:
-#  $confd:
+# === Parameters
+#
+#  [*confd*]
 #     Subfolder in conf.d directory.
 #
-#  $file_name:
+#  [*file_name*]
 #     File name to put in folder (we add order in front if defined).
 #     Defaults to the title with .conf appended.
 #
-#  $order:
+#  [*order*]
 #     Order is prepended to the file to determine the load order.
 #
-#  $content:
+#  [*content*]
 #     Content to put into the file. Is used when no template is defined.
 #
-#  $template:
+#  [*template*]
 #     Path to template to use.
 #
 define apache::confd::file (
   $confd,
-  $file_name     = "${title}.conf",
-  $order    = undef,
-  $content  = '',
-  $template = undef
+  $file_name = "${title}.conf",
+  $order     = undef,
+  $content   = '',
+  $template  = undef
 ) {
 
   $fname = $order ? {

@@ -1,4 +1,4 @@
-# Class: apache::confd
+# Definition: apache::confd
 #
 # Helper class for conf.d style directories
 #
@@ -6,29 +6,27 @@
 #  $name:
 #     Name of the confd style folder
 #
-#  $subpath:
+#  $confd:
 #     Subpath to use below the $apache::params::confd folder.
-#     Defaults to "${name}.d"
 #
 #  $order:
 #     Order in the conf.d folder.
 #
 #  $load_content:
 #     Extra content is added before the include statement.
-#     The load file includes config files in the $subpath.
+#     The load file includes config files in the $confd.
 #
 #  $warn_content:
 #     Extra ctontent to add to the warn file.
-#     The warnfile is a README file in the $subpath when $purge is enabled.
+#     The warnfile is a README file in the $confd when $purge is enabled.
 #     Make sure the content is commented out so mistakes with $includes do
 #     not break the configuration.
 #
 #  $includes:
-#     Pattern to use when including files from the $subpath.
-#     Defaults to '*.conf'
+#     Pattern to use when including files from the $confd.
 #
 #  $purge:
-#     Purge all puppet 'foreign' files in the $subpath.
+#     Purge all puppet 'foreign' files in the $confd.
 #
 # Actions:
 #
@@ -38,21 +36,21 @@
 #   See apache::listen
 #
 define apache::confd (
-  $subpath      = undef,
-  $order        = '05',
-  $load_content = '# (add contnet using the load_content parameter)',
-  $warn_content = '# (add content using the warn_content parameter)',
-  $includes     = '*.conf',
-  $purge        = true
+  $confd,
+  $order,
+  $load_content,
+  $warn_content,
+  $includes,
+  $purge
 ) {
 
   require apache::params
   require apache::config
 
-  # default subpath to name.d
-  $path_name = $subpath ? {
+  # default confd to name.d
+  $path_name = $confd? {
     undef   => "${name}.d",
-    default => $subpath
+    default => $confd
   }
 
   $name_d = "${apache::params::confd}/${path_name}"

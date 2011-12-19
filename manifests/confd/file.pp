@@ -4,21 +4,16 @@
 #
 # === Parameters
 #
-#  [*confd*]
-#     Subfolder in conf.d directory.
+#  [confd]      Subfolder in conf.d directory.
 #
-#  [*file_name*]
-#     File name to put in folder (we add order in front if defined).
-#     Defaults to the title with .conf appended.
+#  [file_name]  File name to put in folder (we add order in front if defined).
+#               Defaults to the title with .conf appended.
 #
-#  [*order*]
-#     Order is prepended to the file to determine the load order.
+#  [order]      Order is prepended to the file to determine the load order.
 #
-#  [*content*]
-#     Content to put into the file. Is used when no template is defined.
+#  [content]    Content to put into the file. Is used when no template is defined.
 #
-#  [*template*]
-#     Path to template to use.
+#  [template]   Path to template to use.
 #
 define apache::confd::file (
   $confd,

@@ -1,8 +1,9 @@
-# Definition: apache::confd
+# == Definition: apache::confd
 #
 # Helper class for conf.d style directories
 #
-# Parameters:
+# === Parameters:
+#
 #  $name:
 #     Name of the confd style folder
 #
@@ -28,12 +29,13 @@
 #  $purge:
 #     Purge all puppet 'foreign' files in the $confd.
 #
-# Actions:
+# === Actions:
 #
-# Requires:
+# === Requires:
 #
-# Sample Usage:
-#   See apache::listen
+# === Sample Usage:
+#
+#   See apache::config::listen
 #
 define apache::confd (
   $confd,

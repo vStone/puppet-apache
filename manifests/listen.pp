@@ -1,11 +1,11 @@
-# Definition: apache::listen
+# == Definition: apache::listen
 #
 # Instruct apache to listen to this port.
 #
-# Parameters:
-#  $ip:
+# === Parameters
+#  $ip:     Ip to listen to, leave empty for all
 #
-#  $port:
+#  $port:   Port to listen to. Defaults to 80.
 #
 #  $comment:
 
@@ -21,6 +21,10 @@ define apache::listen (
   $listen_port = $port ? {
     undef   => $name,
     default => $port,
+  }
+
+  if ! ($listen_port =~ /^[0-9]+$/) {
+    fail("${listen_port} is not a valid port number.")
   }
 
 

@@ -11,10 +11,16 @@ define apache::namevhost (
   require apache::config::listen
   require apache::config::namevhost
 
+
   $vhost_port = $port ? {
     undef   => $name,
     default => $port,
   }
+
+  if ! ($vhost_port =~ /^[0-9]+$/) {
+    fail("${vhost_port} is not a valid port number.")
+  }
+
 
   case $ip {
     undef:    {

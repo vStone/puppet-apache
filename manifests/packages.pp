@@ -6,24 +6,24 @@ class apache::packages {
     alias   => 'apache',
     notify  => Service['apache'];
   }
-  @package {$apache::params::package_devel:
-    ensure  => installed,
-    alias   => 'apache-devel',
-    notify  => Service['apache'],
-    require => Package['apache'],
+  realize(Package[$apache::params::package])
+
+  if $apache::params::devel == true {
+    @package {$apache::params::package_devel:
+      ensure  => installed,
+      alias   => 'apache-devel',
+      notify  => Service['apache'],
+      require => Package['apache'],
+    }
+    realize(Package[$apache::params::package_devel])
   }
-  @package {$apache::params::package_ssl:
+
+  if $apache::params::ssl == true {
+    @package {$apache::params::package_ssl:
       ensure => installed,
       alias  => 'apache-ssl',
       notify => Service['apache'];
-  }
-
-  realize(Package[$apache::params::package])
-
-  if $apache::params::devel == 'yes' {
-    realize(Package[$apache::params::package_devel])
-  }
-  if $apache::params::ssl == 'yes' {
+    }
     realize(Package[$apache::params::package_ssl])
   }
 }

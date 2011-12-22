@@ -7,7 +7,7 @@
 #     Configure the apache package name. Defaults do distro specific.
 #
 #   $apache_dev:
-#     Package(s) to install when $devel = 'yes'. Defaults to distro specific.
+#     Package(s) to install when $devel = true. Defaults to distro specific.
 #
 #   $apache_ssl:
 #
@@ -26,8 +26,8 @@ class apache::params(
   $root = undef,
   $user = undef,
   $group = undef,
-  $devel = 'no',
-  $ssl = 'yes'
+  $devel = false,
+  $ssl = true
 ) {
 
 

@@ -48,12 +48,19 @@ define apache::confd (
   require apache::params
   require apache::config
 
-  # default confd to name.d
+
+  ####################################
+  ####  Initialize path defaults  ####
+  ####################################
+
+  # It might seem funny but since confd is a required parameter,
+  # we could easily remove this.
   $path_name = $confd? {
     undef   => "${name}.d",
     default => $confd
   }
 
+  ## Some default folder configuration/magic
   if $use_config_root == false {
     $name_d = "${apache::params::confd}/${path_name}"
     $include_root = "conf.d/${path_name}"
@@ -61,6 +68,7 @@ define apache::confd (
     $name_d = "${apache::params::config_dir}/${path_name}"
     $include_root = $path_name
   }
+
   $name_dir_name = "apache-confd_${name}"
 
   # conf.d style folder with subconfigs.
@@ -75,12 +83,8 @@ define apache::confd (
     require => File[$apache::config::apache_confd],
   }
 
-  $include_list = template('apache/confd/include.erb')
-
-  $include = "## Apache::Confd['${name}']
-${load_content}
-${include_list}
-"
+  ## Use the include template. Maybe we should put more stuff in the template.
+  $include = template('apache/confd/confd_include.erb')
 
   file {"apache-confd_${name}_load":
     ensure  => present,
@@ -91,13 +95,7 @@ ${include_list}
 
   if $purge {
 
-    $warning = "## WARNING ##
-# All files in this directory are managed by puppet.
-# Unmanaged files will be PURGED!'
-#
-${warn_content}
-"
-
+    $warning = template('apache/confd/confd_warning.erb')
     # warning that all files in this folder will be purged.
     file {"apache-confd_${name}_purge":
       ensure  => present,

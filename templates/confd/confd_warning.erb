@@ -1,0 +1,23 @@
+### File managed with puppet ###
+<% if ! (defined?(servername)).nil? -%>
+# Served by:        '<%= servername %>'
+# <% end -%>
+# Module:           '<%= scope.to_hash['module_name'] %>'
+# Template source:  '<%= template_source %>'
+#
+
+#
+  #""###""###""#                            oo
+  #  ###  ###  #
+  #  ##P  ##P  # .d8888b. 88d888b. 88d888b. dP 88d888b. .d8888b.
+  #  ##'  ##' .# 88'  `88 88'  `88 88'  `88 88 88'  `88 88'  `88
+  #  `' . '' .## 88.  .88 88       88    88 88 88    88 88.  .88
+  #    .d  .d### `88888P8 dP       dP    dP dP dP    dP `8888P88
+  ##############                                             .88
+#                                                        d8888P
+
+#    Purge has been enabled for this configuration folder.
+#   All files that are not managed by puppet will be PURGED!
+<% if ! warn_content == '' %>
+<%= warn_content %>
+<% end %>

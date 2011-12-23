@@ -98,14 +98,14 @@ class apache::params(
 
   ## Template to use.
   $config_template = $::operatingsystem ? {
-    /Archlinux/     => 'apache/archlinux-apache.conf.erb',
+    /Archlinux/     => 'apache/config/archlinux-apache.conf.erb',
     /CentOS|RedHat/ => $::operatingsystemrelease ? {
-      /^6/    => 'apache/centos6-apache.conf.erb',
-      /^5/    => 'apache/centos-apache.conf.erb',
-      default => 'apache/centos-apache.conf.erb',
+      /^6/    => 'apache/config/centos6-apache.conf.erb',
+      /^5/    => 'apache/config/centos-apache.conf.erb',
+      default => 'apache/config/centos-apache.conf.erb',
     },
-    /Debian|Ubuntu/ => 'apache/debian-apache.conf.erb',
-    default         => 'apache/debian-apache.conf.erb',
+    /Debian|Ubuntu/ => 'apache/config/debian-apache.conf.erb',
+    default         => 'apache/config/debian-apache.conf.erb',
   }
 
   ## Location of the (main) configuration file.

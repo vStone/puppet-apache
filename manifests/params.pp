@@ -1,8 +1,8 @@
-# Class: apache::params
+# === Class: apache::params
 #
 # Configure various apache settings and initialize distro specific settings.
 #
-# Parameters:
+# === Parameters:
 #   $apache:
 #     Configure the apache package name. Defaults do distro specific.
 #
@@ -11,13 +11,10 @@
 #
 #   $apache_ssl:
 #
-# Actions:
+# === Sample Usage:
 #
-# Requires:
-#
-# Sample Usage:
-#
-#
+# === Todo:
+# * Finish documentation.
 class apache::params(
   $apache = undef,
   $apache_dev = undef,
@@ -30,7 +27,9 @@ class apache::params(
   $ssl = true
 ) {
 
-
+  ####################################
+  ####         Package(s)         ####
+  ####################################
   $package = $apache ? {
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => 'apache2',
@@ -57,6 +56,10 @@ class apache::params(
     default => $apache_ssl,
   }
 
+
+  ####################################
+  ####      Apache Service        ####
+  ####################################
   $service_name = $service ? {
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => 'apache2',
@@ -80,6 +83,9 @@ class apache::params(
   }
 
 
+  ####################################
+  #### Apache Configuration Files ####
+  ####################################
   ## Configuration directories. Based on defined $root ##
   $config_dir = $root ? {
     undef   => $::operatingsystem ? {
@@ -90,6 +96,7 @@ class apache::params(
     default => $root,
   }
 
+  ## Template to use.
   $config_template = $::operatingsystem ? {
     /Archlinux/     => 'apache/archlinux-apache.conf.erb',
     /CentOS|RedHat/ => $::operatingsystemrelease ? {
@@ -101,14 +108,20 @@ class apache::params(
     default         => 'apache/debian-apache.conf.erb',
   }
 
+  ## Location of the (main) configuration file.
   $config_file = $::operatingsystem ? {
     /Debian|Ubuntu/ => "${config_dir}/apache2.conf",
     /CentOS|RedHat/ => "${config_dir}/conf/httpd.conf",
     default         => "${config_dir}/conf/httpd.conf",
   }
 
+  ## conf.d folder.
   $confd        = "${config_dir}/conf.d/"
 
+
+  ####################################
+  ####    Apache Daemon Config    ####
+  ####################################
   $daemon_user = $user ? {
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => 'www-data',

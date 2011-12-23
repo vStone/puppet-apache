@@ -24,12 +24,10 @@
 #     not break the configuration.
 #
 #  $includes:
-#     Pattern to use when including files from the $confd.
+#     Pattern(s) to use when including files from the $confd.
 #
 #  $purge:
 #     Purge all puppet 'foreign' files in the $confd.
-#
-# === Actions:
 #
 # === Requires:
 #
@@ -43,7 +41,8 @@ define apache::confd (
   $load_content,
   $warn_content,
   $includes,
-  $purge
+  $purge,
+  $use_config_root = false
 ) {
 
   require apache::params
@@ -55,7 +54,13 @@ define apache::confd (
     default => $confd
   }
 
-  $name_d = "${apache::params::confd}/${path_name}"
+  if $use_config_root == false {
+    $name_d = "${apache::params::confd}/${path_name}"
+    $include_root = "conf.d/${path_name}"
+  } else {
+    $name_d = "${apache::params::config_dir}/${path_name}"
+    $include_root = $path_name
+  }
   $name_dir_name = "apache-confd_${name}"
 
   # conf.d style folder with subconfigs.
@@ -68,6 +73,20 @@ define apache::confd (
     recurse => true,
     purge   => $purge,
     require => File[$apache::config::apache_confd],
+  }
+
+  $include_list = template('apache/confd/include.erb')
+
+  $include = "## Apache::Confd['${name}']
+${load_content}
+${include_list}
+"
+
+  file {"apache-confd_${name}_load":
+    ensure  => present,
+    path    => "${apache::params::confd}/${order}_${name}.conf",
+    content => $include,
+    require => File[$name_dir_name]
   }
 
   if $purge {
@@ -88,16 +107,5 @@ ${warn_content}
     }
   }
 
-  $include = "## Apache::Confd['${name}']
-${load_content}
-Include conf.d/${path_name}/${includes}
-"
-
-  file {"apache-confd_${name}_load":
-    ensure  => present,
-    path    => "${apache::params::confd}/${order}_${name}.conf",
-    content => $include,
-    require => File[$name_dir_name]
-  }
 
 }

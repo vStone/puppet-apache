@@ -23,5 +23,6 @@ class apache::config {
   include apache::config::listen
   include apache::config::namevhost
   include apache::config::mod
+  include apache::config::vhost
 
 }

@@ -16,17 +16,18 @@
 # === Todo:
 # * Finish documentation.
 class apache::params(
-  $apache     = undef,
-  $apache_dev = undef,
-  $apache_ssl = undef,
-  $service    = undef,
-  $configroot = undef,
-  $vhostroot  = undef,
-  $logroot    = undef,
-  $user       = undef,
-  $group      = undef,
-  $devel      = false,
-  $ssl        = true,
+  $apache         = undef,
+  $apache_dev     = undef,
+  $apache_ssl     = undef,
+  $service        = undef,
+  $configroot     = undef,
+  $vhostroot      = undef,
+  $logroot        = undef,
+  $user           = undef,
+  $group          = undef,
+  $devel          = false,
+  $ssl            = true,
+  $keepalive      = true,
 ) {
 
   ####################################

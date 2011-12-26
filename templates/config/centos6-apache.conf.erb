@@ -73,7 +73,14 @@ Timeout 60
 # KeepAlive: Whether or not to allow persistent connections (more than
 # one request per connection). Set to "Off" to deactivate.
 #
-KeepAlive Off
+<%
+if scope.lookupvar('apache::params::keepalive') == true
+  keepalive = 'On'
+else
+  keepalive = 'Off'
+end
+-%>
+KeepAlive <%= keepalive %>
 
 #
 # MaxKeepAliveRequests: The maximum number of requests to allow

@@ -28,6 +28,7 @@ class apache::params(
   $devel          = false,
   $ssl            = true,
   $keepalive      = true,
+  $vhostd_use_ip  = true,
 ) {
 
   ####################################

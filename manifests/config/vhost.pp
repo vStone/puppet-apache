@@ -2,7 +2,7 @@ class apache::config::vhost {
 
   $confd = 'vhost.d'
   $order = '10'
-  $includes = ['*.conf', '*/*.conf' ]
+  $includes = ['*.conf' ]
   $purge  = false
 
   apache::confd {'vhost':

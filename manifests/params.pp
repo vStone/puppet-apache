@@ -16,15 +16,17 @@
 # === Todo:
 # * Finish documentation.
 class apache::params(
-  $apache = undef,
+  $apache     = undef,
   $apache_dev = undef,
   $apache_ssl = undef,
-  $service = undef,
-  $root = undef,
-  $user = undef,
-  $group = undef,
-  $devel = false,
-  $ssl = true
+  $service    = undef,
+  $configroot = undef,
+  $vhostroot  = undef,
+  $logroot    = undef,
+  $user       = undef,
+  $group      = undef,
+  $devel      = false,
+  $ssl        = true,
 ) {
 
   ####################################
@@ -86,14 +88,14 @@ class apache::params(
   ####################################
   #### Apache Configuration Files ####
   ####################################
-  ## Configuration directories. Based on defined $root ##
-  $config_dir = $root ? {
+  ## Configuration directories. Based on defined $configroot ##
+  $config_dir = $configroot ? {
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => '/etc/apache2',
       /CentOS|RedHat/ => '/etc/httpd',
       default         => '/etc/httpd',
     },
-    default => $root,
+    default => $configroot,
   }
 
   ## Template to use.
@@ -118,6 +120,15 @@ class apache::params(
   ## conf.d folder.
   $confd        = "${config_dir}/conf.d/"
 
+  $log_dir = $logroot ? {
+    undef   => $::operatingsystem ? {
+      /Debian|Ubuntu/ => '/var/log/apache2',
+      /CentOS|RedHat/ => '/var/log/httpd',
+      /Archlinux/     => '/var/log/httpd',
+      default         => '/var/log/httpd',
+    },
+    default => $logroot,
+  }
 
   ####################################
   ####    Apache Daemon Config    ####
@@ -140,5 +151,14 @@ class apache::params(
     },
     default => $group,
   }
+
+  ####################################
+  ####     Vhost root folder      ####
+  ####################################
+  $vhost_root = $vhostroot ? {
+    undef   => '/var/vhosts/',
+    default => $vhostroot,
+  }
+  $vhost_log_dir = "${log_dir}/vhosts/"
 
 }

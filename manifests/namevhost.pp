@@ -37,23 +37,10 @@ define apache::namevhost (
     fail("Please use '${listen}' as title for the apache::namevhost resource defined with ip: ${ip} and port: ${vhost_port}")
   }
 
-  if $comment != '' {
-    $content_comment = "# ${comment}
-"
-  } else {
-    $content_comment = ''
-  }
-
-  $content_namevhost = "NameVirtualHost ${ip_def}:${vhost_port}"
-
-  $content = "${content_comment}${content_namevhost}
-"
-
   $fname = "namevhost_${ip}_${vhost_port}"
-
   apache::confd::file {$fname:
     confd     => $apache::config::namevhost::confd,
-    content   => $content,
+    content   => template('apache/confd/confd_namevhost.erb'),
     require   => Apache::Listen[$listen],
   }
 

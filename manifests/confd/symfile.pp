@@ -6,18 +6,22 @@
 #  $confd:
 #     Subfolder in conf.d directory.
 #
+#  $enabled:
+#     If enabled, the symlink to the configuration file will be created.
+#
+#  $link_name:
+#     Path of the link.
+#     Defaults to the title with .conf appended.
+#
 #  $file_name:
 #     File name to put in folder (we add order in front if defined).
-#     Defaults to the title with .conf appended.
+#     Defaults to the title with _configuration appended.
 #
 #  $order:
 #     Order is prepended to the file to determine the load order.
 #
 #  $content:
-#     Content to put into the file. Is used when no template is defined.
-#
-#  $template:
-#     Path to template to use.
+#     Content to put into the file.
 #
 define apache::confd::symfile (
   $confd,
@@ -25,8 +29,7 @@ define apache::confd::symfile (
   $link_name  = "${title}.conf",
   $file_name  = "${title}_configuration",
   $order      = undef,
-  $content    = '',
-  $template   = undef
+  $content    = ''
 ) {
 
   case $order {
@@ -44,16 +47,7 @@ define apache::confd::symfile (
     ensure  => present,
     path    => "${apache::params::confd}/${confd}/$fname",
     notify  => Service['apache'],
-  }
-
-  if $template == undef {
-    File[$title] {
-      content => $content,
-    }
-  } else {
-    File[$title] {
-      template => template($template),
-    }
+    content => $content,
   }
 
   file {"${title}-symlink":

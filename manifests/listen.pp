@@ -29,12 +29,22 @@ define apache::listen (
 
   case $name {
     /^[0-9]+$/: {
+      $do_file = true
       $ip = ''
       $port = $name
     }
     /^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)_([0-9]+)/: {
       $ip = $1
       $port = $2
+      if defined(Apache::Listen[$port]) {
+        $do_file = false
+        notify {"listen-allinterfaces-warning-${name}":
+          message => "Already listening on all interfaces for port ${port}!",
+        }
+      } else {
+        $do_file = true
+      }
+
     }
     default : {
       fail ("Could not determine ip and port from ${name}")
@@ -45,17 +55,12 @@ define apache::listen (
   ####       Prepare content      ####
   ####################################
 
-  if defined(Apache::Listen[$port]) {
-    notify {"listen-allinterfaces-warning-${name}":
-      message => "Already listening on all interfaces for port ${port}!",
-    }
-  } else {
-
+  if $do_file {
     ## Filename for thingie.
     $fname = "listen_${ip}_${listen_port}"
 
     apache::confd::file {$fname:
-      confd         => $apache::config::listen::confd,
+      confd   => $apache::config::listen::confd,
       content => template('apache/confd/listen.erb'),
     }
   }

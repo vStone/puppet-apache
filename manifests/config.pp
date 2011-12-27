@@ -27,24 +27,6 @@ class apache::config {
     mode    => '0755',
   }
 
-
-  ## vhost doc roots
-  file{'apache-vhost_root':
-    ensure => directory,
-    path   => $apache::params::vhost_root,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-  }
-  file {'apache-vhosts_log_root':
-    ensure  => directory,
-    path    => $apache::params::vhost_log_dir,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    require => File['apache-log_root'],
-  }
-
   ## log folders
   file {'apache-log_root':
     ensure => directory,

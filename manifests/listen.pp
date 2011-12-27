@@ -1,17 +1,21 @@
 # == Definition: apache::listen
 #
-# Instruct apache to listen to this port.
+# Instruct apache to listen to this port. Name and port are
+# from the defined title
 #
 # === Parameters
-#  $ip:     Ip to listen to, leave empty for all
-#
-#  $port:   Port to listen to. Defaults to 80.
 #
 #  $comment:
-
+#     Additional content that gets added to the listen definition file.
+#
+#  $name:
+#     either a port number or <ip>_<port>
+#
+# === Example
+# apache::listen { '10.0.0.1_80': }
+# apache::listen { '80': }
+#
 define apache::listen (
-  $ip = undef,
-  $port = undef,
   $comment = ''
 ) {
 
@@ -23,57 +27,37 @@ define apache::listen (
   #### Variable checks & Defaults ####
   ####################################
 
-  ## Listen port defaults to the name (title).
-  $listen_port = $port ? {
-    undef   => $name,
-    default => $port,
+  case $name {
+    /^[0-9]+$/: {
+      $ip = ''
+      $port = $name
+    }
+    /^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)_([0-9]+)/: {
+      $ip = $1
+      $port = $2
+    }
+    default : {
+      fail ("Could not determine ip and port from ${name}")
+    }
   }
-
-  ## Check that our port is numeric and not empty.
-  if ! ($listen_port =~ /^[0-9]+$/) {
-    fail("${listen_port} is not a valid port number.")
-  }
-
-  ## Check if the name is a combination of <ip>_<port>
-  # This is mainly used for resolving dependencies.
-  $listen = $ip ? {
-    undef   => $listen_port,
-    default => "${ip}_${listen_port}"
-  }
-  if $title != $listen {
-    fail("Please use '${listen}' as title for the apache::listen resource defined with ip: ${ip} and port: ${listen_port}")
-  }
-
 
   ####################################
   ####       Prepare content      ####
   ####################################
 
-  ## If there is a comment defined, make sure it is commented out.
-  if $comment != '' {
-    $content_comment = "# ${comment}
-"
+  if defined(Apache::Listen[$port]) {
+    notify {"listen-allinterfaces-warning-${name}":
+      message => "Already listening on all interfaces for port ${port}!",
+    }
   } else {
-    $content_comment = ''
-  }
 
-  ## If we are listening to an IP, add it to the Listen definition.
-  if $ip == undef {
-    $content_listen = 'Listen '
-  } else {
-    $content_listen = "Listen ${ip}:"
-  }
+    ## Filename for thingie.
+    $fname = "listen_${ip}_${listen_port}"
 
-  ## And now all of it together
-  $content = "${content_comment}${content_listen}${listen_port}
-"
-
-  ## Filename for thingie.
-  $fname = "listen_${ip}_${listen_port}"
-
-  apache::confd::file {$fname:
-    confd     => $apache::config::listen::confd,
-    content   => $content,
+    apache::confd::file {$fname:
+      confd         => $apache::config::listen::confd,
+      content => template('apache/confd/listen.erb'),
+    }
   }
 
 }

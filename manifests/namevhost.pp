@@ -2,8 +2,6 @@
 #
 #
 define apache::namevhost (
-  $ip = undef,
-  $port = undef,
   $comment = ''
 ) {
 
@@ -12,36 +10,29 @@ define apache::namevhost (
   require apache::config::namevhost
 
 
-  $vhost_port = $port ? {
-    undef   => $name,
-    default => $port,
-  }
+  ####################################
+  #### Variable checks & Defaults ####
+  ####################################
 
-  if ! ($vhost_port =~ /^[0-9]+$/) {
-    fail("${vhost_port} is not a valid port number.")
-  }
-
-
-  case $ip {
-    undef:    {
-      $ip_def = '*'
-      $listen = $vhost_port
+  case $name {
+    /^[0-9]+$/: {
+      $ip = ''
+      $port = $name
     }
-    default:  {
-      $ip_def = $ip
-      $listen = "${ip}_${vhost_port}"
+    /^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)_([0-9]+)/: {
+      $ip = $1
+      $port = $2
+    }
+    default : {
+      fail ("Could not determine ip and port from ${name}")
     }
   }
 
-  if $listen != $title {
-    fail("Please use '${listen}' as title for the apache::namevhost resource defined with ip: ${ip} and port: ${vhost_port}")
-  }
-
-  $fname = "namevhost_${ip}_${vhost_port}"
+  $fname = "namevhost_${ip}_${port}"
   apache::confd::file {$fname:
     confd     => $apache::config::namevhost::confd,
-    content   => template('apache/confd/confd_namevhost.erb'),
-    require   => Apache::Listen[$listen],
+    content   => template('apache/confd/namevhost.erb'),
+    require   => Apache::Listen[$name],
   }
 
 }

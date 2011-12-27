@@ -224,11 +224,6 @@ LoadModule version_module modules/mod_version.so
 #
 
 #
-# Load config files from the config directory "/etc/httpd/conf.d".
-#
-Include conf.d/*.conf
-
-#
 # ExtendedStatus controls whether Apache will generate "full" status
 # information (ExtendedStatus On) or just basic information (ExtendedStatus
 # Off) when the "server-status" handler is called. The default is Off.
@@ -247,8 +242,8 @@ Include conf.d/*.conf
 #  when the value of (unsigned)Group is above 60000;
 #  don't use Group #-1 on these systems!
 #
-User apache
-Group apache
+User <%= scope.lookupvar('apache::params::daemon_user') %>
+Group <%= scope.lookupvar('apache::params::daemon_group') %>
 
 ### Section 2: 'Main' server configuration
 #
@@ -1016,5 +1011,8 @@ BrowserMatch "^Dreamweaver-WebDAV-SCM1" redirect-carefully
 #    CustomLog logs/dummy-host.example.com-access_log common
 #</VirtualHost>
 
-NameVirtualHost *:80
-NameVirtualHost *:443
+#
+# Load config files from the config directory "/etc/httpd/conf.d".
+#
+Include conf.d/*.conf
+

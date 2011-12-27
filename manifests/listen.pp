@@ -38,7 +38,7 @@ define apache::listen (
       $port = $2
       if defined(Apache::Listen[$port]) {
         $do_file = false
-        notify {"listen-allinterfaces-warning-${name}":
+        notify {"apache-listen-allinterfaces-warning-${name}":
           message => "Already listening on all interfaces for port ${port}!",
         }
       } else {

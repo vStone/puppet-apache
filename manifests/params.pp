@@ -16,19 +16,20 @@
 # === Todo:
 # * Finish documentation.
 class apache::params(
-  $apache         = undef,
-  $apache_dev     = undef,
-  $apache_ssl     = undef,
-  $service        = undef,
-  $configroot     = undef,
-  $vhostroot      = undef,
-  $logroot        = undef,
-  $user           = undef,
-  $group          = undef,
-  $devel          = false,
-  $ssl            = true,
-  $keepalive      = true,
-  $vhostd_use_ip  = true
+  $apache           = undef,
+  $apache_dev       = undef,
+  $apache_ssl       = undef,
+  $service          = undef,
+  $configroot       = undef,
+  $vhostroot        = undef,
+  $logroot          = undef,
+  $user             = undef,
+  $group            = undef,
+  $devel            = false,
+  $ssl              = true,
+  $keepalive        = true,
+  $vhostd_use_ip    = true,
+  $default_docroot  = 'htdocs'
 ) {
 
   ####################################
@@ -161,6 +162,6 @@ class apache::params(
     undef   => '/var/vhosts/',
     default => $vhostroot,
   }
-  $vhost_log_dir = "${log_dir}/vhosts/"
+  $vhost_log_dir = "${log_dir}/vhosts"
 
 }

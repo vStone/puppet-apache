@@ -1,4 +1,4 @@
-define apache::vhost::maybe(
+define apache::vhost::file_exists(
   $ensure,
   $path,
   $owner = undef,

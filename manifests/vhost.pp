@@ -57,21 +57,21 @@ define apache::vhost (
   # setup paths / folders / symlinks
   # keep order in mind
 
-  apache::vhost::maybe {"apache-vhost-vhost-root-${name}":
+  apache::vhost::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
     path   => $vhost_root,
   }
-  apache::vhost::maybe {"apache-vhost-vhost-log-${name}":
+  apache::vhost::file_exists {"apache-vhost-vhost-log-${name}":
     ensure  => 'directory',
     path    => $log_dir,
     require => File['apache-vhosts_log_root'],
   }
-  apache::vhost::maybe {"apache-vhost-vhost-log-link-${name}":
+  apache::vhost::file_exists {"apache-vhost-vhost-log-link-${name}":
     ensure  => 'link',
     target  => $log_dir,
     path    => $log_link_target,
-    require => [ Apache::Vhost::Maybe["apache-vhost-vhost-log-${name}"],
-                 Apache::Vhost::Maybe["apache-vhost-vhost-root-${name}"] ]
+    require => [ Apache::Vhost::File_exists["apache-vhost-vhost-log-${name}"],
+                 Apache::Vhost::File_exists["apache-vhost-vhost-root-${name}"] ]
   }
 
 

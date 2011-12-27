@@ -43,6 +43,12 @@
 #     Can be used to define the order for this vhost to be loaded in.
 #     Defaults to 10. So special vhosts should have a lower or higher order.
 #
+#   $vhost_config:
+#     Custom virtualhost configuration.
+#     This does not override the complete config but is included within
+#     the <VirtualHost> directive after the documentroot definition,
+#     and before including any apache vhost mods.
+#
 #   $mods: Currently not implemented!
 #
 # === Best practice:
@@ -66,6 +72,7 @@ define apache::vhost (
   $docroot        = undef,
   $docroot_purge  = false,
   $order          = '10',
+  $vhost_config   = '',
   $mods           = undef
 ) {
 
@@ -158,17 +165,22 @@ define apache::vhost (
 
   $inclfile_title = "${name}_"
 
-  if $apache::params::vhostd_use_ip {
-    apache::vhost::use_ip_config { $title:
-      ensure => $enable,
-      name   => $name,
-      order  => $order,
+  case $apache::params::config_style {
+    'use_ip': {
+      apache::vhost::config::use_ip { $title:
+        ensure  => $enable,
+        name    => $name,
+        order   => $order,
+        content => template('apache/vhost/virtualhost.erb'),
+      }
     }
-  } else {
-    apache::vhost::simple_config {$title:
-      ensure => $enable,
-      name   => $name,
-      order  => $order,
+    'simple','default',default: {
+      apache::vhost::config::simple { $title:
+        ensure  => $enable,
+        name    => $name,
+        order   => $order,
+        content => template('apache/vhost/virtualhost.erb'),
+      }
     }
   }
   # if mods is defined, do some create_resources magic.

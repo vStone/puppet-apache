@@ -28,7 +28,7 @@ class apache::params(
   $devel            = false,
   $ssl              = true,
   $keepalive        = true,
-  $vhostd_use_ip    = true,
+  $config_style     = 'default',
   $default_docroot  = 'htdocs'
 ) {
 

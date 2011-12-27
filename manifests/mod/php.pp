@@ -1,9 +1,9 @@
 class apache::mod::php {
 
-  $pkg_name = $::operatingsystem ? {
+  $pkg_name =  $::operatingsystem ? {
     /Debian|Ubuntu/ => 'libapache2-mod-php',
     /CentOS|RedHat/ => '',
-    default => [],
+    default         => [],
   }
 
 

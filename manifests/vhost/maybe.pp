@@ -1,0 +1,37 @@
+define apache::vhost::maybe(
+  $ensure,
+  $path,
+  $owner = undef,
+  $group = undef,
+  $purge = false,
+  $target = undef,
+) {
+
+  require apache::params
+
+  $fowner = $owner ? {
+    undef   => $apache::params::daemon_user,
+    default => $owner,
+  }
+
+  $fgroup = $group ? {
+    undef   => $apache::params::daemon_group,
+    default => $group,
+  }
+
+  if defined(File[$path]) {
+    notify {"$name-exists":
+      message => "The folder ${path} is already defined. Skipping creation.",
+    }
+  } else {
+    file {$path:
+      ensure => $ensure,
+      owner  => $fowner,
+      group  => $fgroup,
+      purge  => $purge,
+      target => $target,
+    }
+  }
+
+
+}

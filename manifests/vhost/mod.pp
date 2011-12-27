@@ -1,0 +1,5 @@
+class apache::vhost::mod (
+
+) {
+
+}

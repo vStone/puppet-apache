@@ -23,36 +23,50 @@
 #  $content:
 #     Content to put into the file.
 #
+# === Todo:
+#  * Fix documentation
 define apache::confd::symfile (
   $confd,
-  $enabled    = true,
-  $link_name  = "${title}.conf",
-  $file_name  = "${title}_configuration",
-  $order      = undef,
-  $content    = ''
+  $order            = '10',
+  $ensure           = 'enable',
+  $link_name        = "${title}.conf",
+  $file_name        = "${title}_configuration",
+  $content          = '',
+  $use_config_root  = false,
+  $order_linkonly   = true
 ) {
 
-  case $order {
-    undef:    {
-      $fname = $file_name
-      $lname = $link_name
-    }
-    default:  {
-      $fname = "${order}_${file_name}"
-      $lname = "${order}_${link_name}"
-    }
+  $enabled = $ensure ? {
+    /enable|present/ => true,
+    true             => true,
+    /disable|absent/ => false,
+    false            => false,
+    default          => true,
+  }
+
+  if $order_linkonly {
+    $fname = $file_name 
+  } else {
+    $fname = "${order}_${file_name}"
+  }
+  $lname = "${order}_${link_name}"
+
+  if $use_config_root {
+    $config_root = $apache::params::config_dir
+  } else {
+    $config_root = $apache::params::confd
   }
 
   file {$title:
     ensure  => present,
-    path    => "${apache::params::confd}/${confd}/$fname",
+    path    => "${config_root}/${confd}/$fname",
     notify  => Service['apache'],
     content => $content,
   }
 
   file {"${title}-symlink":
-    path    => "${apache::params::confd}/${confd}/${lname}",
-    target  => "${apache::params::confd}/${confd}/$fname",
+    path    => "${config_root}/${confd}/${lname}",
+    target  => "${config_root}/${confd}/$fname",
   }
 
   if $enabled {

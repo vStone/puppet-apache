@@ -5,6 +5,8 @@ class apache::config::vhost {
   $includes = ['*.conf' ]
   $purge  = false
 
+  $use_config_root = true
+
   ## vhost doc roots
   file{'apache-vhost_root':
     ensure => directory,
@@ -29,7 +31,7 @@ class apache::config::vhost {
     warn_content    => '',
     includes        => $apache::config::vhost::includes,
     purge           => $apache::config::vhost::purge,
-    use_config_root => true,
+    use_config_root => $apache::config::vhost::use_config_root,
   }
 
 }

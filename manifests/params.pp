@@ -159,7 +159,7 @@ class apache::params(
   ####     Vhost root folder      ####
   ####################################
   $vhost_root = $vhostroot ? {
-    undef   => '/var/vhosts/',
+    undef   => '/var/vhosts',
     default => $vhostroot,
   }
   $vhost_log_dir = "${log_dir}/vhosts"

@@ -139,22 +139,22 @@ define apache::vhost (
   ####################################
   ####   Create folder structure  ####
   ####################################
-  apache::vhost::file_exists {"apache-vhost-vhost-root-${name}":
+  apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
     path   => $vhost_root,
   }
-  apache::vhost::file_exists {"apache-vhost-vhost-log-${name}":
+  apache::confd::file_exists {"apache-vhost-vhost-log-${name}":
     ensure  => 'directory',
     path    => $log_dir,
     require => File['apache-vhosts_log_root'],
   }
-  apache::vhost::file_exists {"apache-vhost-vhost-log-link-${name}":
+  apache::confd::file_exists {"apache-vhost-vhost-log-link-${name}":
     ensure  => 'link',
     target  => $log_dir,
     path    => $log_link_target,
     require => [
-      Apache::Vhost::File_exists["apache-vhost-vhost-log-${name}"],
-      Apache::Vhost::File_exists["apache-vhost-vhost-root-${name}"]
+      Apache::Confd::File_exists["apache-vhost-vhost-log-${name}"],
+      Apache::Confd::File_exists["apache-vhost-vhost-root-${name}"]
     ]
   }
 

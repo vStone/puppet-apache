@@ -1,4 +1,4 @@
-define apache::vhost::file_exists(
+define apache::confd::file_exists(
   $ensure,
   $path,
   $owner = undef,
@@ -20,7 +20,7 @@ define apache::vhost::file_exists(
   }
 
   if defined(File[$path]) {
-    notify {"apache-vhost-file_exists-${name}":
+    notify {"apache-confd-file_exists-${name}":
       message => "The folder ${path} is already defined. Skipping creation.",
     }
   } else {

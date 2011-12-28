@@ -4,7 +4,7 @@ define apache::vhost::file_exists(
   $owner = undef,
   $group = undef,
   $purge = false,
-  $target = undef,
+  $target = undef
 ) {
 
   require apache::params
@@ -20,7 +20,7 @@ define apache::vhost::file_exists(
   }
 
   if defined(File[$path]) {
-    notify {"$name-exists":
+    notify {"apache-vhost-file_exists-${name}":
       message => "The folder ${path} is already defined. Skipping creation.",
     }
   } else {

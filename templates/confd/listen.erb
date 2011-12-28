@@ -2,10 +2,10 @@
 # <%= comment %>
 <% end -%>
 <%
-  if ip == ''
+  if listen_ip == ''
     str_ip = ''
   else
-    str_ip = "#{ip}:"
+    str_ip = "#{listen_ip}:"
   end
 -%>
-Listen <%= str_ip -%><%= port %>
+Listen <%= str_ip -%><%= listen_port %>

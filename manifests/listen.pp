@@ -30,16 +30,16 @@ define apache::listen (
   case $name {
     /^[0-9]+$/: {
       $do_file = true
-      $ip = ''
-      $port = $name
+      $listen_ip = ''
+      $listen_port = $name
     }
     /^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)_([0-9]+)/: {
-      $ip = $1
-      $port = $2
-      if defined(Apache::Listen[$port]) {
+      $listen_ip = $1
+      $listen_port = $2
+      if defined(Apache::Listen[$listen_port]) {
         $do_file = false
         notify {"apache-listen-allinterfaces-warning-${name}":
-          message => "Already listening on all interfaces for port ${port}!",
+          message => "Already listening on all interfaces for port ${listen_port}!",
         }
       } else {
         $do_file = true
@@ -57,7 +57,7 @@ define apache::listen (
 
   if $do_file {
     ## Filename for thingie.
-    $fname = "listen_${ip}_${listen_port}"
+    $fname = "listen_${listen_ip}_${listen_port}"
 
     apache::confd::file {$fname:
       confd   => $apache::config::listen::confd,

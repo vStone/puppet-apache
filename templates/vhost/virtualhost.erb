@@ -2,16 +2,23 @@
 ## Served by:        '<%= scope.lookupvar('::servername') %>'
 ## Module:           '<%= scope.to_hash['module_name'] %>'
 ## Template source:  '<%= template_source %>'
-#
-<%
-  serveraliases = [ serveraliases ] unless serveraliases.is_a?(Array)
--%>
+
 <VirtualHost <%= ip_def -%>:<%= port -%>>
 
-  ServerName <%= server %>
-  <% serveraliases.each do |serveralias| %>
-  ServerAlias <%= serveralias %>
-  <% end %>
+  ServerName  <%= server %>
+<%
+  if serveraliases.is_a?(Array)
+    serveraliases.each do |srvalias|
+-%>
+  ServerAlias <%= srvalias %>
+<%
+    end
+  elsif ! ( serveraliases == '' )
+-%>
+  ServerAlias <%= serveraliases %>
+<%
+  end
+-%>
   ServerAdmin <%= serveradmin %>
 
   DocumentRoot <%= documentroot %>

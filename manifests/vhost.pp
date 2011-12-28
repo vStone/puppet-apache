@@ -62,7 +62,7 @@
 #
 define apache::vhost (
   $servername     = undef,
-  $serveraliases  = [],
+  $serveraliases  = '',
   $ensure         = 'present',
   $ip             = undef,
   $port           = '80',
@@ -165,25 +165,17 @@ define apache::vhost (
 
   $inclfile_title = "${name}_"
 
-  case $apache::params::config_style {
-    'use_ip': {
-      apache::vhost::config::use_ip { $title:
-        ensure  => $enable,
-        name    => $name,
-        order   => $order,
-        content => template('apache/vhost/virtualhost.erb'),
-      }
-    }
-    'simple','default',default: {
-      apache::vhost::config::simple { $title:
-        ensure  => $enable,
-        name    => $name,
-        order   => $order,
-        content => template('apache/vhost/virtualhost.erb'),
-      }
+  $style_def = "apache::vhost::config::${apache::params::config_style}"
+  $style_args = {
+    "${title}" => {
+      'ensure'  => $enable,
+      'name'    => $name,
+      'order'   => $order,
+      'content' => template('apache/vhost/virtualhost.erb'),
+
     }
   }
-  # if mods is defined, do some create_resources magic.
 
+  create_resources($style_def, $style_args)
 
 }

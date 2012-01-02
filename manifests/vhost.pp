@@ -82,7 +82,6 @@ define apache::vhost (
   ####################################
   ####  Param checks & Defaults   ####
   ####################################
-
   case $ensure {
     /enable|present/, true:   { $enable = true }
     /disable|absent/, false:  { $enable = false }
@@ -137,7 +136,7 @@ define apache::vhost (
 
 
   ####################################
-  ####   Create folder structure  ####
+  ####   Create vhost structure   ####
   ####################################
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
@@ -158,24 +157,32 @@ define apache::vhost (
     ]
   }
 
-  # manage create root.
 
-  # template magic.
-  $includeglob = "${server}_mod_*.conf"
+  ####################################
+  ####   Generate vhost config    ####
+  ####################################
+  $params_def = "${apache::params::config_base}::params"
+  require $params_def
 
-  $inclfile_title = "${name}_"
+  $include_template = inline_template('<%= scope.lookupvar("#{params_def}::include_path") %>')
+  $include_tmp_path = inline_template($include_template)
 
-  $style_def = "apache::vhost::config::${apache::params::config_style}"
+  $include_root = $apache::config::vhost::confd
+
+  $include_blob = "${include_root}/${include_path}${name}_include_*.conf"
+
+  $style_def = "${apache::params::config_base}::main"
   $style_args = {
-    "${title}" => {
-      'ensure'  => $enable,
-      'name'    => $name,
-      'order'   => $order,
-      'content' => template('apache/vhost/virtualhost.erb'),
-
+    "${name}"    => {
+      'ensure'    => $enable,
+      'name'      => $name,
+      'content'   => template('apache/vhost/virtualhost.erb'),
+      'order'     => $order,
+      'ip'        => $ip,
+      'port'      => $port,
     }
   }
-
   create_resources($style_def, $style_args)
+
 
 }

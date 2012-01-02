@@ -11,10 +11,17 @@
 #
 #   $apache_ssl:
 #
+#   $config_style:
+#     Allows to pick the configuration style you want to generate.
+#     If this is a simple string, the used class will be:
+#       apache::vhost::config::${config_style}:: *
+#     When the string contains '::', we will use that definition.
+#
 # === Sample Usage:
 #
 # === Todo:
 # * Finish documentation.
+# * Test /out of scope/ config_style stuff.
 class apache::params(
   $apache           = undef,
   $apache_dev       = undef,
@@ -101,7 +108,7 @@ class apache::params(
     default => $configroot,
   }
 
-  ## Template to use.
+  ## Main configuration template to use.
   $config_template = $::operatingsystem ? {
     /Archlinux/     => 'apache/config/archlinux-apache.conf.erb',
     /CentOS|RedHat/ => $::operatingsystemrelease ? {
@@ -123,6 +130,7 @@ class apache::params(
   ## conf.d folder.
   $confd        = "${config_dir}/conf.d/"
 
+  ## Log directory.
   $log_dir = $logroot ? {
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => '/var/log/apache2',
@@ -132,6 +140,13 @@ class apache::params(
     },
     default => $logroot,
   }
+
+  ## config_base
+  $config_base = $config_style ? {
+    /::/    => $config_style,
+    default => "apache::vhost::config::${config_style}"
+  }
+
 
   ####################################
   ####    Apache Daemon Config    ####

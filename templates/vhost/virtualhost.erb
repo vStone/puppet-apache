@@ -29,11 +29,15 @@
     Allow from All
   </Directory>
 
-<% if ! vhost_config == '' %>
+<% if vhost_config != '' -%>
 ## Custom content. This is NOT created by the Apache::Vhost but has been
 #  configured in the apache::vhost definition.
 <%= vhost_config %>
 <% end -%>
-  Include <%= includeglob %>
+
+## '<%= include_blob -%>'
+<% if include_blob != '' -%>
+  Include <%= include_blob %>
+<% end %>
 
 </VirtualHost>

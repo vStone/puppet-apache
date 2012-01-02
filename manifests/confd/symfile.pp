@@ -4,7 +4,7 @@
 #
 # === Parameters:
 #  $confd:
-#     Subfolder in conf.d directory.
+#     Subfolder in conf.d directory. If use_config_root is enabled, subfolder in apache configuration folder.
 #
 #  $enabled:
 #     If enabled, the symlink to the configuration file will be created.
@@ -23,8 +23,14 @@
 #  $content:
 #     Content to put into the file.
 #
-# === Todo:
-#  * Fix documentation
+#  $use_config_root:
+#     If enabled, the $confd folder is not placed below the conf.d folder but
+#     directly in the apache root.
+#
+#  $order_linkonly:
+#     If enabled, only put the order in the symlink filename. Otherwise,
+#     we will also prepend the order to the regular configuration file.
+#
 define apache::confd::symfile (
   $confd,
   $order            = '10',
@@ -45,11 +51,11 @@ define apache::confd::symfile (
   }
 
   if $order_linkonly {
-    $fname = $file_name 
+    $filename = $file_name
   } else {
-    $fname = "${order}_${file_name}"
+    $filename = "${order}_${file_name}"
   }
-  $lname = "${order}_${link_name}"
+  $linkname = "${order}_${link_name}"
 
   if $use_config_root {
     $config_root = $apache::params::config_dir
@@ -59,20 +65,20 @@ define apache::confd::symfile (
 
   file {$title:
     ensure  => present,
-    path    => "${config_root}/${confd}/$fname",
+    path    => "${config_root}/${confd}/${filename}",
     notify  => Service['apache'],
     content => $content,
   }
 
   file {"${title}-symlink":
-    path    => "${config_root}/${confd}/${lname}",
-    target  => "${config_root}/${confd}/$fname",
+    path    => "${config_root}/${confd}/${linkname}",
+    target  => "${config_root}/${confd}/${filename}",
   }
 
   if $enabled {
-    File["${title}-symlink"] { ensure => link }
+    File["${title}-symlink"] { ensure => 'link' }
   } else {
-    File["${title}-symlink"] { ensure => absent }
+    File["${title}-symlink"] { ensure => 'absent' }
   }
 
 }

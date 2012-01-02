@@ -1,12 +1,14 @@
-define apache::vhost::config::simple (
+define apache::vhost::config::simple::main (
   $ensure,
   $content,
-  $order
+  $order,
+  $ip,
+  $port
 ) {
 
-  $file_base= "apache-vhost-config-simple-${title}"
+  require apache::vhost::config::simple::params
 
-  apache::confd::symfile {$file_base:
+  apache::confd::symfile {$name:
     ensure          => $ensure,
     confd           => $apache::config::vhost::confd,
     order           => $order,

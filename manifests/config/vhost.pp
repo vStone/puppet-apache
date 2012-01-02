@@ -2,7 +2,7 @@ class apache::config::vhost {
 
   $confd = 'vhost.d'
   $order = '10'
-  $includes = ['*.conf' ]
+  $includes = [ '*.conf' ]
   $purge  = false
 
   $use_config_root = true
@@ -15,6 +15,7 @@ class apache::config::vhost {
     group  => 'root',
     mode   => '0755',
   }
+
   file {'apache-vhosts_log_root':
     ensure  => directory,
     path    => $apache::params::vhost_log_dir,

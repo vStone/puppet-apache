@@ -31,6 +31,15 @@
 #     If enabled, only put the order in the symlink filename. Otherwise,
 #     we will also prepend the order to the regular configuration file.
 #
+# === Created resources:
+#
+# file {$title: }
+#
+# file {"${title}-symlink":
+#   requires => File[$title],
+# }
+#
+#
 define apache::confd::symfile (
   $confd,
   $order            = '10',
@@ -73,6 +82,7 @@ define apache::confd::symfile (
   file {"${title}-symlink":
     path    => "${config_root}/${confd}/${linkname}",
     target  => "${config_root}/${confd}/${filename}",
+    require => File[$title],
   }
 
   if $enabled {

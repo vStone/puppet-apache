@@ -1,0 +1,25 @@
+### reverse proxy definition goes here ###
+
+<%
+  if defined? proxypass
+    if proxypass.is_a?(Array)
+%>
+# Its an array
+<%
+    elsif proxypass.is_a?(Hash)
+%>
+# Its a hash
+<%
+    elsif proxypass.is_a?(String)
+%>
+# Its a string
+<%
+    else
+%>
+# its something else
+<%
+    end
+
+  end
+
+%>

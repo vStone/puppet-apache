@@ -165,11 +165,11 @@ define apache::vhost (
   require $params_def
 
   $include_template = inline_template('<%= scope.lookupvar("#{params_def}::include_path") %>')
-  $include_tmp_path = inline_template($include_template)
+  $include_path = inline_template($include_template)
 
   $include_root = $apache::config::vhost::confd
 
-  $include_blob = "${include_root}/${include_path}${name}_include_*.conf"
+  $include_blob = "${include_root}/${include_path}${name}_mod_*.include"
 
   $style_def = "${apache::params::config_base}::main"
   $style_args = {

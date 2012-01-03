@@ -1,4 +1,4 @@
-define apache::confd::file_exists(
+define apache::confd::file_exists (
   $ensure,
   $path,
   $owner = undef,

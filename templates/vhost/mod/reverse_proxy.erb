@@ -1,5 +1,21 @@
-### reverse proxy definition goes here ###
+<%
+  def always_array(var)
+    if var.is_a?(Array)
+      return var
+    elsif var.is_a?(Hash)
+      return var.map{ |k,v| "#{k} #{v}" }
+    elsif var.is_a?(String)
+      return [var]
+    else
+      return []
+    end
+  end
 
+  ## Sanitize variables
+  proxiez_pass = always_array(proxypass)
+  proxiez_reverse = always_array(proxypassreverse)
+
+-%>
 ProxyRequests Off
 
 <Proxy <%= proxy_url %>>
@@ -12,19 +28,10 @@ ProxyRequests Off
 <% end -%>
 </Proxy>
 
-<%
-    if proxypass.is_a?(Array)
-      proxypass.each do |pass| -%>
-ProxyPass <%= pass %>
-<%
-      end
-    elsif proxypass.is_a?(Hash)
-      proxypass.each do |location,target| -%>
-ProxyPass <%= location %> <%= target %>
-<%
-      end
-    elsif proxypass.is_a?(String) -%>
-ProxyPass <%= proxypass %>
-<%
-    end
--%>
+<% proxiez_pass.each do |p| -%>
+  ProxyPass <%= p %>
+<% end -%>
+
+<% proxiez_reverse.each do |p| -%>
+  ProxyPassReverse  <%= p %>
+<% end -%>

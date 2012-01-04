@@ -1,25 +1,30 @@
 ### reverse proxy definition goes here ###
 
+ProxyRequests Off
+
+<Proxy <%= proxy_url %>>
+  Order <%= allow_order %>
+<% if allow_from != '' -%>
+  Allow from <%= allow_from %>
+<% end -%>
+<% if deny_from != '' -%>
+  Deny from <%= deny_from %>
+<% end -%>
+</Proxy>
+
 <%
-  if defined? proxypass
     if proxypass.is_a?(Array)
-%>
-# Its an array
+      proxypass.each do |pass| -%>
+ProxyPass <%= pass %>
 <%
+      end
     elsif proxypass.is_a?(Hash)
-%>
-# Its a hash
+      proxypass.each do |location,target| -%>
+ProxyPass <%= location %> <%= target %>
 <%
-    elsif proxypass.is_a?(String)
-%>
-# Its a string
-<%
-    else
-%>
-# its something else
+      end
+    elsif proxypass.is_a?(String) -%>
+ProxyPass <%= proxypass %>
 <%
     end
-
-  end
-
-%>
+-%>

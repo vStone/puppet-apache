@@ -13,12 +13,20 @@ define apache::vhost::mod::reverse_proxy (
   $ensure       = 'present',
   $content      = '',
   $proxy_url    = '*',
-  $allow_order  = 'Deny, Allow',
+  $allow_order  = 'Deny,Allow',
   $allow_from   = 'All',
   $deny_from    = '',
   $proxypass    = undef,
   $proxypassreverse = undef
 ) {
+
+  case $allow_order {
+    /(?i:deny,allow)/: {}
+    /(?i:allow,deny)/: {}
+    default: {
+      fail("Only 'allow,deny' or 'deny,allow' are allowed values for allow_order. Defined value: ${allow_order}")
+    }
+  }
 
   $definition = template('apache/vhost/mod/reverse_proxy.erb')
 

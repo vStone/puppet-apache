@@ -16,17 +16,22 @@
   proxiez_reverse = always_array(proxypassreverse)
 
 -%>
-ProxyRequests Off
+### File managed with puppet ###
+### Served by:        '<%= scope.lookupvar('::servername') %>'
+### Module:           '<%= scope.to_hash['module_name'] %>'
+### Template source:  '<%= template_source %>'
 
-<Proxy <%= proxy_url %>>
-  Order <%= allow_order %>
+  ProxyRequests Off
+
+  <Proxy <%= proxy_url %>>
+    Order <%= allow_order %>
 <% if allow_from != '' -%>
-  Allow from <%= allow_from %>
+    Allow from <%= allow_from %>
 <% end -%>
 <% if deny_from != '' -%>
-  Deny from <%= deny_from %>
+    Deny from <%= deny_from %>
 <% end -%>
-</Proxy>
+  </Proxy>
 
 <% proxiez_pass.each do |p| -%>
   ProxyPass <%= p %>
@@ -35,3 +40,10 @@ ProxyRequests Off
 <% proxiez_reverse.each do |p| -%>
   ProxyPassReverse  <%= p %>
 <% end -%>
+
+<% if content != '' %>
+  # Below you will find the extra content you have defined.
+  # This is NOT part of the puppet template.
+  <%= content %>
+<% end -%>
+

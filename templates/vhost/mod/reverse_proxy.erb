@@ -14,6 +14,7 @@
   ## Sanitize variables
   proxiez_pass = always_array(proxypass)
   proxiez_reverse = always_array(proxypassreverse)
+  proxiez_path  = always_array(proxypath)
 
 -%>
 ### File managed with puppet ###
@@ -39,6 +40,11 @@
 
 <% proxiez_reverse.each do |p| -%>
   ProxyPassReverse  <%= p %>
+<% end -%>
+
+<% proxiez_path.each do |p| -%>
+  ProxyPass <%= p %>
+  ProxyPassReverse <%= p %>
 <% end -%>
 
 <% if content != '' %>

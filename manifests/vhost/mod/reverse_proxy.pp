@@ -17,7 +17,8 @@ define apache::vhost::mod::reverse_proxy (
   $allow_from   = 'All',
   $deny_from    = '',
   $proxypass    = undef,
-  $proxypassreverse = undef
+  $proxypassreverse = undef,
+  $proxypath    = undef
 ) {
 
   case $allow_order {

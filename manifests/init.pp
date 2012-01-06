@@ -13,4 +13,6 @@ class apache {
     }
   }
 
+  $module_name = 'inuits-puppet-apache'
+
 }

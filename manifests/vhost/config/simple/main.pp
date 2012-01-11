@@ -10,12 +10,12 @@ define apache::vhost::config::simple::main (
 
   apache::confd::symfile {$name:
     ensure          => $ensure,
-    confd           => $apache::config::vhost::confd,
+    confd           => $apache::setup::vhost::confd,
     order           => $order,
     content         => $content,
     file_name       => "${name}_configuration",
     link_name       => "${name}.conf",
-    use_config_root => $apache::config::vhost::use_config_root,
+    use_config_root => $apache::setup::vhost::use_config_root,
   }
 
 }

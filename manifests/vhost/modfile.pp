@@ -27,13 +27,13 @@ define apache::vhost::modfile (
   $modpath_template = inline_template('<%= scope.lookupvar("#{params_def}::mod_path") %>')
   $modpath = inline_template($modpath_template)
 
-  $modfile_path = "${apache::config::vhost::confd}/$modpath"
+  $modfile_path = "${apache::setup::vhost::confd}/$modpath"
 
   apache::confd::file { $filename:
     confd           => $modfile_path,
     file_name       => $filename,
     content         => $content,
-    use_config_root => $apache::config::vhost::use_config_root,
+    use_config_root => $apache::setup::vhost::use_config_root,
     require         => Apache::Vhost[$vhost],
   }
 

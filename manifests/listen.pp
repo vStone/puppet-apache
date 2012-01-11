@@ -21,7 +21,7 @@ define apache::listen (
 
   ## Requirements
   require apache::params
-  require apache::config::listen
+  require apache::setup::listen
 
   ####################################
   #### Variable checks & Defaults ####
@@ -60,7 +60,7 @@ define apache::listen (
     $fname = "listen_${listen_ip}_${listen_port}"
 
     apache::confd::file {$fname:
-      confd   => $apache::config::listen::confd,
+      confd   => $apache::setup::listen::confd,
       content => template('apache/confd/listen.erb'),
     }
   }

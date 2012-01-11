@@ -1,9 +1,9 @@
-# == Class: apache::config
+# == Class: apache::setup
 #
 # This class configures apache. So its more of a setup than config really.
 #
 #
-class apache::config {
+class apache::setup {
   require apache::params
 
   ## Apache main configuration file
@@ -37,9 +37,9 @@ class apache::config {
   }
 
 
-  include apache::config::listen
-  include apache::config::namevhost
-  include apache::config::mod
-  include apache::config::vhost
+  include apache::setup::listen
+  include apache::setup::namevhost
+  include apache::setup::mod
+  include apache::setup::vhost
 
 }

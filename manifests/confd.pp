@@ -33,7 +33,7 @@
 #
 # === Sample Usage:
 #
-#   See apache::config::listen
+#   See apache::setup::listen
 #
 define apache::confd (
   $confd,
@@ -46,7 +46,7 @@ define apache::confd (
 ) {
 
   require apache::params
-  require apache::config
+  require apache::setup
 
 
   ####################################
@@ -80,7 +80,7 @@ define apache::confd (
     mode    => '0644',
     recurse => true,
     purge   => $purge,
-    require => File[$apache::config::apache_confd],
+    require => File[$apache::setup::apache_confd],
   }
 
   ## Use the include template. Maybe we should put more stuff in the template.

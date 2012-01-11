@@ -77,7 +77,7 @@ define apache::vhost (
 ) {
 
   require apache::params
-  require apache::config::vhost
+  require apache::setup::vhost
 
   ####################################
   ####  Param checks & Defaults   ####
@@ -167,7 +167,7 @@ define apache::vhost (
   $include_template = inline_template('<%= scope.lookupvar("#{params_def}::include_path") %>')
   $include_path = inline_template($include_template)
 
-  $include_root = $apache::config::vhost::confd
+  $include_root = $apache::setup::vhost::confd
 
   $include_blob = "${include_root}/${include_path}${name}_mod_*.include"
 

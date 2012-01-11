@@ -6,8 +6,8 @@ define apache::namevhost (
 ) {
 
   require apache::params
-  require apache::config::listen
-  require apache::config::namevhost
+  require apache::setup::listen
+  require apache::setup::namevhost
 
 
   ####################################
@@ -30,7 +30,7 @@ define apache::namevhost (
 
   $fname = "namevhost_${ip}_${port}"
   apache::confd::file {$fname:
-    confd     => $apache::config::namevhost::confd,
+    confd     => $apache::setup::namevhost::confd,
     content   => template('apache/confd/namevhost.erb'),
     require   => Apache::Listen[$name],
   }

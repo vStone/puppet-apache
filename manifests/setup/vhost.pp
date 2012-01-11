@@ -1,4 +1,4 @@
-class apache::config::vhost {
+class apache::setup::vhost {
 
   $confd = 'vhost.d'
   $order = '10'
@@ -26,13 +26,13 @@ class apache::config::vhost {
   }
 
   apache::confd {'vhost':
-    confd           => $apache::config::vhost::confd,
-    order           => $apache::config::vhost::order,
+    confd           => $apache::setup::vhost::confd,
+    order           => $apache::setup::vhost::order,
     load_content    => '',
     warn_content    => '',
-    includes        => $apache::config::vhost::includes,
-    purge           => $apache::config::vhost::purge,
-    use_config_root => $apache::config::vhost::use_config_root,
+    includes        => $apache::setup::vhost::includes,
+    purge           => $apache::setup::vhost::purge,
+    use_config_root => $apache::setup::vhost::use_config_root,
   }
 
 }

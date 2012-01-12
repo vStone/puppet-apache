@@ -128,7 +128,7 @@ class apache::params(
   }
 
   ## conf.d folder.
-  $confd        = "${config_dir}/conf.d/"
+  $confd        = "${config_dir}/conf.d"
 
   ## Log directory.
   $log_dir = $logroot ? {

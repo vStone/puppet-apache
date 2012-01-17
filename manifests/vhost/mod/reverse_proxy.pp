@@ -4,7 +4,39 @@
 #
 # === Parameters:
 #
+#   $vhost:
+#     The name of the vhost to work on.
+#     This should be identical to the apache::vhost{NAME:} you have setup.
 #
+#   $ip:
+#     Ip of the vhost to work on. Should be identical to the apache::vhost
+#     instance you have setup. Defaults to '*'
+#
+#   $port:
+#     Port of the vhost to work on. Should be identical to the apache::vhost
+#     instance you have setup. Defaults to '80'
+#
+#   $ensure:
+#     If ensure is absent, the configuration file will be removed.
+#
+#   $content:
+#     Extra content to add to the configuration file.
+#
+#   $proxy_url:
+#     The proxy url is used in <Proxy></Proxy> directives to limit access.
+#     Defaults to '*' (all)
+#
+#   $allow_order:
+#     Should be either deny,allow or allow,deny. Configures permissions.
+#
+#   $allow_from:
+#   $deny_from:
+#
+#   $proxypass:
+#
+#   $proxypassreverse:
+#
+#   $proxypath:
 #
 define apache::vhost::mod::reverse_proxy (
   $vhost,

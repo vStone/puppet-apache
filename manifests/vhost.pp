@@ -1,4 +1,4 @@
-# == Class: apache::vhost
+# == Definition: apache::vhost
 #
 #   Define a apache vhost.
 #

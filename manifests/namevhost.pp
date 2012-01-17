@@ -1,5 +1,20 @@
+# == Definition: apache::namevhost
 #
+# Configure the apache service to enable name based vhosts on a certain (ip/)port
 #
+# === Parameters
+#
+#   $comment:     Add a comment in the configuration file.
+#
+# === Usage:
+#
+#  On all ips:
+#
+#     apache::namevhost {'80':}
+#
+#  On a specific ip:
+#
+#     apache::namevhost {'10.0.0.1_80':}
 #
 define apache::namevhost (
   $comment = ''

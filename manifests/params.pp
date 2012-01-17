@@ -1,8 +1,8 @@
-# === Class: apache::params
+# = Class: apache::params
 #
 # Configure various apache settings and initialize distro specific settings.
 #
-# === Parameters:
+# == Parameters:
 #   $apache:
 #     Configure the apache package name. Defaults do distro specific.
 #
@@ -17,11 +17,12 @@
 #       apache::vhost::config::${config_style}:: *
 #     When the string contains '::', we will use that definition.
 #
-# === Sample Usage:
+# == Sample Usage:
 #
-# === Todo:
+# == Todo:
 # * Finish documentation.
 # * Test /out of scope/ config_style stuff.
+#
 class apache::params(
   $apache           = undef,
   $apache_dev       = undef,

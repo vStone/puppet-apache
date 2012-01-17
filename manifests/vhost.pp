@@ -57,6 +57,19 @@
 #   You can use the same  port, ip and servername for different definitions,
 #   but the combination of all 3 always has to be unique!
 #
+# === Usage:
+#
+#   class {'apache::params':
+#     config_style ='simple',
+#   }
+#
+#   include apache
+#   apache::listen {'80': }
+#   apache::namevhost {'80': }
+#
+#   apache::vhost {'myvhost.example.com':
+#   }
+#
 # === Todo:
 #  * Write the mods system
 #

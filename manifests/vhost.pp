@@ -1,8 +1,8 @@
-# == Definition: apache::vhost
+# = Definition: apache::vhost
 #
 #  Define a apache vhost.
 #
-# === Parameters:
+# == Parameters:
 #
 #   $name:
 #     The name is used for the filenames of various configuration files.
@@ -51,7 +51,7 @@
 #
 #   $mods: Currently not implemented!
 #
-# === Usage / Best practice:
+# == Usage / Best practice:
 #
 #   Try and to use something unique for the name of each vhost defintion.
 #   You can use the same  port, ip and servername for different definitions,
@@ -66,10 +66,9 @@
 #   apache::namevhost {'80': }
 #
 #   apache::vhost {'myvhost.example.com':
+#     ip   => '10.0.0.1',
+#     port => '80',
 #   }
-#
-# === Todo:
-#  * Write the mods system
 #
 define apache::vhost (
   $servername     = undef,

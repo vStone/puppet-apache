@@ -1,6 +1,6 @@
 # == Definition: apache::vhost
 #
-#   Define a apache vhost.
+#  Define a apache vhost.
 #
 # === Parameters:
 #
@@ -51,13 +51,11 @@
 #
 #   $mods: Currently not implemented!
 #
-# === Best practice:
+# === Usage / Best practice:
 #
 #   Try and to use something unique for the name of each vhost defintion.
 #   You can use the same  port, ip and servername for different definitions,
 #   but the combination of all 3 always has to be unique!
-#
-# === Usage:
 #
 #   class {'apache::params':
 #     config_style ='simple',

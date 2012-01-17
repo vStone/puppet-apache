@@ -1,42 +1,52 @@
-# == Definition: apache::vhost::mod::proxy
+# = Definition: apache::vhost::mod::proxy
 #
 # Setup mod_proxy in a vhost.
 #
-# === Parameters:
+# == Parameters:
 #
-#   $vhost:
-#     The name of the vhost to work on.
-#     This should be identical to the apache::vhost{NAME:} you have setup.
+# $vhost::            The name of the vhost to work on. This should be
+#                     identical to the apache::vhost{NAME:} you have setup.
 #
-#   $ip:
-#     Ip of the vhost to work on. Should be identical to the apache::vhost
-#     instance you have setup. Defaults to '*'
+# $ip::               Ip of the vhost to work on. Should be identical to the
+#                     apache::vhost instance you have setup. Defaults to '*'
 #
-#   $port:
-#     Port of the vhost to work on. Should be identical to the apache::vhost
-#     instance you have setup. Defaults to '80'
+# $port::             Port of the vhost to work on. Should be identical to
+#                     the apache::vhost instance you have setup.
+#                     Defaults to '80'
 #
-#   $ensure:
-#     If ensure is absent, the configuration file will be removed.
+# $ensure::           If ensure is absent, the configuration file will be
+#                     removed. Defaults to 'present'.
 #
-#   $content:
-#     Extra content to add to the configuration file.
+# $content::          Extra content to add to the configuration file.
 #
-#   $proxy_url:
-#     The proxy url is used in <Proxy></Proxy> directives to limit access.
-#     Defaults to '*' (all)
+# $proxy_url::        The proxy url is used in <Proxy></Proxy> directives to
+#                     limit access. Defaults to '*' (all).
+#                     See: http://httpd.apache.org/docs/2.2/mod/mod_proxy.html#proxy
 #
-#   $allow_order:
-#     Should be either deny,allow or allow,deny. Configures permissions.
+# $allow_order::      Should be either deny,allow or allow,deny.
+#                     See: http://httpd.apache.org/docs/2.2/howto/access.html
 #
-#   $allow_from:
-#   $deny_from:
+# $allow_from::       Hosts, ips, ... where access should be allowed from.
+#                     Defaults to 'All'
+#                     See: http://httpd.apache.org/docs/2.2/howto/access.html
 #
-#   $proxypass:
+# $deny_from::        Hosts,ips, ... where access should be disallowed from.
+#                     Defaults to '' (empty).
+#                     See: http://httpd.apache.org/docs/2.2/howto/access.html.
 #
-#   $proxypassreverse:
+# $proxypass::        This can either be a single string, an array or a hash.
+#                     For each entry, a ProxyPass directive will be written to the
+#                     configuration file.
+#                     See: http://httpd.apache.org/docs/2.2/mod/mod_proxy.html#proxypass
 #
-#   $proxypath:
+# $proxypassreverse:: This can either be a single string, an array or a hash.
+#                     For each entry, a ProxyPassReverse directive will be
+#                     written to the configuration file.
+#                     See: http://httpd.apache.org/docs/2.2/mod/mod_proxy.html#proxypassreverse
+#
+# $proxypath::        This can either be a single string, an array or a hash.
+#                     For each entry, a ProxyPass AND ProxyPassReverse directive
+#                     will be written to the configuration file.
 #
 define apache::vhost::mod::reverse_proxy (
   $vhost,

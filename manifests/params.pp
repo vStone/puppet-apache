@@ -3,21 +3,53 @@
 # Configure various apache settings and initialize distro specific settings.
 #
 # == Parameters:
-#   $apache:
-#     Configure the apache package name. Defaults do distro specific.
 #
-#   $apache_dev:
-#     Package(s) to install when $devel = true. Defaults to distro specific.
+# $apache::       Configure the apache package name.
+#                 Defaults do distro specific.
 #
-#   $apache_ssl:
+# $apache_dev::   Package(s) to install when $devel = true.
+#                 Defaults to distro specific.
 #
-#   $config_style:
-#     Allows to pick the configuration style you want to generate.
-#     If this is a simple string, the used class will be:
-#       apache::vhost::config::${config_style}:: *
-#     When the string contains '::', we will use that definition.
+# $apache_ssl::   Packages to install when $ssl = true.
+#                 Defaults to distro specific.
 #
-# == Sample Usage:
+# $service::      Name of the apache service.
+#                 Defaults to distro specific.
+#
+# $configroot::   Root of all configuration files (NOT vhosts!)
+#                 Defaults to apache configuration dir/conf.d/
+#
+# $vhostroot::    Root where all vhost configuration is done. The
+#                 structure beneath this folder is determined by the
+#                 used $config_style.
+#                 Defaults to distro specific.
+#
+# $logroot::      Root where all log files are stored.
+#                 Defaults to distro specific.
+#
+# $user::         User to run the apache daemon as.
+#                 Defaults to distro specific.
+#
+# $group::        Group to run apache daemon as.
+#                 Defaults to distro specific.
+#
+# $devel::        Include development packages. Sometimes required for
+#                 building custom apache modules.
+#
+# $ssl::          Use ssl or not. On some distro's, we need to install
+#                 some additional packages for this to work properly.
+#
+# $keepalive::    Enable keepalive in the main configuration file.
+#                 Defaults to true.
+#
+# $config_style:: Allows to pick the configuration style you want to generate.
+#                 If this is a simple string, the used class will be:
+#                   apache::vhost::config::${config_style}:: *
+#                 When the string contains '::', we will use that definition.
+#                 Defaults to 'simple'.
+#
+# $default_docroot::  The default document root to use beneath each
+#                     vhost documentroot folder. Defaults to 'htdocs'.
 #
 # == Todo:
 # * Finish documentation.

@@ -182,6 +182,7 @@ define apache::vhost (
   $include_blob = "${include_root}/${include_path}${name}_mod_*.include"
 
   $style_def = "${apache::params::config_base}::main"
+  ## Note: puppet-lint warns on "${name}" but its the only way to get it working.
   $style_args = {
     "${name}"    => {
       'ensure'    => $enable,

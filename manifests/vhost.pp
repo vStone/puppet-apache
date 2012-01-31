@@ -4,58 +4,47 @@
 #
 # == Parameters:
 #
-#   $name:
-#     The name is used for the filenames of various configuration files.
-#     It is a good idea to use <servername>_<port> so there is no overlapping
-#     of configuration files.
+#   $name::         The name is used for the filenames of various config files.
+#                   It is a good idea to use <servername>_<port> so there is no
+#                   overlapping of configuration files.
 #
-#   $servername:
-#     The server name to use.
+#   $servername::   The server name to use.
 #
-#   $ensure:
-#     Can either be present/enabled/true or absent/disabled/false.
+#   $ensure::       Can either be present/enabled/true or absent/disabled/false.
 #
-#   $ip:
-#     The ip to use. Must match with a apache::namevhost.
+#   $ip::           The ip to use. Must match with a apache::namevhost.
 #
-#   $port:
-#     The port to use. Must match with apache::namevhost.
-#     Defaults to '80'/
+#   $port::         The port to use. Must match with apache::namevhost.
+#                   Defaults to '80'
 #
-#   $admin:
-#     Admin email address.
-#     Defaults to admin@SERVERNAME
+#   $admin::        Admin email address.
+#                   Defaults to admin@SERVERNAME
 #
-#   $vhostroot
-#     Root where all other files for this vhost will be created under.
-#     Defaults to the globally defined vhost root folder.
+#   $vhostroot::    Root where all other files for this vhost will be created under.
+#                   Defaults to the globally defined vhost root folder.
 #
-#   $docroot:
-#     Document root for this vhost.
-#     Defaults to /<vhostroot>/<servername>/<htdocs>
+#   $docroot::      Document root for this vhost.
+#                   Defaults to /<vhostroot>/<servername>/<htdocs>
 #
-#   $docroot_purge:
-#     If you are going to manage the content of the document root with
-#     puppet alone, you can safely enable purging here. This will also
-#     remove any file/dir that is not managed by puppet.
+#   $docroot_purge:: If you are going to manage the content of the document root with
+#                    puppet alone, you can safely enable purging here. This will also
+#                    remove any file/dir that is not managed by puppet.
 #
-#   $order:
-#     Can be used to define the order for this vhost to be loaded in.
-#     Defaults to 10. So special vhosts should have a lower or higher order.
+#   $order::        Can be used to define the order for this vhost to be loaded in.
+#                   Defaults to 10. So special vhosts should have a lower or higher order.
 #
-#   $vhost_config:
-#     Custom virtualhost configuration.
-#     This does not override the complete config but is included within
-#     the <VirtualHost> directive after the documentroot definition,
-#     and before including any apache vhost mods.
+#   $vhost_config:: Custom virtualhost configuration.
+#                   This does not override the complete config but is included within
+#                   the <VirtualHost> directive after the documentroot definition,
+#                   and before including any apache vhost mods.
 #
-#   $mods: Currently not implemented!
+#   $mods::         An hash with vhost mods to be enabled.
 #
 # == Usage / Best practice:
 #
-#   Try and to use something unique for the name of each vhost defintion.
-#   You can use the same  port, ip and servername for different definitions,
-#   but the combination of all 3 always has to be unique!
+# Try and to use something unique for the name of each vhost defintion.
+# You can use the same  port, ip and servername for different definitions,
+# but the combination of all 3 always has to be unique!
 #
 #   class {'apache::params':
 #     config_style ='simple',
@@ -69,6 +58,16 @@
 #     ip   => '10.0.0.1',
 #     port => '80',
 #   }
+#
+# To enable modules together with the vhost, use following syntax:
+#
+#   apache::vhost {'myvhost.example.com':
+#     mods => {
+#       'reverse_proxy' => { proxypath => '/ http://localhost:8080' }
+#     }
+#   }
+#
+#
 #
 define apache::vhost (
   $servername     = undef,
@@ -189,11 +188,18 @@ define apache::vhost (
       'name'      => $name,
       'content'   => template('apache/vhost/virtualhost.erb'),
       'order'     => $order,
-      'ip'        => $ip,
+      'ip'        => $ip_def,
       'port'      => $port,
     }
   }
   create_resources($style_def, $style_args)
 
+  $defaults = {
+    vhost     => $name,
+    ip        => $ip_def,
+    port      => $port,
+    automated => true,
+  }
+  create_mods($name, $mods, $defaults)
 
 }

@@ -14,10 +14,10 @@ define apache::vhost::modfile (
   $ip       = undef,
   $port     = '80',
   $ensure   = 'present',
-  $content  = ''
+  $content  = '',
+  $nodepend = false
 ) {
 
-  $filename = "${vhost}_mod_${name}.include"
 
   ## Get the configured configuration style.
   $params_def = "${apache::params::config_base}::params"
@@ -29,12 +29,24 @@ define apache::vhost::modfile (
 
   $modfile_path = "${apache::setup::vhost::confd}/$modpath"
 
+
+  $filename = "${vhost}_mod_${name}.include"
+
   apache::confd::file { $filename:
     confd           => $modfile_path,
-    file_name       => $filename,
     content         => $content,
     use_config_root => $apache::setup::vhost::use_config_root,
-    require         => Apache::Vhost[$vhost],
+  }
+  if $nodepend == false {
+    Apache::Confd::File[$filename] {
+      require   => Apache::Vhost[$vhost],
+      file_name => $filename,
+    }
+  }
+  else {
+    Apache::Confd::File[$filename] {
+      file_name => "${name}.include",
+    }
   }
 
 

@@ -60,7 +60,8 @@ define apache::vhost::mod::reverse_proxy (
   $deny_from    = '',
   $proxypass    = undef,
   $proxypassreverse = undef,
-  $proxypath    = undef
+  $proxypath    = undef,
+  $automated    = false,
 ) {
 
   case $allow_order {
@@ -74,11 +75,12 @@ define apache::vhost::mod::reverse_proxy (
   $definition = template('apache/vhost/mod/reverse_proxy.erb')
 
   apache::vhost::modfile {$title:
-    ensure  => $ensure,
-    vhost   => $vhost,
-    ip      => $ip,
-    port    => $port,
-    content => $definition,
+    ensure    => $ensure,
+    vhost     => $vhost,
+    ip        => $ip,
+    port      => $port,
+    content   => $definition,
+    nodepend  => $automated,
   }
 
 }

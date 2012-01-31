@@ -54,7 +54,7 @@ ServerTokens OS
 #
 # Do NOT add a slash at the end of the directory path.
 #
-ServerRoot "/etc/httpd"
+ServerRoot <%= scope.lookupvar('apache::params::config_dir') %>
 
 #
 # PidFile: The file in which the server should record its process
@@ -73,7 +73,14 @@ Timeout 60
 # KeepAlive: Whether or not to allow persistent connections (more than
 # one request per connection). Set to "Off" to deactivate.
 #
-KeepAlive Off
+<%
+if scope.lookupvar('apache::params::keepalive') == true
+  keepalive = 'On'
+else
+  keepalive = 'Off'
+end
+-%>
+KeepAlive <%= keepalive %>
 
 #
 # MaxKeepAliveRequests: The maximum number of requests to allow
@@ -133,7 +140,7 @@ MaxRequestsPerChild  0
 # prevent Apache from glomming onto all bound IP addresses (0.0.0.0)
 #
 #Listen 12.34.56.78:80
-Listen 80
+# Listen is now managed inside the conf.d/listen.d/ folder by puppet
 
 #
 # Dynamic Shared Object (DSO) Support
@@ -239,8 +246,9 @@ Include conf.d/*.conf
 #  when the value of (unsigned)Group is above 60000;
 #  don't use Group #-1 on these systems!
 #
-User apache
-Group apache
+User <%= scope.lookupvar('apache::params::daemon_user') %>
+Group <%= scope.lookupvar('apache::params::daemon_group') %>
+
 
 ### Section 2: 'Main' server configuration
 #
@@ -1008,5 +1016,8 @@ BrowserMatch "^Dreamweaver-WebDAV-SCM1" redirect-carefully
 #    CustomLog logs/dummy-host.example.com-access_log common
 #</VirtualHost>
 
-NameVirtualHost *:80
-NameVirtualHost *:443
+# NameVirtualHosts are now managed by puppet conf.d style
+#NameVirtualHost *:80
+#NameVirtualHost *:443
+
+Include conf.d/*.conf

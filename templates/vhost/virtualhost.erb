@@ -1,0 +1,43 @@
+### File managed with puppet ###
+## Served by:        '<%= scope.lookupvar('::servername') %>'
+## Module:           '<%= scope.to_hash['module_name'] %>'
+## Template source:  '<%= template_source %>'
+
+<VirtualHost <%= ip_def -%>:<%= port -%>>
+
+  ServerName  <%= server %>
+<%
+  if serveraliases.is_a?(Array)
+    serveraliases.each do |srvalias|
+-%>
+  ServerAlias <%= srvalias %>
+<%
+    end
+  elsif ! ( serveraliases == '' )
+-%>
+  ServerAlias <%= serveraliases %>
+<%
+  end
+-%>
+  ServerAdmin <%= serveradmin %>
+
+  DocumentRoot <%= documentroot %>
+  <Directory <%= documentroot %>>
+    Options FollowSymlinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from All
+  </Directory>
+
+<% if vhost_config != '' -%>
+## Custom content. This is NOT created by the Apache::Vhost but has been
+#  configured in the apache::vhost definition.
+<%= vhost_config %>
+<% end -%>
+
+## '<%= include_blob -%>'
+<% if include_blob != '' -%>
+  Include <%= include_blob %>
+<% end %>
+
+</VirtualHost>

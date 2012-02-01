@@ -1,0 +1,55 @@
+<%
+  def always_array(var)
+    if var.is_a?(Array)
+      return var
+    elsif var.is_a?(Hash)
+      return var.map{ |k,v| "#{k} #{v}" }
+    elsif var.is_a?(String)
+      return [var]
+    else
+      return []
+    end
+  end
+
+  ## Sanitize variables
+  proxiez_pass = always_array(proxypass)
+  proxiez_reverse = always_array(proxypassreverse)
+  proxiez_path  = always_array(proxypath)
+
+-%>
+### File managed with puppet ###
+### Served by:        '<%= scope.lookupvar('::servername') %>'
+### Module:           '<%= scope.to_hash['module_name'] %>'
+### Template source:  '<%= template_source %>'
+
+  ProxyRequests Off
+
+  <Proxy <%= proxy_url %>>
+    Order <%= allow_order %>
+<% if allow_from != '' -%>
+    Allow from <%= allow_from %>
+<% end -%>
+<% if deny_from != '' -%>
+    Deny from <%= deny_from %>
+<% end -%>
+  </Proxy>
+
+<% proxiez_pass.each do |p| -%>
+  ProxyPass <%= p %>
+<% end -%>
+
+<% proxiez_reverse.each do |p| -%>
+  ProxyPassReverse  <%= p %>
+<% end -%>
+
+<% proxiez_path.each do |p| -%>
+  ProxyPass <%= p %>
+  ProxyPassReverse <%= p %>
+<% end -%>
+
+<% if content != '' %>
+  # Below you will find the extra content you have defined.
+  # This is NOT part of the puppet template.
+  <%= content %>
+<% end -%>
+

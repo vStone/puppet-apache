@@ -1,16 +1,13 @@
 class apache::service {
+  require apache::params
+
   service { 'apache':
-    ensure  => running,
-    enable  => true,
-    name    => $::operatingsystem ? {
-      archlinux       => 'httpd',
-      /Debian|Ubuntu/ => 'apache2',
-      Centos          => 'httpd',
-    },
-    path => $::operatingsystem ? {
-      archlinux => '/etc/rc.d',
-      default   => '/etc/init.d',
-    },
-    require => Package['apache'],
+    ensure      => running,
+    enable      => true,
+    name        => $apache::params::service_name,
+    path        => $apache::params::service_path,
+    hasrestart  => $apache::params::service_hasrestart,
+    hasstatus   => $apache::params::service_hasstatus,
+    require     => Package['apache'],
   }
 }

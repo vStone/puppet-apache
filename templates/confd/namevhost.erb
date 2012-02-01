@@ -1,0 +1,11 @@
+<% if comment != '' -%>
+# <%= comment %>
+<% end -%>
+<%
+  if ip == ''
+    str_ip = '*'
+  else
+    str_ip = ip
+  end
+-%>
+NameVirtualHost <%= str_ip -%>:<%= port %>

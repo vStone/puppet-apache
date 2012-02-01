@@ -1,0 +1,29 @@
+### File managed with puppet ###
+<% if ! (defined?(servername)).nil? -%>
+# Served by:        '<%= servername %>'
+<% end -%>
+# Module:           '<%= scope.to_hash['module_name'] %>'
+# Template source:  '<%= template_source %>'
+### Parameters:
+# confd:            '<%= confd %>'
+# order:            '<%= order %>'
+# purge:            '<%= purge %>'
+# use_config_root:  '<%= use_config_root %>'
+###
+<% if ! load_content == '' %>
+# Load content:
+<%= load_content %>
+<% end %>
+
+# Includes:
+<%
+  if includes.is_a?(Array)
+    incs = includes
+  else
+    incs = [ includes ]
+  end
+  incs.each do |included|
+-%>
+Include <%= include_root -%>/<%= included %>
+<% end -%>
+

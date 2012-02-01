@@ -1,39 +1,19 @@
-import 'packages.pp'
-import 'config.pp'
-import 'service.pp'
-import 'mod/passenger.pp'
-import 'mod/prefork.pp'
-import 'mod/php.pp'
-import 'mod/xsendfile.pp'
-
-class apache (
-  $apache = $::operatingsystem ? {
-    debian    => 'apache2',
-    default   => 'httpd',
-  },
-  $root = $::operatingsystem ? {
-    debian    => '/etc/apache2',
-    default   => '/etc/httpd',
-  },
-  $user = $::operatingsystem ? {
-    archlinux => 'http',
-    debian    => 'www-data',
-    default   => 'apache',
-  },
-  $group = $::operatingsystem ? {
-    archlinux => 'http',
-    debian    => 'www-data',
-    default   => 'apache',
-  },
-  $devel = 'no',
-  $ssl = 'yes'
-) {
+class apache {
 
   include apache::packages
-  include apache::config
+  include apache::setup
   include apache::service
 
-  Class['apache::packages'] ->
-  Class['apache::config'] ->
-  Class['apache::service']
+  Class['apache::packages'] -> Class['apache::setup'] -> Class['apache::service']
+
+  case $::puppetversion {
+    /^2.7/:   {}
+    default:  {
+      require puppetlabs-create_resources
+    }
+  }
+
+  $modulename = 'inuits-puppet-apache'
+  $moduleversion = '0.1'
+
 }

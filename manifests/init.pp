@@ -14,6 +14,6 @@ class apache {
   }
 
   $modulename = 'inuits-puppet-apache'
-  $moduleversion = '0.1'
+  $moduleversion = '0.1.1'
 
 }

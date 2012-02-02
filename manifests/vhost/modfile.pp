@@ -33,9 +33,9 @@ define apache::vhost::modfile (
   $filename = "${vhost}_mod_${name}.include"
 
   apache::confd::file { $filename:
+    ensure          => $ensure,
     confd           => $modfile_path,
     content         => $content,
-    ensure          => $ensure,
     use_config_root => $apache::setup::vhost::use_config_root,
   }
   if $nodepend == false {

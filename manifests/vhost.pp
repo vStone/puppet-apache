@@ -198,6 +198,7 @@ define apache::vhost (
     vhost     => $name,
     ip        => $ip_def,
     port      => $port,
+    ensure    => $ensure,
     automated => true,
   }
   create_mods($name, $mods, $defaults)

@@ -195,10 +195,10 @@ define apache::vhost (
   create_resources($style_def, $style_args)
 
   $defaults = {
+    ensure    => $ensure,
     vhost     => $name,
     ip        => $ip_def,
     port      => $port,
-    ensure    => $ensure,
     automated => true,
   }
   create_mods($name, $mods, $defaults)

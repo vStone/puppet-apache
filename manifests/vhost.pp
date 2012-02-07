@@ -202,6 +202,8 @@ define apache::vhost (
     automated => true,
     docroot   => $documentroot,
   }
-  create_mods($name, $mods, $defaults)
+  if $mods != undef and $mods != '' {
+    create_mods($name, $mods, $defaults)
+  }
 
 }

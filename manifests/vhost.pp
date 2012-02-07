@@ -10,7 +10,7 @@
 #
 #   $servername::   The server name to use.
 #
-#   $ensure::       Can either be present/enabled/true or absent/disabled/false.
+#   $ensure::       Can be present/enabled/true or absent/disabled/false.
 #
 #   $ip::           The ip to use. Must match with a apache::namevhost.
 #
@@ -20,24 +20,26 @@
 #   $admin::        Admin email address.
 #                   Defaults to admin@SERVERNAME
 #
-#   $vhostroot::    Root where all other files for this vhost will be created under.
+#   $vhostroot::    Root where all other files for this vhost will be placed.
 #                   Defaults to the globally defined vhost root folder.
 #
 #   $docroot::      Document root for this vhost.
 #                   Defaults to /<vhostroot>/<servername>/<htdocs>
 #
-#   $docroot_purge:: If you are going to manage the content of the document root with
-#                    puppet alone, you can safely enable purging here. This will also
-#                    remove any file/dir that is not managed by puppet.
+#   $docroot_purge::  If you are going to manage the content of the docroot
+#                     with puppet alone, you can safely enable purging here.
+#                     This will also remove any file/dir that is not managed
+#                     by puppet.
 #
-#   $order::        Can be used to define the order for this vhost to be loaded in.
-#                   Defaults to 10. So special vhosts should have a lower or higher order.
+#   $order::        Can be used to define the order for this vhost to be loaded.
+#                   Defaults to 10.
+#                   Special cases should have a lower or higher order value.
 #
 #   $logdir::       Folder where log files are stored.
 #                   Defaults to <global logdir>/<vhostname>
 #
-#   $errorlevel::   (Error)level to log on. See apache configuration for more
-#                   possibilities: http://httpd.apache.org/docs/2.1/mod/core.html#loglevel
+#   $errorlevel::   Errorlevel to log on. See apache docs for more info.
+#                   http://httpd.apache.org/docs/2.1/mod/core.html#loglevel
 #                   Defaults to 'warn'.
 #
 #   $accesslog::    Filename of the access log. Set to '' to disable logging.
@@ -48,9 +50,9 @@
 #
 #
 #   $vhost_config:: Custom virtualhost configuration.
-#                   This does not override the complete config but is included within
-#                   the <VirtualHost> directive after the documentroot definition,
-#                   and before including any apache vhost mods.
+#                   This does not override the complete config but is included
+#                   within the <VirtualHost> directive after the document
+#                   root definition and before including any apache vhost mods.
 #
 #   $mods::         An hash with vhost mods to be enabled.
 #

@@ -33,6 +33,20 @@
 #   $order::        Can be used to define the order for this vhost to be loaded in.
 #                   Defaults to 10. So special vhosts should have a lower or higher order.
 #
+#   $logdir::       Folder where log files are stored.
+#                   Defaults to <global logdir>/<vhostname>
+#
+#   $errorlevel::   (Error)level to log on. See apache configuration for more
+#                   possibilities: http://httpd.apache.org/docs/2.1/mod/core.html#loglevel
+#                   Defaults to 'warn'.
+#
+#   $accesslog::    Filename of the access log. Set to '' to disable logging.
+#                   Defaults to 'access.log'
+#
+#   $errorlog::     Filename of the error log. Set to '' to disable logging.
+#                   Defaults to 'error.log'
+#
+#
 #   $vhost_config:: Custom virtualhost configuration.
 #                   This does not override the complete config but is included within
 #                   the <VirtualHost> directive after the documentroot definition,
@@ -78,6 +92,9 @@ define apache::vhost (
   $admin          = undef,
   $vhostroot      = undef,
   $logdir         = undef,
+  $accesslog      = 'access.log',
+  $errorlog       = 'error.log',
+  $errorlevel     = 'warn',
   $docroot        = undef,
   $docroot_purge  = false,
   $order          = '10',

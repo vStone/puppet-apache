@@ -30,14 +30,24 @@
   </Directory>
 
 <% if vhost_config != '' -%>
-## Custom content. This is NOT created by the Apache::Vhost but has been
-#  configured in the apache::vhost definition.
+  ## Custom content. This is NOT created by the Apache::Vhost but has been
+  #  configured in the apache::vhost definition.
 <%= vhost_config %>
 <% end -%>
 
-## '<%= include_blob -%>'
+  ## apache::vhost::mod::*
 <% if include_blob != '' -%>
   Include <%= include_blob %>
 <% end %>
+
+
+  ## Logging ####
+<% if accesslog != '' -%>
+  CustomLog <%= log_dir %>/<%= accesslog %> combined
+<% end -%>
+<% if errorlog != '' -%>
+  LogLevel <%= errorlevel %>
+  ErrorLog <%= log_dir %>/<%= errorlog %>
+<% end -%>
 
 </VirtualHost>

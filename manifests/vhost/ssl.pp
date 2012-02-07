@@ -27,6 +27,14 @@ define apache::vhost::ssl (
   $order          = '10',
   $vhost_config   = '',
   $mods           = undef,
+  $ssl_cert,
+  $ssl_key,
+  $ssl_ciphersuite = 'ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL',
+  $ssl_chain = undef,
+  $ssl_ca_path = undef,
+  $ssl_ca_file = undef,
+  $ssl_ca_crl_path = undef,
+  $ssl_ca_crl_file = undef
 ) {
   ## Copy paste snippets:
   # template("${module_name}/template.erb")

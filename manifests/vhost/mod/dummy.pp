@@ -50,7 +50,7 @@ define apache::vhost::mod::dummy (
 
 
   ## Generate the content for your module file:
-  $definition = '## You probably want to use a template here'
+  $definition = template('apache/vhost/mod/dummy.erb')
 
   apache::vhost::modfile {$title:
     ensure   => $ensure,

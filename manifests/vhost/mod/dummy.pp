@@ -7,25 +7,31 @@
 # Your definition should always take the following parameters. When
 # using the mods parameter from vhost, these get set automaticly.
 #
-# $vhost::      Defined what vhost this module is for. Required for apache::vhost::modfile
+# $ensure::     Disable or enable this mod. This will/should remove the config
+#               file. Required for apache::vhost::modfile.
+#
+# $vhost::      Defined what vhost this module is for.
+#               Required for apache::vhost::modfile
 #
 # $ip::         Required for apache::vhost::modfile.
 #
 # $port::       Required for apache::vhost::modfile.
 #
-# $ensure::     Disable or enable this mod. This will/should remove the config
-#               file. Required for apache::vhost::modfile.
+# $docroot::    Document root.
+#               Is automaticly filled in if pushed through apache::vhost.
 #
-# $automated::  This is a variable that is used under the hood. If a mod is enabled
-#               directly through apache::vhost (no specific apache::vhost::mod::* is defined)
-#               this is set to true. Required for apache::vhost::modfile.
+# $automated::  This is a variable that is used under the hood.
+#               If a mod is enabled directly through apache::vhost (no
+#               specific apache::vhost::mod::* is defined) this is set
+#               to true. Required for apache::vhost::modfile.
 #
 #
 # == Optional Parameters:
 #
-# Any other parameters you wish to use for your module. If you add other parameters,
-# make sure to add the required parameters without default values before those with
-# default parameters. There is no shame in changing the order of the Required Parameters.
+# Any other parameters you wish to use for your module. If you add other
+# parameters, make sure to add the required parameters without default
+# values before those with default parameters. There is no shame in
+# changing the order of the Required Parameters.
 #
 # == Actions:
 #
@@ -38,7 +44,8 @@ define apache::vhost::mod::dummy (
   $ip           = undef,
   $port         = '80',
   $ensure       = 'present',
-  $automated    = true
+  $docroot      = undef,
+  $automated    = false
 ) {
 
 

@@ -200,6 +200,7 @@ define apache::vhost (
     ip        => $ip_def,
     port      => $port,
     automated => true,
+    docroot   => $documentroot,
   }
   create_mods($name, $mods, $defaults)
 

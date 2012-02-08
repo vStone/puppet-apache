@@ -6,19 +6,13 @@
 <VirtualHost <%= ip_def -%>:<%= port -%>>
 
   ServerName  <%= server %>
-<%
-  if serveraliases.is_a?(Array)
-    serveraliases.each do |srvalias|
--%>
+<%  if serveraliases.is_a?(Array) -%>
+<%    serveraliases.each do |srvalias| -%>
   ServerAlias <%= srvalias %>
-<%
-    end
-  elsif ! ( serveraliases == '' )
--%>
+<%    end -%>
+<%  elsif ! ( serveraliases == '' ) -%>
   ServerAlias <%= serveraliases %>
-<%
-  end
--%>
+<% end -%>
   ServerAdmin <%= serveradmin %>
 
   DocumentRoot <%= documentroot %>

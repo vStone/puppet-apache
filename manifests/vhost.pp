@@ -136,7 +136,6 @@ define apache::vhost (
     undef   => "${apache::params::vhost_root}/${server}",
     default =>  $vhostroot,
   }
-
   $log_dir = $logdir ? {
     undef   => "${apache::params::vhost_log_dir}/${server}",
     default => $logdir,
@@ -172,6 +171,16 @@ define apache::vhost (
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
     path   => $vhost_root,
+  }
+  apache::confd::file_exists {"apache-vhost-vhost-docroot-${name}":
+    ensure  => 'directory',
+    path    => $documentroot,
+    require => Apache::Confd::File_exists["apache-vhost-vhost-root-${name}"]
+  }
+  if $docroot_purge {
+    Apache::Confd::File_exists["apache-vhost-vhost-docroot-${name}"] {
+      purge => $docroot_purge
+    }
   }
   apache::confd::file_exists {"apache-vhost-vhost-log-${name}":
     ensure  => 'directory',

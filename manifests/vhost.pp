@@ -4,57 +4,60 @@
 #
 # == Parameters:
 #
-#   $name::         The name is used for the filenames of various config files.
-#                   It is a good idea to use <servername>_<port> so there is no
-#                   overlapping of configuration files.
+# $name::         The name is used for the filenames of various config files.
+#                 It is a good idea to use <servername>_<port> so there is no
+#                 overlapping of configuration files.
 #
-#   $servername::   The server name to use.
+# $ensure::       Can be present/enabled/true or absent/disabled/false.
 #
-#   $ensure::       Can be present/enabled/true or absent/disabled/false.
+# $servername::   The server name to use.
 #
-#   $ip::           The ip to use. Must match with a apache::namevhost.
+# $serveraliases::  Can be a single server alias, an array of aliases or
+#                   '' (empty) if no alias is needed.
 #
-#   $port::         The port to use. Must match with apache::namevhost.
-#                   Defaults to '80'
+# $ip::           The ip to use. Must match with a apache::namevhost.
 #
-#   $admin::        Admin email address.
-#                   Defaults to admin@SERVERNAME
+# $port::         The port to use. Must match with apache::namevhost.
+#                 Defaults to '80'
 #
-#   $vhostroot::    Root where all other files for this vhost will be placed.
-#                   Defaults to the globally defined vhost root folder.
+# $admin::        Admin email address.
+#                 Defaults to admin@SERVERNAME
 #
-#   $docroot::      Document root for this vhost.
-#                   Defaults to /<vhostroot>/<servername>/<htdocs>
+# $vhostroot::    Root where all other files for this vhost will be placed.
+#                 Defaults to the globally defined vhost root folder.
 #
-#   $docroot_purge::  If you are going to manage the content of the docroot
-#                     with puppet alone, you can safely enable purging here.
-#                     This will also remove any file/dir that is not managed
-#                     by puppet.
+# $docroot::      Document root for this vhost.
+#                 Defaults to /<vhostroot>/<servername>/<htdocs>
 #
-#   $order::        Can be used to define the order for this vhost to be loaded.
-#                   Defaults to 10.
-#                   Special cases should have a lower or higher order value.
+# $docroot_purge::  If you are going to manage the content of the docroot
+#                   with puppet alone, you can safely enable purging here.
+#                   This will also remove any file/dir that is not managed
+#                   by puppet.
 #
-#   $logdir::       Folder where log files are stored.
-#                   Defaults to <global logdir>/<vhostname>
+# $order::        Can be used to define the order for this vhost to be loaded.
+#                 Defaults to 10.
+#                 Special cases should have a lower or higher order value.
 #
-#   $errorlevel::   Errorlevel to log on. See apache docs for more info.
-#                   http://httpd.apache.org/docs/2.1/mod/core.html#loglevel
-#                   Defaults to 'warn'.
+# $logdir::       Folder where log files are stored.
+#                 Defaults to <global logdir>/<vhostname>
 #
-#   $accesslog::    Filename of the access log. Set to '' to disable logging.
-#                   Defaults to 'access.log'
+# $errorlevel::   Errorlevel to log on. See apache docs for more info.
+#                 http://httpd.apache.org/docs/2.1/mod/core.html#loglevel
+#                 Defaults to 'warn'.
 #
-#   $errorlog::     Filename of the error log. Set to '' to disable logging.
-#                   Defaults to 'error.log'
+# $accesslog::    Filename of the access log. Set to '' to disable logging.
+#                 Defaults to 'access.log'
+#
+# $errorlog::     Filename of the error log. Set to '' to disable logging.
+#                 Defaults to 'error.log'
 #
 #
-#   $vhost_config:: Custom virtualhost configuration.
-#                   This does not override the complete config but is included
-#                   within the <VirtualHost> directive after the document
-#                   root definition and before including any apache vhost mods.
+# $vhost_config:: Custom virtualhost configuration.
+#                 This does not override the complete config but is included
+#                 within the <VirtualHost> directive after the document
+#                 root definition and before including any apache vhost mods.
 #
-#   $mods::         An hash with vhost mods to be enabled.
+# $mods::         An hash with vhost mods to be enabled.
 #
 # == Usage / Best practice:
 #

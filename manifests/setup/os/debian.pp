@@ -6,7 +6,7 @@
 #
 # * Removes the ports.conf file that defines listen directives.
 #
-class apache::setup::os::centos {
+class apache::setup::os::debian {
 
   require apache::params
 

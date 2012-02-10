@@ -42,4 +42,9 @@ class apache::setup {
   include apache::setup::mod
   include apache::setup::vhost
 
+  case $::operatingsystem {
+    /(?i:debian|ubuntu)/: { include apache::setup::os::debian }
+    default: {}
+  }
+
 }

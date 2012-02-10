@@ -43,6 +43,7 @@ class apache::setup {
   include apache::setup::vhost
 
   case $::operatingsystem {
+    /(?i:centos|redhat)/: { include apache::setup::os::centos }
     /(?i:debian|ubuntu)/: { include apache::setup::os::debian }
     default: {}
   }

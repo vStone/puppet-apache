@@ -1,6 +1,6 @@
 # = Definition: apache::vhost::mod::passenger
 #
-# Enable a passenger configuration in this vhost. 
+# Enable a passenger configuration in this vhost.
 #
 # == Required Parameters:
 #

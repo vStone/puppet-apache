@@ -37,19 +37,51 @@
 #
 define apache::vhost::mod::passenger (
   $vhost,
-  $ip           = undef,
-  $port         = '80',
-  $ensure       = 'present',
-  $docroot      = undef,
-  $automated    = false,
-  $app_root     = undef,
-  $global_queue = undef
+  $ip                   = undef,
+  $port                 = '80',
+  $ensure               = 'present',
+  $docroot              = undef,
+  $automated            = false,
+  $app_root             = undef,
+  $spawn_method         = undef,
+  $global_queue         = undef,
+  $passenger_enabled    = undef,
+  $upload_buffer_dir    = undef,
+  $restart_dir          = undef,
+  $friendly_error_pages = undef,
+  $buffer_response      = undef,
+  $user                 = '',
+  $group                = ''
 ) {
 
   require apache::mod::passenger
 
+  $passengerenabled =  $passenger_enabled ? {
+    undef   => '',
+    default => $passenger_enabled,
+  }
+  $uploadbufferdir =  $upload_buffer_dir ? {
+    undef   => '',
+    default => $upload_buffer_dir,
+  }
+  $friendlyerrorpages =  $friendly_error_pages ? {
+    undef   => '',
+    default => $friendly_error_pages,
+  }
+  $bufferresponse =  $buffer_response ? {
+    undef   => '',
+    default => $buffer_response,
+  }
+
+  $approot     = $app_root ?     { undef => '',  default => $app_root,      }
+  $spawnmethod = $spawn_method ? { undef => '',  default => $spawn_method,  }
+  $globalqueue = $global_queue ? { undef => '',  default => $global_queue,  }
+  $restartdir  = $restart_dir  ? { undef => '',  default => $restart_dir,   }
+
+
+
   ## Generate the content for your module file:
-  $definition = template('apache/vhost/mod/dummy.erb')
+  $definition = template('apache/vhost/mod/passenger.erb')
 
   apache::vhost::modfile {$title:
     ensure   => $ensure,

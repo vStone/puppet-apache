@@ -1,106 +1,87 @@
 <%
   def onoff (var)
     return var if var.is_a?(String)
-    if var.is_a?(Boolean)
+    if var == true or var == false
       return 'on' if var
       return 'off'
     end
   end
 -%>
 
-  PassengerAppRoot <%= app_root %>
-
-<% if has_variable?(spawn_method) -%>
-  PassengerSpawnMethod <%= spawn_method %>
+<% if approot != '' -%>
+  PassengerAppRoot <%= approot %>
 <% end -%>
-
-<% if has_variable?(global_queue)
--%>
-  PassengerUseGlobalQueue <%= onoff(global_queue) -%>
+<% if spawnmethod != '' -%>
+  PassengerSpawnMethod <%= spawnmethod %>
 <% end -%>
-
-<% if has_variable?(passenger_enabled) -%>
-  PassengerEnabled <%= onoff(passenger_enabled) %>
+<% if globalqueue != '' -%>
+  PassengerUseGlobalQueue <%= onoff(globalqueue) -%>
 <% end -%>
-
-<% if has_variable?(upload_buffer_dir) -%>
-  PassengerUploadBufferDir <%= upload_buffer_dir -%>
+<% if passengerenabled != '' -%>
+  PassengerEnabled <%= onoff(passengerenabled) %>
 <% end -%>
-
-<% if has_variable?(restart_dir) -%>
-  PassengerRestartDir <%= restart_dir %>
+<% if uploadbufferdir != '' -%>
+  PassengerUploadBufferDir <%= uploadbufferdir -%>
 <% end -%>
-
-<% if has_variable?(friendly_error_pages) -%>
-  PassengerFriendlyErrorPages <%= onoff(friendly_error_pages) %>
+<% if restartdir != '' -%>
+  PassengerRestartDir <%= restartdir %>
 <% end -%>
-
-<% has_variable?(buffer_response) -%>
-  PassengerBufferResponse <%= onoff(buffer_response) %>
+<% if friendlyerrorpages != '' -%>
+  PassengerFriendlyErrorPages <%= onoff(friendlyerrorpages) %>
 <% end -%>
-
-<% has_variable?(user) and user != '' -%>
+<% if bufferresponse != '' -%>
+  PassengerBufferResponse <%= onoff(bufferresponse) %>
+<% end -%>
+<% if user != '' -%>
   PassengerUser <%= user %>
 <% end -%>
-
-<% has_variable?(group) and group != '' -%>
+<% if group != '' -%>
   PassengerGroup <%= group %>
 <% end -%>
 
-<% has_variable?(min_instances) and min_instances != '' -%>
+<% if has_variable?('min_instances') and min_instances != '' -%>
   PassengerMinInstances <%= min_instances %>
 <% end -%>
-
-<% has_variable?(max_requests) and max_requests != '' -%>
+<% if has_variable?('max_requests') and max_requests != '' -%>
   PassengerMaxRequests <%= max_requests %>
 <% end -%>
-
-<% has_variable?(stat_throttle_rate) and stat_throttle_rate != '' -%>
+<% if has_variable?('stat_throttle_rate') and stat_throttle_rate != '' -%>
   PassengerStatThrottleRate <%= stat_throttle_rate %>
 <% end -%>
-
-<% has_variable?(pre_start) and pre_start != '' -%>
+<% if has_variable?('pre_start') and pre_start != '' -%>
   PassengerPreStart <%= pre_start %>
 <% end -%>
-
-<% has_variable?(high_performance) -%>
+<% if has_variable?('high_performance') -%>
   PassengerHighPerformance <%= onoff(high_performance) %>
 <% end -%>
-
-<% has_variable?(rails_autodetect) -%>
+<% if has_variable?('rails_autodetect') -%>
   RailsAutoDetect <%= onoff(rails_autodetect) %>
 <% end -%>
-
-<% if has_variable?(rails_baseuri) and rails_baseuri != ''
+<% if has_variable?('rails_baseuri') and rails_baseuri != ''
     rails_baseuri = [ rails_baseuri ] unless rails_baseuri.is_a?(Array)
     rails_baseuri.each do |uri| 
 -%>
   RailsBaseUri <%= uri %>
 <%  end -%>
 <% end -%>
-
-<% if has_variable?(rails_env) and rails_env != ''
+<% if has_variable?('rails_env') and rails_env != ''
     rails_env = [ rails_env ] unless rails_env.is_a?(Array)
     rails_env.each do |env|
 -%>
   RailsEnv <%= env %>
 <%  end -%>
 <% end -%>
-
-
-<% has_variable?(rack_autodetect) -%>
+<% if has_variable?('rack_autodetect') -%>
   RackAutoDetect <%= onoff(rack_autodetect) %>
 <% end -%>
-
-<% if has_variable?(rack_baseuri) and rack_baseuri != ''
+<% if has_variable?('rack_baseuri') and rack_baseuri != ''
     rack_baseuri = [ rack_baseuri ] unless rack_baseuri.is_a?(Array)
     rack_baseuri.each do |uri|
 -%>
   RackBaseUri <%= uri %>
 <%  end -%>
 <% end -%>
-
-<% if has_variable?(rack_env) and rack_env != ''
+<% if has_variable?('rack_env') and rack_env != ''
     rack_env = [ rack_env ] unless rack_env.is_a?(Array)
     rack_env.each do |env|
 -%>

@@ -5,7 +5,9 @@ class apache::mod::passenger {
     notify {'apache-mod-passenger-detect-passenger-module':
       message => "O Hi! I detected that you using a (pluggeable?) passenger module (${passenger::module::id}). Trying to work with it!"
     }
-    require passenger
+    if ! defined(Class['passenger']) {
+      include passenger
+    }
   } else {
 
     ## @Todo: Do we even need this here? I'm unsure it still works.

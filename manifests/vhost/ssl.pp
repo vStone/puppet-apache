@@ -63,13 +63,13 @@ define apache::vhost::ssl (
   $mods             = undef
 ) {
 
-
-  $chainfile   = $ssl_chain ?       { undef => '', default => $ssl_chain,        }
-  $ca_path     = $ssl_ca_path?      { undef => '', default => $ssl_ca_path,      }
-  $ca_file     = $ssl_ca_file?      { undef => '', default => $ssl_ca_file,      }
-  $ca_crl_path = $ssl_ca_crl_path?  { undef => '', default => $ssl_ca_crl_path,  }
-  $ca_crl_file = $ssl_ca_crl_file?  { undef => '', default => $ssl_ca_crl_file,  }
-  $requestlog  = $ssl_requestlog?   { undef => '', default => $ssl_requestlog,   }
+  $server      = $servername ?  { undef => $name, default => $servername,     }
+  $chainfile   = $ssl_chain ?      { undef => '', default => $ssl_chain,      }
+  $ca_path     = $ssl_ca_path?     { undef => '', default => $ssl_ca_path,    }
+  $ca_file     = $ssl_ca_file?     { undef => '', default => $ssl_ca_file,    }
+  $ca_crl_path = $ssl_ca_crl_path? { undef => '', default => $ssl_ca_crl_path,}
+  $ca_crl_file = $ssl_ca_crl_file? { undef => '', default => $ssl_ca_crl_file,}
+  $requestlog  = $ssl_requestlog?  { undef => '', default => $ssl_requestlog, }
 
   $log_dir = $logdir ? {
     undef   => "${apache::params::vhost_log_dir}/${server}",

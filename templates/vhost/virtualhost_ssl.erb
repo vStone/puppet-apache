@@ -36,7 +36,7 @@
   # server certificate. Alternatively the referenced file can be the same as
   # SSLCertificateFile when the CA certificates are directly appended to the
   # server certificate for convinience.
-<% if has_variable?(ssl_chain) -%>
+<% if has_variable?("ssl_chain") -%>
   SSLCertificateChainFile <%= ssl_chain %>
 <% end -%>
 
@@ -47,10 +47,10 @@
   # Note: Inside SSLCACertificatePath you need hash symlinks to point to the
   # certificate files. Use the provided Makefile to update the hash symlinks
   # after changes.
-<% if has_variable?(ssl_ca_path) -%>
+<% if has_variable?("ssl_ca_path") -%>
   SSLCACertificatePath <%= ssl_ca_path %>
 <% end -%>
-<% if has_variable?(ssl_ca_file) -%>
+<% if has_variable?("ssl_ca_file") -%>
   SSLCACertificateFile <%= ssl_ca_file %>
 <% end -%>
   #SSLCACertificatePath /etc/ssl/apache2/ssl.crt
@@ -63,10 +63,10 @@
   # Note: Inside SSLCARevocationPath you need hash symlinks to point to the
   # certificate files. Use the provided Makefile to update the hash symlinks
   # after changes.
-<% if has_variable?(ssl_ca_crl_path) -%>
+<% if has_variable?("ssl_ca_crl_path") -%>
   SSLCARevocationPath <%= ssl_ca_crl_path %>
 <% end -%>
-<% if has_variable?(ssl_ca_crl_file) -%>
+<% if has_variable?("ssl_ca_crl_file") -%>
   SSLCARevocationFile <%= ssl_ca_crl_file %>
 <% end -%>
   #SSLCARevocationPath /etc/ssl/apache2/ssl.crl

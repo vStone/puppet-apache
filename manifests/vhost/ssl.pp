@@ -64,6 +64,7 @@ define apache::vhost::ssl (
 ) {
 
   $server      = $servername ?  { undef => $name, default => $servername,     }
+
   $chainfile   = $ssl_chain ?      { undef => '', default => $ssl_chain,      }
   $ca_path     = $ssl_ca_path?     { undef => '', default => $ssl_ca_path,    }
   $ca_file     = $ssl_ca_file?     { undef => '', default => $ssl_ca_file,    }

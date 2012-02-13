@@ -46,6 +46,7 @@ define apache::vhost::mod::passenger (
   $global_queue = undef
 ) {
 
+  require apache::mod::passenger
 
   ## Generate the content for your module file:
   $definition = template('apache/vhost/mod/dummy.erb')

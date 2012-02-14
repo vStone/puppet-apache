@@ -2,9 +2,6 @@ class apache::mod::passenger {
 
   if defined('::passenger::module') {
     require passenger::module
-    notify {'apache-mod-passenger-detect-passenger-module':
-      message => "O Hi! I detected that you using a (pluggeable?) passenger module (${passenger::module::id}). Trying to work with it!"
-    }
     if ! defined(Class['passenger']) {
       include passenger
     }

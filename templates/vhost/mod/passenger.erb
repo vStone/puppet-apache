@@ -39,8 +39,8 @@
   PassengerGroup <%= group %>
 <% end -%>
 
-<% if has_variable?('min_instances') and min_instances != '' -%>
-  PassengerMinInstances <%= min_instances %>
+<% mininstances != '' -%>
+  PassengerMinInstances <%= mininstances %>
 <% end -%>
 <% if has_variable?('max_requests') and max_requests != '' -%>
   PassengerMaxRequests <%= max_requests %>

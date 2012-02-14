@@ -51,7 +51,8 @@ define apache::vhost::mod::passenger (
   $friendly_error_pages = undef,
   $buffer_response      = undef,
   $user                 = '',
-  $group                = ''
+  $group                = '',
+  $min_instances        = undef
 ) {
 
   require apache::mod::passenger
@@ -73,11 +74,11 @@ define apache::vhost::mod::passenger (
     default => $buffer_response,
   }
 
-  $approot     = $app_root ?     { undef => '',  default => $app_root,      }
-  $spawnmethod = $spawn_method ? { undef => '',  default => $spawn_method,  }
-  $globalqueue = $global_queue ? { undef => '',  default => $global_queue,  }
-  $restartdir  = $restart_dir  ? { undef => '',  default => $restart_dir,   }
-
+  $approot      = $app_root     ?{ undef => '',  default => $app_root,     }
+  $spawnmethod  = $spawn_method ?{ undef => '',  default => $spawn_method, }
+  $globalqueue  = $global_queue ?{ undef => '',  default => $global_queue, }
+  $restartdir   = $restart_dir  ?{ undef => '',  default => $restart_dir,  }
+  $mininstances = $mininstances ?{ undef => '',  default => $min_instances,}
 
 
   ## Generate the content for your module file:

@@ -217,6 +217,8 @@ define apache::vhost (
   }
   apache::confd::file_exists {"apache-vhost-vhost-docroot-${name}":
     ensure  => 'directory',
+    owner   => $owner,
+    group   => $group,
     path    => $documentroot,
     require => Apache::Confd::File_exists["apache-vhost-vhost-root-${name}"]
   }
@@ -227,6 +229,8 @@ define apache::vhost (
   }
   apache::confd::file_exists {"apache-vhost-vhost-log-${name}":
     ensure  => 'directory',
+    owner   => $owner,
+    group   => $group,
     path    => $log_dir,
     require => File['apache-vhosts_log_root'],
   }

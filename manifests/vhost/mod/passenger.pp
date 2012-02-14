@@ -35,6 +35,10 @@
 #
 # == Sample Usage:
 #
+# == Todo:
+#
+#  * Implement remaining parameters
+#
 define apache::vhost::mod::passenger (
   $vhost,
   $ip                   = undef,

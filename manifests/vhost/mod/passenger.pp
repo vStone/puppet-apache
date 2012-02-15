@@ -56,7 +56,13 @@ define apache::vhost::mod::passenger (
   $buffer_response      = undef,
   $user                 = '',
   $group                = '',
-  $min_instances        = undef
+  $min_instances        = undef,
+  $max_requests         = undef,
+  $stat_throttle_rate   = undef,
+  $pre_start            = undef,
+  $high_performance     = undef,
+  $rails_autodetect     = undef,
+  $rack_autodetect      = undef
 ) {
 
   require apache::mod::passenger
@@ -77,13 +83,30 @@ define apache::vhost::mod::passenger (
     undef   => '',
     default => $buffer_response,
   }
+  $statthrottlerate = $stat_throttle_rate ? {
+    undef   => '',
+    default => $stat_throttle_rate,
+  }
+  $highperformance =  $high_performance ? {
+    undef   => '',
+    default => $high_performance,
+  }
+  $railsautodetect = $rails_autodetect ? {
+    undef   => '',
+    default =>  $rails_autodetect,
+  }
+  $rackautodetect = $rack_autodetect ? {
+    undef   => '',
+    default => $rack_autodetect,
+  }
 
-  $approot      = $app_root     ?{ undef => '',  default => $app_root,     }
-  $spawnmethod  = $spawn_method ?{ undef => '',  default => $spawn_method, }
-  $globalqueue  = $global_queue ?{ undef => '',  default => $global_queue, }
-  $restartdir   = $restart_dir  ?{ undef => '',  default => $restart_dir,  }
-  $mininstances = $mininstances ?{ undef => '',  default => $min_instances,}
-
+  $approot      = $app_root      ?{ undef => '', default => $app_root,     }
+  $spawnmethod  = $spawn_method  ?{ undef => '', default => $spawn_method, }
+  $globalqueue  = $global_queue  ?{ undef => '', default => $global_queue, }
+  $restartdir   = $restart_dir   ?{ undef => '', default => $restart_dir,  }
+  $mininstances = $min_instances ?{ undef => '', default => $min_instances,}
+  $maxrequests  = $max_requests  ?{ undef => '', default => $max_requests, }
+  $prestart     = $pre_start     ?{ undef => '', default => $pre_start,    }
 
   ## Generate the content for your module file:
   $definition = template('apache/vhost/mod/passenger.erb')

@@ -39,27 +39,27 @@
   PassengerGroup <%= group %>
 <% end -%>
 
-<% mininstances != '' -%>
+<% if mininstances != '' -%>
   PassengerMinInstances <%= mininstances %>
 <% end -%>
-<% if has_variable?('max_requests') and max_requests != '' -%>
-  PassengerMaxRequests <%= max_requests %>
+<% if maxrequests != '' -%>
+  PassengerMaxRequests <%= maxrequests %>
 <% end -%>
-<% if has_variable?('stat_throttle_rate') and stat_throttle_rate != '' -%>
-  PassengerStatThrottleRate <%= stat_throttle_rate %>
+<% if statthrottlerate != '' -%>
+  PassengerStatThrottleRate <%= statthrottlerate %>
 <% end -%>
-<% if has_variable?('pre_start') and pre_start != '' -%>
-  PassengerPreStart <%= pre_start %>
+<% if prestart != '' -%>
+  PassengerPreStart <%= prestart %>
 <% end -%>
-<% if has_variable?('high_performance') -%>
-  PassengerHighPerformance <%= onoff(high_performance) %>
+<% if highperformance != '' -%>
+  PassengerHighPerformance <%= onoff(highperformance) %>
 <% end -%>
-<% if has_variable?('rails_autodetect') -%>
-  RailsAutoDetect <%= onoff(rails_autodetect) %>
+<% if railsautodetect != '' -%>
+  RailsAutoDetect <%= onoff(railsautodetect) %>
 <% end -%>
 <% if has_variable?('rails_baseuri') and rails_baseuri != ''
     rails_baseuri = [ rails_baseuri ] unless rails_baseuri.is_a?(Array)
-    rails_baseuri.each do |uri| 
+    rails_baseuri.each do |uri|
 -%>
   RailsBaseUri <%= uri %>
 <%  end -%>
@@ -71,8 +71,8 @@
   RailsEnv <%= env %>
 <%  end -%>
 <% end -%>
-<% if has_variable?('rack_autodetect') -%>
-  RackAutoDetect <%= onoff(rack_autodetect) %>
+<% if rackautodetect != '' -%>
+  RackAutoDetect <%= onoff(rackautodetect) %>
 <% end -%>
 <% if has_variable?('rack_baseuri') and rack_baseuri != ''
     rack_baseuri = [ rack_baseuri ] unless rack_baseuri.is_a?(Array)

@@ -1,5 +1,6 @@
 class apache {
 
+  include apache::module
   include apache::packages
   include apache::setup
   include apache::service

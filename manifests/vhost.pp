@@ -107,6 +107,10 @@ define apache::vhost (
   $mods           = undef
 ) {
 
+  if $title == '' {
+    fail('Can not create a vhost with empty title/name')
+  }
+
   require apache::params
   require apache::setup::vhost
 

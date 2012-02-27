@@ -34,6 +34,9 @@
 #                   This will also remove any file/dir that is not managed
 #                   by puppet.
 #
+# $dirroot::      Allow overrriding of the default Directory directive.
+#                 Defaults to the docroot.
+#
 # $order::        Can be used to define the order for this vhost to be loaded.
 #                 Defaults to 10.
 #                 Special cases should have a lower or higher order value.
@@ -102,6 +105,7 @@ define apache::vhost (
   $errorlevel     = 'warn',
   $docroot        = undef,
   $docroot_purge  = false,
+  $dirroot        = undef,
   $order          = '10',
   $vhost_config   = '',
   $mods           = undef
@@ -150,6 +154,11 @@ define apache::vhost (
   $documentroot = $docroot ? {
     undef   => "${vhost_root}/${apache::params::default_docroot}",
     default => $docroot,
+  }
+
+  $directoryroot =  $dirroot ? {
+    undef   => $documentroot,
+    default => $dirroot,
   }
 
   ## Check for matching apache::namevhost

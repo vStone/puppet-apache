@@ -58,6 +58,7 @@ define apache::vhost::ssl (
   $errorlevel       = 'warn',
   $docroot          = undef,
   $docroot_purge    = false,
+  $dirroot          = undef,
   $order            = '10',
   $vhost_config     = '',
   $mods             = undef
@@ -94,6 +95,7 @@ define apache::vhost::ssl (
     errorlog      => $errorlog,
     errorlevel    => $errorlevel,
     docroot_purge => $docroot_purge,
+    dirroot       => $dirroot,
     order         => $order,
     mods          => $mods,
     vhost_config  => $ssl_content, ## This is the only thing that differs really.

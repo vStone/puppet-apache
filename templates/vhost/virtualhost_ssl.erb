@@ -80,6 +80,12 @@
   # require and optional_no_ca. Depth is a number which specifies how deeply
   # to verify the certificate issuer chain before deciding the certificate is
   # not valid.
+<% if verify_client != '' -%>
+  SSLVerifyClient <%= verify_client %>
+<% end -%>
+<% if verify_depth != '' -%>
+  SSLVerifyDepth <%= verify_depth %>
+<% end -%>
   #SSLVerifyClient require
   #SSLVerifyDepth  10
 
@@ -123,6 +129,10 @@
   #<Directory "/var/www/localhost/cgi-bin">
   #    SSLOptions +StdEnvVars
   #</Directory>
+
+<% if options != '' -%>
+  SSLOptions <%= options %>
+<% end -%>
 
   ## SSL Protocol Adjustments:
   # The safe and default but still SSL/TLS standard compliant shutdown

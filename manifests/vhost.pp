@@ -4,41 +4,63 @@
 #
 # == Parameters:
 #
-#   $name::         The name is used for the filenames of various config files.
-#                   It is a good idea to use <servername>_<port> so there is no
-#                   overlapping of configuration files.
+# $name::         The name is used for the filenames of various config files.
+#                 It is a good idea to use <servername>_<port> so there is no
+#                 overlapping of configuration files.
 #
-#   $servername::   The server name to use.
+# $ensure::       Can be present/enabled/true or absent/disabled/false.
 #
-#   $ensure::       Can either be present/enabled/true or absent/disabled/false.
+# $servername::   The server name to use.
 #
-#   $ip::           The ip to use. Must match with a apache::namevhost.
+# $serveraliases::  Can be a single server alias, an array of aliases or
+#                   '' (empty) if no alias is needed.
 #
-#   $port::         The port to use. Must match with apache::namevhost.
-#                   Defaults to '80'
+# $ip::           The ip to use. Must match with a apache::namevhost.
 #
-#   $admin::        Admin email address.
-#                   Defaults to admin@SERVERNAME
+# $port::         The port to use. Must match with apache::namevhost.
+#                 Defaults to '80'
 #
-#   $vhostroot::    Root where all other files for this vhost will be created under.
-#                   Defaults to the globally defined vhost root folder.
+# $admin::        Admin email address.
+#                 Defaults to admin@SERVERNAME
 #
-#   $docroot::      Document root for this vhost.
-#                   Defaults to /<vhostroot>/<servername>/<htdocs>
+# $vhostroot::    Root where all other files for this vhost will be placed.
+#                 Defaults to the globally defined vhost root folder.
 #
-#   $docroot_purge:: If you are going to manage the content of the document root with
-#                    puppet alone, you can safely enable purging here. This will also
-#                    remove any file/dir that is not managed by puppet.
+# $docroot::      Document root for this vhost.
+#                 Defaults to /<vhostroot>/<servername>/<htdocs>
 #
-#   $order::        Can be used to define the order for this vhost to be loaded in.
-#                   Defaults to 10. So special vhosts should have a lower or higher order.
+# $docroot_purge::  If you are going to manage the content of the docroot
+#                   with puppet alone, you can safely enable purging here.
+#                   This will also remove any file/dir that is not managed
+#                   by puppet.
 #
-#   $vhost_config:: Custom virtualhost configuration.
-#                   This does not override the complete config but is included within
-#                   the <VirtualHost> directive after the documentroot definition,
-#                   and before including any apache vhost mods.
+# $dirroot::      Allow overrriding of the default Directory directive.
+#                 Defaults to the docroot.
 #
-#   $mods::         An hash with vhost mods to be enabled.
+# $order::        Can be used to define the order for this vhost to be loaded.
+#                 Defaults to 10.
+#                 Special cases should have a lower or higher order value.
+#
+# $logdir::       Folder where log files are stored.
+#                 Defaults to <global logdir>/<vhostname>
+#
+# $errorlevel::   Errorlevel to log on. See apache docs for more info.
+#                 http://httpd.apache.org/docs/2.1/mod/core.html#loglevel
+#                 Defaults to 'warn'.
+#
+# $accesslog::    Filename of the access log. Set to '' to disable logging.
+#                 Defaults to 'access.log'
+#
+# $errorlog::     Filename of the error log. Set to '' to disable logging.
+#                 Defaults to 'error.log'
+#
+#
+# $vhost_config:: Custom virtualhost configuration.
+#                 This does not override the complete config but is included
+#                 within the <VirtualHost> directive after the document
+#                 root definition and before including any apache vhost mods.
+#
+# $mods::         An hash with vhost mods to be enabled.
 #
 # == Usage / Best practice:
 #
@@ -78,12 +100,20 @@ define apache::vhost (
   $admin          = undef,
   $vhostroot      = undef,
   $logdir         = undef,
+  $accesslog      = 'access.log',
+  $errorlog       = 'error.log',
+  $errorlevel     = 'warn',
   $docroot        = undef,
   $docroot_purge  = false,
+  $dirroot        = undef,
   $order          = '10',
   $vhost_config   = '',
   $mods           = undef
 ) {
+
+  if $title == '' {
+    fail('Can not create a vhost with empty title/name')
+  }
 
   require apache::params
   require apache::setup::vhost
@@ -114,7 +144,6 @@ define apache::vhost (
     undef   => "${apache::params::vhost_root}/${server}",
     default =>  $vhostroot,
   }
-
   $log_dir = $logdir ? {
     undef   => "${apache::params::vhost_log_dir}/${server}",
     default => $logdir,
@@ -125,6 +154,11 @@ define apache::vhost (
   $documentroot = $docroot ? {
     undef   => "${vhost_root}/${apache::params::default_docroot}",
     default => $docroot,
+  }
+
+  $directoryroot =  $dirroot ? {
+    undef   => $documentroot,
+    default => $dirroot,
   }
 
   ## Check for matching apache::namevhost
@@ -150,6 +184,16 @@ define apache::vhost (
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
     path   => $vhost_root,
+  }
+  apache::confd::file_exists {"apache-vhost-vhost-docroot-${name}":
+    ensure  => 'directory',
+    path    => $documentroot,
+    require => Apache::Confd::File_exists["apache-vhost-vhost-root-${name}"]
+  }
+  if $docroot_purge {
+    Apache::Confd::File_exists["apache-vhost-vhost-docroot-${name}"] {
+      purge => $docroot_purge
+    }
   }
   apache::confd::file_exists {"apache-vhost-vhost-log-${name}":
     ensure  => 'directory',
@@ -181,7 +225,7 @@ define apache::vhost (
   $include_blob = "${include_root}/${include_path}${name}_mod_*.include"
 
   $style_def = "${apache::params::config_base}::main"
-  ## Note: puppet-lint warns on "${name}" but its the only way to get it working.
+  ## Note: puppet-lint warns on "${name}". Won't work properly without quotes.
   $style_args = {
     "${name}"    => {
       'ensure'    => $enable,
@@ -195,11 +239,15 @@ define apache::vhost (
   create_resources($style_def, $style_args)
 
   $defaults = {
+    ensure    => $ensure,
     vhost     => $name,
     ip        => $ip_def,
     port      => $port,
     automated => true,
+    docroot   => $documentroot,
   }
-  create_mods($name, $mods, $defaults)
+  if $mods != undef and $mods != '' {
+    create_mods($name, $mods, $defaults)
+  }
 
 }

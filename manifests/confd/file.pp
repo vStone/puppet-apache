@@ -47,7 +47,7 @@ define apache::confd::file (
 
   file {$title:
     ensure  => $ensure,
-    path    => "${config_root}/${confd}/$fname",
+    path    => "${config_root}/${confd}/${fname}",
     notify  => Service['apache'],
     content => $content,
   }

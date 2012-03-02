@@ -1,5 +1,6 @@
 class apache {
 
+  include apache::module
   include apache::packages
   include apache::setup
   include apache::service
@@ -12,8 +13,5 @@ class apache {
       require puppetlabs-create_resources
     }
   }
-
-  $modulename = 'inuits-puppet-apache'
-  $moduleversion = '0.1.1'
 
 }

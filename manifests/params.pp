@@ -146,7 +146,7 @@ class apache::params(
     /Archlinux/     => 'apache/config/archlinux-apache.conf.erb',
     /CentOS|RedHat/ => $::operatingsystemrelease ? {
       /^6/    => 'apache/config/centos6-apache.conf.erb',
-      /^5/    => 'apache/config/centos-apache.conf.erb',
+      /^5/    => 'apache/config/centos5-apache.conf.erb',
       default => 'apache/config/centos6-apache.conf.erb',
     },
     /Debian|Ubuntu/ => 'apache/config/debian-apache.conf.erb',

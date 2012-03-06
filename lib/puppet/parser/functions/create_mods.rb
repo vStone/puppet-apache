@@ -45,11 +45,11 @@ Puppet::Parser::Functions::newfunction(:create_mods, :doc => '
       index = 0
       mod.each do |xmod|
         params = defmerge.merge(xmod)
-        function_create_resources(deftype, {"#{name}_mod_#{type}_#{index}" => params })
+        function_create_resources([deftype, {"#{name}_mod_#{type}_#{index}" => params }])
       end
     else
       params = defmerge.merge(mod)
-      function_create_resources(deftype, { "#{name}_mod_#{type}" => params })
+      function_create_resources([deftype, { "#{name}_mod_#{type}" => params }])
     end
 
   end

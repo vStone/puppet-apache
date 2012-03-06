@@ -61,8 +61,8 @@
 #                 root definition and before including any apache vhost mods.
 #
 # $linklogdir::   Boolean. If enabled, a symlink to the apache logs is created
-#		  in the root of the virtual host folder. Set to false to disable.
-#		  Defaults to true
+#     in the root of the virtual host folder. Set to false to disable.
+#     Defaults to true
 #
 # $mods::         An hash with vhost mods to be enabled.
 #
@@ -206,27 +206,22 @@ define apache::vhost (
     require => File['apache-vhosts_log_root'],
   }
 
-	if ( $linklogdir == true )
-	{
-  		apache::confd::file_exists 
-		{ "apache-vhost-vhost-log-link-${name}":
-    			ensure  => 'link',
-    			target  => $log_dir,
-    			path    => $log_link_target,
-    			require => [
-      				Apache::Confd::File_exists["apache-vhost-vhost-log-${name}"],
-      				Apache::Confd::File_exists["apache-vhost-vhost-root-${name}"]
-    			]
-  		}
-	}
-	else
-	{
-  		apache::confd::file_exists 
-		{ "apache-vhost-vhost-log-link-${name}":
-    			path    => $log_link_target,
-    			ensure  => absent
-		}
-	}
+  if ( $linklogdir == true ) {
+    apache::confd::file_exists { "apache-vhost-vhost-log-link-${name}":
+      ensure  => 'link',
+      target  => $log_dir,
+      path    => $log_link_target,
+      require => [
+        Apache::Confd::File_exists["apache-vhost-vhost-log-${name}"],
+        Apache::Confd::File_exists["apache-vhost-vhost-root-${name}"],
+      ]
+    }
+  } else {
+    apache::confd::file_exists { "apache-vhost-vhost-log-link-${name}":
+      ensure  => 'absent',
+      path    => $log_link_target,
+    }
+  }
 
 
   ####################################

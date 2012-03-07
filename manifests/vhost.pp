@@ -247,6 +247,7 @@ define apache::vhost (
       'order'     => $order,
       'ip'        => $ip_def,
       'port'      => $port,
+      'require'   => File[$documentroot],
     }
   }
   create_resources($style_def, $style_args)

@@ -6,6 +6,7 @@ define apache::vhost::config::simple::main (
   $port
 ) {
 
+  require apache::params
   require apache::vhost::config::simple::params
 
   apache::confd::symfile {$name:
@@ -16,6 +17,7 @@ define apache::vhost::config::simple::main (
     file_name       => "${name}_configuration",
     link_name       => "${name}.conf",
     use_config_root => $apache::setup::vhost::use_config_root,
+    notify          => Service[$apache::params::service_name],
   }
 
 }

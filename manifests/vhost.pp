@@ -64,6 +64,8 @@
 #     in the root of the virtual host folder. Set to false to disable.
 #     Defaults to true
 #
+# $directoryoptions:: String. defaults to "FollowSymlinks MultiViews"
+#
 # $mods::         An hash with vhost mods to be enabled.
 #
 # == Usage / Best practice:
@@ -113,7 +115,8 @@ define apache::vhost (
   $order          = '10',
   $vhost_config   = '',
   $mods           = undef,
-  $linklogdir     = true
+  $linklogdir     = true,
+  $diroptions     = 'FollowSymlinks MultiViews'
 ) {
 
   if $title == '' {
@@ -182,10 +185,28 @@ define apache::vhost (
     warning("You need to define the Apache::Namevhost['${listen}'] before the vhost '${name}' will be enabled.")
   }
 
+  if ($diroptions == '') {
+    $diroptions = 'All'
+  }
+
 
   ####################################
   ####   Create vhost structure   ####
   ####################################
+  
+  case $diroptions {
+    /(?i:All|Indexes)/: {
+      apache::confd::file { 'confd/welcome.conf':
+        ensure           => 'present',
+        confd            => '',
+        file_name        => 'welcome.conf',
+        content          => template('apache/confd/welcome.erb'),
+        use_config_root  => false,
+        }
+    }
+    default: {}
+  }
+
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
     path   => $vhost_root,
@@ -247,6 +268,7 @@ define apache::vhost (
       'order'     => $order,
       'ip'        => $ip_def,
       'port'      => $port,
+      'require'   => File[$documentroot],
     }
   }
   create_resources($style_def, $style_args)

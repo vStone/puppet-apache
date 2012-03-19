@@ -17,7 +17,7 @@
 
   DocumentRoot <%= documentroot %>
   <Directory <%= directoryroot %>>
-    Options FollowSymlinks MultiViews
+    Options <%= diroptions %>
     AllowOverride All
     Order allow,deny
     Allow from All

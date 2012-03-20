@@ -193,7 +193,7 @@ define apache::vhost (
   ####################################
   ####   Create vhost structure   ####
   ####################################
-  
+
   case $diroptions {
     /(?i:All|Indexes)/: {
       apache::confd::file { 'confd/welcome.conf':

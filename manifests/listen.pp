@@ -40,7 +40,7 @@ define apache::listen (
       if defined(Apache::Listen[$listen_port]) {
         $do_file = false
         notify {"apache-listen-allinterfaces-warning-${name}":
-          message => "Already listening on all interfaces for port ${listen_port}!",
+          message => template('apache/msg/listen-allinterfaces-warning.erb'),
         }
       } else {
         $do_file = true
@@ -48,7 +48,8 @@ define apache::listen (
 
     }
     default : {
-      fail ("Could not determine ip and port from ${name}")
+      $failmsg = template('apache/msg/listen-fail-ip-port-fromname.erb')
+      fail ($failmsg)
     }
   }
 

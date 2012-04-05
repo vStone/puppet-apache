@@ -135,7 +135,7 @@ define apache::vhost (
     /enable|present/, true:   { $enable = true }
     /disable|absent/, false:  { $enable = false }
     default: {
-      warning('Only enable/present/true/disable/absent/false are valid values for the ensure parameter')
+      warning( template('apache/msg/vhost-ensure-unvalid-warning.erb') )
       $enable = true
     }
   }
@@ -184,7 +184,7 @@ define apache::vhost (
   }
 
   if ($ensure == 'present') and ( ! defined (Apache::Namevhost[$listen])) {
-    warning("You need to define the Apache::Namevhost['${listen}'] before the vhost '${name}' will be enabled.")
+    warning( template('apache/msg/vhost-notdef-namevhost-warning.erb') )
   }
 
   if ($diroptions == '') {
@@ -259,8 +259,8 @@ define apache::vhost (
   $params_def = "${apache::params::config_base}::params"
   require $params_def
 
-  $include_template = inline_template('<%= scope.lookupvar("#{params_def}::include_path") %>')
-  $include_path = inline_template($include_template)
+  $inc = inline_template('<%=scope.lookupvar("#{params_def}::include_path")%>')
+  $include_path = inline_template($inc)
 
   $include_root = $apache::setup::vhost::confd
 

@@ -24,8 +24,8 @@ define apache::vhost::modfile (
   require $params_def
 
   ## The path to a module configuration is configured by the config style.
-  $modpath_template = inline_template('<%= scope.lookupvar("#{params_def}::mod_path") %>')
-  $modpath = inline_template($modpath_template)
+  $mtmp = inline_template('<%= scope.lookupvar("#{params_def}::mod_path") %>')
+  $modpath = inline_template($mtmp)
 
   $modfile_path = "${apache::setup::vhost::confd}/$modpath"
 

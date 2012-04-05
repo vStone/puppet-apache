@@ -5,7 +5,9 @@ class apache {
   include apache::setup
   include apache::service
 
-  Class['apache::packages'] -> Class['apache::setup'] -> Class['apache::service']
+  Class['apache::packages'] ->
+  Class['apache::setup'] ->
+  Class['apache::service']
 
   case $::puppetversion {
     /^2.7/:   {}

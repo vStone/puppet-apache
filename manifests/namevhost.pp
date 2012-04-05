@@ -1,6 +1,7 @@
 # == Definition: apache::namevhost
 #
-# Configure the apache service to enable name based vhosts on a certain (ip/)port
+#   Configure the apache service to enable name based vhosts on
+#   a certain (ip/)port
 #
 # === Parameters
 #

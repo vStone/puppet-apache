@@ -21,7 +21,7 @@
 #
 # $proxy_url::        The proxy url is used in <Proxy></Proxy> directives to
 #                     limit access. Defaults to '*' (all).
-#                     See: http://httpd.apache.org/docs/2.2/mod/mod_proxy.html#proxy
+#                     See: http://tinyurl.com/apache-mod-proxy#proxy
 #
 # $allow_order::      Should be either deny,allow or allow,deny.
 #                     See: http://httpd.apache.org/docs/2.2/howto/access.html
@@ -35,18 +35,18 @@
 #                     See: http://httpd.apache.org/docs/2.2/howto/access.html.
 #
 # $proxypass::        This can either be a single string, an array or a hash.
-#                     For each entry, a ProxyPass directive will be written to the
-#                     configuration file.
-#                     See: http://httpd.apache.org/docs/2.2/mod/mod_proxy.html#proxypass
+#                     For each entry, a ProxyPass directive will be written to
+#                     the configuration file.
+#                     See: http://tinyurl.com/apache-mod-proxy#proxypass
 #
 # $proxypassreverse:: This can either be a single string, an array or a hash.
 #                     For each entry, a ProxyPassReverse directive will be
 #                     written to the configuration file.
-#                     See: http://httpd.apache.org/docs/2.2/mod/mod_proxy.html#proxypassreverse
+#                     See: http://tinyurl.com/apache-mod-proxy#proxypassreverse
 #
 # $proxypath::        This can either be a single string, an array or a hash.
-#                     For each entry, a ProxyPass AND ProxyPassReverse directive
-#                     will be written to the configuration file.
+#                     For each entry, a ProxyPass AND ProxyPassReverse
+#                     directive will be written to the configuration file.
 #
 define apache::vhost::mod::reverse_proxy (
   $vhost,

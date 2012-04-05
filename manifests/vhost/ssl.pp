@@ -145,7 +145,7 @@ define apache::vhost::ssl (
     mods          => $mods,
     owner         => $owner,
     group         => $group,
-    vhost_config  => $ssl_content, ## This is the only thing that differs really.
+    vhost_config  => $ssl_content, # This is the only thing that is different.
   }
 }
 

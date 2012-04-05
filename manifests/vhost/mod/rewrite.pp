@@ -4,13 +4,31 @@
 #
 # == Parameters:
 #
+# $rewrite_cond:: The rewrite condition to use. Standard apache syntax.
+#                 For now only one string is supported, array support
+#                 may be added at a later time.
+#
+# $rewrite_rule:: The rewrite rule to use when the rewrite_cond matches.
+#                 For now only one string is supported, array support
+#                 may be added at a later time.
+#
 # $vhost::        The name of the vhost to work on. This should be
 #                 identical to the apache::vhost{NAME:} you have setup.
 #
-# $rewrite_cond:: The rewrite condition
+# $ensure::       If ensure is absent, the configuration file will be
+#                 removed. Defaults to 'present'.
 #
-# $rewrite_rule:: The rewrite rule
+# $ip::           Ip of the vhost to work on. Should be identical to the
+#                 apache::vhost instance you have setup. Defaults to '*'
 #
+# $port::         Port of the vhost to work on. Should be identical to
+#                 the apache::vhost instance you have setup.
+#                 Defaults to the vhost default.
+#
+# $automated::    Only used when including the mod through the mods param
+#                 of the corresponding vhost. This automagically sets the
+#                 vhost name and some more params. Also removes the need
+#                 for a title.
 define apache::vhost::mod::rewrite (
   $rewrite_cond,
   $rewrite_rule,

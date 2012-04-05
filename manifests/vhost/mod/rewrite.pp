@@ -12,12 +12,12 @@
 # $rewrite_rule:: The rewrite rule
 #
 define apache::vhost::mod::rewrite (
-  $ensure        = 'present',
-  $vhost,
-  $ip            = undef,
-  $port          = undef,
   $rewrite_cond,
   $rewrite_rule,
+  $vhost,
+  $ensure        = 'present',
+  $ip            = undef,
+  $port          = undef,
   $automated     = false,
 ) {
 

@@ -3,7 +3,7 @@ class apache::setup::vhost {
   $confd = 'vhost.d'
   $order = '10'
   $includes = [ '*.conf' ]
-  $purge  = false
+  $purge  = $apache::params::vhostroot_purge
 
   $use_config_root = true
 

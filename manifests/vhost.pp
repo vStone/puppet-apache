@@ -32,7 +32,7 @@
 # $docroot_purge::  If you are going to manage the content of the docroot
 #                   with puppet alone, you can safely enable purging here.
 #                   This will also remove any file/dir that is not managed
-#                   by puppet.
+#                   by puppet. Defaults to false.
 #
 # $dirroot::      Allow overrriding of the default Directory directive.
 #                 Defaults to the docroot.

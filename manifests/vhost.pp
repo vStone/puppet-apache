@@ -116,7 +116,9 @@ define apache::vhost (
   $vhost_config   = '',
   $mods           = undef,
   $linklogdir     = true,
-  $diroptions     = 'FollowSymlinks MultiViews'
+  $diroptions     = 'FollowSymlinks MultiViews',
+  $owner          = undef,
+  $group          = undef
 ) {
 
   if $title == '' {
@@ -209,6 +211,8 @@ define apache::vhost (
 
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
+    owner  => $owner,
+    group  => $group,
     path   => $vhost_root,
   }
   apache::confd::file_exists {"apache-vhost-vhost-docroot-${name}":

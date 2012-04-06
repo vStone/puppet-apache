@@ -62,7 +62,7 @@ define apache::vhost::mod::reverse_proxy (
   $proxypass    = undef,
   $proxypassreverse = undef,
   $proxypath    = undef,
-  $automated    = false,
+  $automated    = false
 ) {
 
   case $allow_order {

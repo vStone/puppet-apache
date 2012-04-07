@@ -36,7 +36,7 @@ define apache::vhost::mod::rewrite (
   $ensure        = 'present',
   $ip            = undef,
   $port          = undef,
-  $automated     = false,
+  $automated     = false
 ) {
 
   $definition = template('apache/vhost/mod/rewrite.erb')

@@ -15,13 +15,4 @@ class apache::mod::xsendfile {
     alias   => 'apache_mod_xsendfile',
   }
 
-  case $::operatingsystem {
-    /CentOS/:   {
-      Package[$pkg_name] {
-        require => Yumrepo['epel'],
-      }
-    }
-    default: {}
-  }
-
 }

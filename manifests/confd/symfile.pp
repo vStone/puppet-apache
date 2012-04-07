@@ -4,7 +4,8 @@
 #
 # === Parameters:
 #  $confd:
-#     Subfolder in conf.d directory. If use_config_root is enabled, subfolder in apache configuration folder.
+#     Subfolder in conf.d directory. If use_config_root is enabled,
+#     subfolder in apache configuration folder.
 #
 #  $enabled:
 #     If enabled, the symlink to the configuration file will be created.

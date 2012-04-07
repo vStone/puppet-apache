@@ -5,7 +5,8 @@
 # Your definition should always take the following parameters. When
 # using the mods parameter from vhost, these get set automaticly.
 #
-# $vhost::      Defined what vhost this module is for. Required for apache::vhost::modfile
+# $vhost::      Defined what vhost this module is for.
+#               Required for apache::vhost::modfile
 #
 # $ip::         Required for apache::vhost::modfile.
 #
@@ -14,9 +15,10 @@
 # $ensure::     Disable or enable this mod. This will/should remove the config
 #               file. Required for apache::vhost::modfile.
 #
-# $automated::  This is a variable that is used under the hood. If a mod is enabled
-#               directly through apache::vhost (no specific apache::vhost::mod::* is defined)
-#               this is set to true. Required for apache::vhost::modfile.
+# $automated::  This is a variable that is used under the hood. If a mod is
+#               enabled directly through apache::vhost - no specific
+#               apache::vhost::mod::* is defined - this is set to true.
+#               Required for apache::vhost::modfile.
 #
 # $location::   Location of files to share, relative to the vhost docroot.
 #               Defaults to '/'.

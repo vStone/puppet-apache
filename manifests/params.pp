@@ -24,6 +24,9 @@
 #                 used $config_style.
 #                 Defaults to distro specific.
 #
+# $vhostroot_purge:: Purge the vhost configuration root of all configuration
+#                    files that are not managed by puppet.
+#
 # $logroot::      Root where all log files are stored.
 #                 Defaults to distro specific.
 #
@@ -62,6 +65,7 @@ class apache::params(
   $service          = undef,
   $configroot       = undef,
   $vhostroot        = undef,
+  $vhostroot_purge  = false,
   $logroot          = undef,
   $user             = undef,
   $group            = undef,

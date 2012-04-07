@@ -32,7 +32,7 @@
 # $docroot_purge::  If you are going to manage the content of the docroot
 #                   with puppet alone, you can safely enable purging here.
 #                   This will also remove any file/dir that is not managed
-#                   by puppet.
+#                   by puppet. Defaults to false.
 #
 # $dirroot::      Allow overrriding of the default Directory directive.
 #                 Defaults to the docroot.
@@ -116,7 +116,9 @@ define apache::vhost (
   $vhost_config   = '',
   $mods           = undef,
   $linklogdir     = true,
-  $diroptions     = 'FollowSymlinks MultiViews'
+  $diroptions     = 'FollowSymlinks MultiViews',
+  $owner          = undef,
+  $group          = undef
 ) {
 
   if $title == '' {
@@ -133,7 +135,7 @@ define apache::vhost (
     /enable|present/, true:   { $enable = true }
     /disable|absent/, false:  { $enable = false }
     default: {
-      warning('Only enable/present/true/disable/absent/false are valid values for the ensure parameter')
+      warning( template('apache/msg/vhost-ensure-unvalid-warning.erb') )
       $enable = true
     }
   }
@@ -182,7 +184,7 @@ define apache::vhost (
   }
 
   if ($ensure == 'present') and ( ! defined (Apache::Namevhost[$listen])) {
-    warning("You need to define the Apache::Namevhost['${listen}'] before the vhost '${name}' will be enabled.")
+    warning( template('apache/msg/vhost-notdef-namevhost-warning.erb') )
   }
 
   if ($diroptions == '') {
@@ -193,7 +195,7 @@ define apache::vhost (
   ####################################
   ####   Create vhost structure   ####
   ####################################
-  
+
   case $diroptions {
     /(?i:All|Indexes)/: {
       apache::confd::file { 'confd/welcome.conf':
@@ -209,10 +211,14 @@ define apache::vhost (
 
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
+    owner  => $owner,
+    group  => $group,
     path   => $vhost_root,
   }
   apache::confd::file_exists {"apache-vhost-vhost-docroot-${name}":
     ensure  => 'directory',
+    owner   => $owner,
+    group   => $group,
     path    => $documentroot,
     require => Apache::Confd::File_exists["apache-vhost-vhost-root-${name}"]
   }
@@ -223,6 +229,8 @@ define apache::vhost (
   }
   apache::confd::file_exists {"apache-vhost-vhost-log-${name}":
     ensure  => 'directory',
+    owner   => $owner,
+    group   => $group,
     path    => $log_dir,
     require => File['apache-vhosts_log_root'],
   }
@@ -251,8 +259,8 @@ define apache::vhost (
   $params_def = "${apache::params::config_base}::params"
   require $params_def
 
-  $include_template = inline_template('<%= scope.lookupvar("#{params_def}::include_path") %>')
-  $include_path = inline_template($include_template)
+  $inc = inline_template('<%=scope.lookupvar("#{params_def}::include_path")%>')
+  $include_path = inline_template($inc)
 
   $include_root = $apache::setup::vhost::confd
 

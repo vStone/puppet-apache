@@ -70,7 +70,9 @@ define apache::vhost::ssl (
   $dirroot           = undef,
   $order             = '10',
   $vhost_config      = '',
-  $mods              = undef
+  $mods              = undef,
+  $owner             = undef,
+  $group             = undef
 ) {
 
   ## Same logic as apache::vhost but we redo this since we need $server
@@ -141,7 +143,9 @@ define apache::vhost::ssl (
     dirroot       => $dirroot,
     order         => $order,
     mods          => $mods,
-    vhost_config  => $ssl_content, ## This is the only thing that differs really.
+    owner         => $owner,
+    group         => $group,
+    vhost_config  => $ssl_content, # This is the only thing that is different.
   }
 }
 

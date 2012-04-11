@@ -4,4 +4,7 @@
 ##### Template source:  '<%= template_source %>'
 <Location <%= location %>>
   Dav On
+<% if allow != '' -%>
+  Require <%= allow %>
+<% end -%>
 </Location>

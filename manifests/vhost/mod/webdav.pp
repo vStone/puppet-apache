@@ -36,7 +36,8 @@ define apache::vhost::mod::webdav (
   $port      = '80',
   $ensure    = 'present',
   $automated = false,
-  $location  = '/'
+  $location  = '/',
+  $allow     = ''
 ) {
 
 

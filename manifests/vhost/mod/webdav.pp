@@ -23,6 +23,12 @@
 # $location::   Location of files to share, relative to the vhost docroot.
 #               Defaults to '/'.
 #
+# $allow::      Parameters to pass to a 'Require' statement inside the webdav
+#               location. The 'Require' statement will only be present when the
+#               'allow' parameter is set to something other than ''. This is
+#               mostly useful to restrict access to a certain location to a
+#               specific person or group.
+#
 # == Actions:
 #
 # Creates a apache::vhost::modfile for the vhost that has been selected.
@@ -36,7 +42,8 @@ define apache::vhost::mod::webdav (
   $port      = '80',
   $ensure    = 'present',
   $automated = false,
-  $location  = '/'
+  $location  = '/',
+  $allow     = ''
 ) {
 
 

@@ -72,7 +72,8 @@ define apache::vhost::ssl (
   $vhost_config      = '',
   $mods              = undef,
   $owner             = undef,
-  $group             = undef
+  $group             = undef,
+  $diroptions        = 'FollowSymlinks MultiViews'
 ) {
 
   ## Same logic as apache::vhost but we redo this since we need $server
@@ -146,6 +147,7 @@ define apache::vhost::ssl (
     owner         => $owner,
     group         => $group,
     vhost_config  => $ssl_content, # This is the only thing that is different.
+    diroptions    => $diroptions,
   }
 }
 

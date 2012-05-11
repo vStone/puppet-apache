@@ -20,9 +20,7 @@ define apache::confd::file_exists (
   }
 
   if defined(File[$path]) {
-    notify {"apache-confd-file_exists-${name}":
-      message => "The folder ${path} is already defined. Skipping creation.",
-    }
+    warn($message)
   } else {
     file {$path:
       ensure => $ensure,

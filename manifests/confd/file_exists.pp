@@ -20,8 +20,8 @@ define apache::confd::file_exists (
   }
 
   if defined(File[$path]) {
-    warn($message)
-  } else {
+    info("The folder ${path} is already defined. Skipping creation.")
+  else {
     file {$path:
       ensure => $ensure,
       owner  => $fowner,

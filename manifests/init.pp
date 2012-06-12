@@ -10,10 +10,8 @@ class apache {
   Class['apache::service']
 
   case $::puppetversion {
-    /^2.7/:   {}
-    default:  {
-      require puppetlabs-create_resources
-    }
+    /^2.6/:  { require puppetlabs-create_resources }
+    default: { }
   }
 
 }

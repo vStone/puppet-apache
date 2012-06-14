@@ -40,6 +40,10 @@
 #
 # === Sample Usage:
 #
+# === Todo:
+#
+# * Update documentation
+#
 define apache::vhost::ssl (
   $ssl_cert,
   $ssl_key,
@@ -51,6 +55,7 @@ define apache::vhost::ssl (
   $ssl_ca_crl_path   = undef,
   $ssl_ca_crl_file   = undef,
   $ssl_requestlog    = undef,
+  $ssl_requestlog_pattern = '%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b',
   $ssl_options       = undef,
   $ssl_verify_client = undef,
   $ssl_verify_depth  = undef,
@@ -69,7 +74,7 @@ define apache::vhost::ssl (
   $docroot_purge     = false,
   $dirroot           = undef,
   $order             = '10',
-  $vhost_config      = '',
+  $vhost_config      = undef,
   $mods              = undef,
   $owner             = undef,
   $group             = undef,
@@ -80,43 +85,6 @@ define apache::vhost::ssl (
   $server = $servername ? {
     undef   => $name,
     default => $servername,
-  }
-
-  $chainfile = $ssl_chain ? {
-    undef   => '',
-    default => $ssl_chain,
-  }
-  $ca_path = $ssl_ca_path ? {
-    undef   => '',
-    default => $ssl_ca_path,
-  }
-  $ca_file = $ssl_ca_file ? {
-    undef   => '',
-    default => $ssl_ca_file,
-  }
-  $ca_crl_path = $ssl_ca_crl_path ? {
-    undef   => '',
-    default => $ssl_ca_crl_path,
-  }
-  $ca_crl_file = $ssl_ca_crl_file ? {
-    undef   => '',
-    default => $ssl_ca_crl_file,
-  }
-  $requestlog = $ssl_requestlog ? {
-    undef   => '',
-    default => $ssl_requestlog,
-  }
-  $options = $ssl_options ? {
-    undef   => '',
-    default => $ssl_options,
-  }
-  $verify_client = $ssl_verify_client ? {
-    undef   => '',
-    default => $ssl_verify_client,
-  }
-  $verify_depth = $ssl_verify_depth ? {
-    undef   => '',
-    default => $ssl_verify_depth
   }
 
   $log_dir = $logdir ? {

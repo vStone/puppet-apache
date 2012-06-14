@@ -1,3 +1,9 @@
+<%
+  def empty?(value)
+    value == '' or value == :undef
+  end
+%>
+
 #### Start of apache::vhost::ssl ####
 
   ## SSL Engine Switch:
@@ -36,8 +42,8 @@
   # server certificate. Alternatively the referenced file can be the same as
   # SSLCertificateFile when the CA certificates are directly appended to the
   # server certificate for convinience.
-<% if chainfile != '' -%>
-  SSLCertificateChainFile <%= chainfile %>
+<% if ! empty?(ssl_chain) -%>
+  SSLCertificateChainFile <%= ssl_chain %>
 <% else -%>
   # Not defined
 <% end -%>
@@ -49,11 +55,11 @@
   # Note: Inside SSLCACertificatePath you need hash symlinks to point to the
   # certificate files. Use the provided Makefile to update the hash symlinks
   # after changes.
-<% if ca_path != '' -%>
-  SSLCACertificatePath <%= ca_path %>
+<% if ! empty?(ssl_ca_path) -%>
+  SSLCACertificatePath <%= ssl_ca_path %>
 <% end -%>
-<% if ca_file != '' -%>
-  SSLCACertificateFile <%= ca_file %>
+<% if ! empty?(ssl_ca_file) -%>
+  SSLCACertificateFile <%= ssl_ca_file %>
 <% end -%>
   #SSLCACertificatePath /etc/ssl/apache2/ssl.crt
   #SSLCACertificateFile /etc/ssl/apache2/ca-bundle.crt
@@ -65,11 +71,11 @@
   # Note: Inside SSLCARevocationPath you need hash symlinks to point to the
   # certificate files. Use the provided Makefile to update the hash symlinks
   # after changes.
-<% if ca_crl_path != '' -%>
-  SSLCARevocationPath <%= ca_crl_path %>
+<% if ! empty?(ssl_ca_crl_path) -%>
+  SSLCARevocationPath <%= ssl_ca_crl_path %>
 <% end -%>
-<% if ca_crl_file != '' -%>
-  SSLCARevocationFile <%= ca_crl_file %>
+<% if ! empty?(ssl_ca_crl_file)-%>
+  SSLCARevocationFile <%= ssl_ca_crl_file %>
 <% end -%>
   #SSLCARevocationPath /etc/ssl/apache2/ssl.crl
   #SSLCARevocationFile /etc/ssl/apache2/ca-bundle.crl
@@ -80,11 +86,11 @@
   # require and optional_no_ca. Depth is a number which specifies how deeply
   # to verify the certificate issuer chain before deciding the certificate is
   # not valid.
-<% if verify_client != '' -%>
-  SSLVerifyClient <%= verify_client %>
+<% if ! empty?(ssl_verify_client) -%>
+  SSLVerifyClient <%= ssl_verify_client %>
 <% end -%>
-<% if verify_depth != '' -%>
-  SSLVerifyDepth <%= verify_depth %>
+<% if ! empty?(ssl_verify_depth) -%>
+  SSLVerifyDepth <%= ssl_verify_depth %>
 <% end -%>
   #SSLVerifyClient require
   #SSLVerifyDepth  10
@@ -130,8 +136,8 @@
   #    SSLOptions +StdEnvVars
   #</Directory>
 
-<% if options != '' -%>
-  SSLOptions <%= options %>
+<% if ! empty?(ssl_options) -%>
+  SSLOptions <%= ssl_options %>
 <% end -%>
 
   ## SSL Protocol Adjustments:
@@ -169,15 +175,28 @@
   ## Per-Server Logging:
   # The home of a custom SSL log file. Use this when you want a compact
   # non-error SSL logfile on a virtual host basis.
-<% if requestlog != '' -%>
-  CustomLog  <%= log_dir %>/<% requestlog -%>  \
-    "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+<% if ! empty?(ssl_requestlog) -%>
+  CustomLog  <%= log_dir %>/<% ssl_requestlog -%> \
+    <%= ssl_requestlog_pattern %>
 <% end -%>
 
-<% if vhost_config != '' -%>
+<% if ! empty?(vhost_config) -%>
   ## Custom content. This is NOT created by the Apache::Vhost but has been
   #  configured in the apache::vhost definition.
-<%= vhost_config %>
+<%
+    if ! vhost_config.is_a?(Array)
+      vhost_config_arr = [ vhost_config ]
+    else
+      vhost_config_arr = vhost_config
+    end
+    count = 0
+    vhost_config_arr.each do |cfg|
+      count += 1
+%>
+# Start custom config block <%= count %>
+<%= cfg %>
+# End custom config block <%= count %>
+<%  end -%>
 <% end -%>
 
 #### End of apache::vhost::ssl ####

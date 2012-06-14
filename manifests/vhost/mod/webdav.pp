@@ -43,7 +43,7 @@ define apache::vhost::mod::webdav (
   $ensure    = 'present',
   $automated = false,
   $location  = '/',
-  $allow     = ''
+  $allow     = undef
 ) {
 
 

@@ -2,6 +2,12 @@
 ## Served by:        '<%= scope.lookupvar('::servername') %>'
 ## Module:           '<%= scope.to_hash['module_name'] %>'
 ## Template source:  '<%= template_source %>'
+<%
+  def empty?(value)
+    value == '' or value == :undef
+  end
+%>
+
 
 <VirtualHost <%= ip_def -%>:<%= port -%>>
 
@@ -10,7 +16,7 @@
 <%    serveraliases.each do |srvalias| -%>
   ServerAlias <%= srvalias %>
 <%    end -%>
-<%  elsif ! ( serveraliases == '' ) -%>
+<%  elsif ! empty?(serveraliases) -%>
   ServerAlias <%= serveraliases %>
 <% end -%>
   ServerAdmin <%= serveradmin %>
@@ -23,23 +29,36 @@
     Allow from All
   </Directory>
 
-<% if vhost_config != '' -%>
+<% if ! empty?(vhost_config) -%>
   ## Custom content. This is NOT created by the Apache::Vhost but has been
   #  configured in the apache::vhost definition.
-<%= vhost_config %>
+<%
+    if ! vhost_config.is_a?(Array)
+      vhost_config_arr = [ vhost_config ]
+    else
+      vhost_config_arr = vhost_config
+    end
+    count = 0
+    vhost_config_arr.each do |cfg|
+      count += 1
+%>
+# Start custom config block <%= count %>
+<%= cfg %>
+# End custom config block <%= count %>
+<%  end -%>
 <% end -%>
 
   ## apache::vhost::mod::*
-<% if include_blob != '' -%>
+<% if ! empty?(include_blob) -%>
   Include <%= include_blob %>
 <% end %>
 
 
   ## Logging ####
-<% if accesslog != '' -%>
+<% if ! empty?(accesslog) -%>
   CustomLog <%= log_dir %>/<%= accesslog %> combined
 <% end -%>
-<% if errorlog != '' -%>
+<% if ! empty?(errorlog) -%>
   LogLevel <%= errorlevel %>
   ErrorLog <%= log_dir %>/<%= errorlog %>
 <% end -%>

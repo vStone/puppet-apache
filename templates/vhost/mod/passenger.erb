@@ -1,4 +1,7 @@
 <%
+  def empty?(value)
+    value == '' or value == :undef
+  end
   def onoff (var)
     return var if var.is_a?(String)
     if var == true or var == false
@@ -8,80 +11,80 @@
   end
 -%>
 
-<% if approot != '' -%>
-  PassengerAppRoot <%= approot %>
+<% if ! empty?(app_root) -%>
+  PassengerAppRoot <%= app_root %>
 <% end -%>
-<% if spawnmethod != '' -%>
-  PassengerSpawnMethod <%= spawnmethod %>
+<% if ! empty?(spawn_method) -%>
+  PassengerSpawnMethod <%= spawn_method %>
 <% end -%>
-<% if globalqueue != '' -%>
-  PassengerUseGlobalQueue <%= onoff(globalqueue) -%>
+<% if ! empty?(global_queue) -%>
+  PassengerUseGlobalQueue <%= onoff(global_queue) -%>
 <% end -%>
-<% if passengerenabled != '' -%>
-  PassengerEnabled <%= onoff(passengerenabled) %>
+<% if ! empty?(passenger_enabled) -%>
+  PassengerEnabled <%= onoff(passenger_enabled) %>
 <% end -%>
-<% if uploadbufferdir != '' -%>
-  PassengerUploadBufferDir <%= uploadbufferdir -%>
+<% if ! empty?(upload_buffer_dir) -%>
+  PassengerUploadBufferDir <%= upload_buffer_dir -%>
 <% end -%>
-<% if restartdir != '' -%>
-  PassengerRestartDir <%= restartdir %>
+<% if ! empty?(restart_dir) -%>
+  PassengerRestartDir <%= restart_dir %>
 <% end -%>
-<% if friendlyerrorpages != '' -%>
-  PassengerFriendlyErrorPages <%= onoff(friendlyerrorpages) %>
+<% if ! empty?(friendly_error_pages) -%>
+  PassengerFriendlyErrorPages <%= onoff(friendly_error_pages) %>
 <% end -%>
-<% if bufferresponse != '' -%>
-  PassengerBufferResponse <%= onoff(bufferresponse) %>
+<% if ! empty?(buffer_response) -%>
+  PassengerBufferResponse <%= onoff(buffer_response) %>
 <% end -%>
-<% if user != '' -%>
+<% if ! empty?(user) -%>
   PassengerUser <%= user %>
 <% end -%>
-<% if group != '' -%>
+<% if ! empty?(group) -%>
   PassengerGroup <%= group %>
 <% end -%>
 
-<% if mininstances != '' -%>
-  PassengerMinInstances <%= mininstances %>
+<% if ! empty?(min_instances) -%>
+  PassengerMinInstances <%= min_instances %>
 <% end -%>
-<% if maxrequests != '' -%>
-  PassengerMaxRequests <%= maxrequests %>
+<% if ! empty?(max_requests) -%>
+  PassengerMaxRequests <%= max_requests %>
 <% end -%>
-<% if statthrottlerate != '' -%>
-  PassengerStatThrottleRate <%= statthrottlerate %>
+<% if ! empty?(stat_throttle_rate) -%>
+  PassengerStatThrottleRate <%= stat_throttle_rate %>
 <% end -%>
-<% if prestart != '' -%>
-  PassengerPreStart <%= prestart %>
+<% if ! empty?(pre_start) -%>
+  PassengerPreStart <%= pre_start %>
 <% end -%>
-<% if highperformance != '' -%>
-  PassengerHighPerformance <%= onoff(highperformance) %>
+<% if ! empty?(high_performance) -%>
+  PassengerHighPerformance <%= onoff(high_performance) %>
 <% end -%>
-<% if railsautodetect != '' -%>
-  RailsAutoDetect <%= onoff(railsautodetect) %>
+<% if ! empty?(rails_autodetect) -%>
+  RailsAutoDetect <%= onoff(rails_autodetect) %>
 <% end -%>
-<% if has_variable?('rails_baseuri') and rails_baseuri != ''
+<% if has_variable?('rails_baseuri') and ! empty?(rails_baseuri)
     rails_baseuri = [ rails_baseuri ] unless rails_baseuri.is_a?(Array)
     rails_baseuri.each do |uri|
 -%>
   RailsBaseUri <%= uri %>
 <%  end -%>
 <% end -%>
-<% if has_variable?('rails_env') and rails_env != ''
+<% if has_variable?('rails_env') and ! empty?(rails_env)
     rails_env = [ rails_env ] unless rails_env.is_a?(Array)
     rails_env.each do |env|
 -%>
   RailsEnv <%= env %>
 <%  end -%>
 <% end -%>
-<% if rackautodetect != '' -%>
-  RackAutoDetect <%= onoff(rackautodetect) %>
+<% if ! empty?(rack_autodetect) -%>
+  RackAutoDetect <%= onoff(rack_autodetect) %>
 <% end -%>
-<% if has_variable?('rack_baseuri') and rack_baseuri != ''
+<% if has_variable?('rack_baseuri') and ! empty?(rack_baseuri)
     rack_baseuri = [ rack_baseuri ] unless rack_baseuri.is_a?(Array)
     rack_baseuri.each do |uri|
 -%>
   RackBaseUri <%= uri %>
 <%  end -%>
 <% end -%>
-<% if has_variable?('rack_env') and rack_env != ''
+<% if has_variable?('rack_env') and ! empty?(rack_env)
     rack_env = [ rack_env ] unless rack_env.is_a?(Array)
     rack_env.each do |env|
 -%>
@@ -89,7 +92,7 @@
 <%  end -%>
 <% end -%>
 
-<% if content != '' -%>
+<% if ! empty?(content) -%>
 <%= content %>
 <% end -%>
 

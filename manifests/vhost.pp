@@ -99,7 +99,7 @@
 #
 define apache::vhost (
   $servername     = undef,
-  $serveraliases  = '',
+  $serveraliases  = undef,
   $ensure         = 'present',
   $ip             = undef,
   $port           = '80',
@@ -113,7 +113,7 @@ define apache::vhost (
   $docroot_purge  = false,
   $dirroot        = undef,
   $order          = '10',
-  $vhost_config   = '',
+  $vhost_config   = undef,
   $mods           = undef,
   $linklogdir     = true,
   $diroptions     = 'FollowSymlinks MultiViews',

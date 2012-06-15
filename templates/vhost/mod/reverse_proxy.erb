@@ -1,4 +1,8 @@
 <%
+  def empty?(value)
+    value == '' or value == :undef
+  end
+
   def always_array(var)
     if var.is_a?(Array)
       return var
@@ -26,10 +30,10 @@
 
   <Proxy <%= proxy_url %>>
     Order <%= allow_order %>
-<% if allow_from != '' -%>
+<% if ! empty?(allow_from) -%>
     Allow from <%= allow_from %>
 <% end -%>
-<% if deny_from != '' -%>
+<% if ! empty?(deny_from) -%>
     Deny from <%= deny_from %>
 <% end -%>
   </Proxy>
@@ -47,7 +51,7 @@
   ProxyPassReverse <%= p %>
 <% end -%>
 
-<% if content != '' %>
+<% if ! empty?(content) %>
   # Below you will find the extra content you have defined.
   # This is NOT part of the puppet template.
   <%= content %>

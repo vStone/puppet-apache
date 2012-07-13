@@ -64,7 +64,7 @@
 #     in the root of the virtual host folder. Set to false to disable.
 #     Defaults to true
 #
-# $directoryoptions:: String. defaults to "FollowSymlinks MultiViews"
+# $diroptions::   String. defaults to "FollowSymlinks MultiViews"
 #
 # $mods::         An hash with vhost mods to be enabled.
 #

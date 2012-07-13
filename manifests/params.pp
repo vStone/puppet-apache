@@ -54,6 +54,9 @@
 # $default_docroot::  The default document root to use beneath each
 #                     vhost documentroot folder. Defaults to 'htdocs'.
 #
+# $diroptions::   Default directory Options to use for a vhost.
+#                 Defaults to 'FollowSymlinks MultiViews'
+#
 # == Todo:
 # * Finish documentation.
 # * Test /out of scope/ config_style stuff.
@@ -73,7 +76,8 @@ class apache::params(
   $ssl              = true,
   $keepalive        = true,
   $config_style     = 'simple',
-  $default_docroot  = 'htdocs'
+  $default_docroot  = 'htdocs',
+  $diroptions       = ['FollowSymlinks','MultiViews']
 ) {
 
   ####################################

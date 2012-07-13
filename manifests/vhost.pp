@@ -116,7 +116,7 @@ define apache::vhost (
   $vhost_config   = undef,
   $mods           = undef,
   $linklogdir     = true,
-  $diroptions     = 'FollowSymlinks MultiViews',
+  $diroptions     = undef,
   $owner          = undef,
   $group          = undef
 ) {
@@ -187,8 +187,10 @@ define apache::vhost (
     warning( template('apache/msg/vhost-notdef-namevhost-warning.erb') )
   }
 
-  if ($diroptions == '') {
-    $diroptions = 'All'
+  $dir_options = $diroptions ? {
+    undef   => $::apache::params::diroptions,
+    ''      => 'All',
+    default => $diroptions,
   }
 
   ####################################

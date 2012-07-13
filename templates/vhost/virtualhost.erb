@@ -22,12 +22,11 @@
 <VirtualHost <%= ip_def -%>:<%= port -%>>
 
   ServerName  <%= server %>
-<%  if serveraliases.is_a?(Array) -%>
-<%    serveraliases.each do |srvalias| -%>
+<%
+  server_aliases = always_array(serveraliases)
+  server_aliases.each do |srvalias|
+-%>
   ServerAlias <%= srvalias %>
-<%    end -%>
-<%  elsif ! empty?(serveraliases) -%>
-  ServerAlias <%= serveraliases %>
 <% end -%>
   ServerAdmin <%= serveradmin %>
 
@@ -46,11 +45,7 @@
   ## Custom content. This is NOT created by the Apache::Vhost but has been
   #  configured in the apache::vhost definition.
 <%
-    if ! vhost_config.is_a?(Array)
-      vhost_config_arr = [ vhost_config ]
-    else
-      vhost_config_arr = vhost_config
-    end
+    vhost_config_arr = always_array(vhost_config)
     count = 0
     vhost_config_arr.each do |cfg|
       count += 1

@@ -191,23 +191,9 @@ define apache::vhost (
     $diroptions = 'All'
   }
 
-
   ####################################
   ####   Create vhost structure   ####
   ####################################
-
-  case $diroptions {
-    /(?i:All|Indexes)/: {
-      apache::confd::file { 'confd/welcome.conf':
-        ensure           => 'present',
-        confd            => '',
-        file_name        => 'welcome.conf',
-        content          => template('apache/confd/welcome.erb'),
-        use_config_root  => false,
-        }
-    }
-    default: {}
-  }
 
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',

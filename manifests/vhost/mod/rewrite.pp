@@ -15,6 +15,9 @@
 # $vhost::        The name of the vhost to work on. This should be
 #                 identical to the apache::vhost{NAME:} you have setup.
 #
+# $docroot::      Document root.
+#                 Is automaticly filled in if pushed through apache::vhost.
+#
 # $ensure::       If ensure is absent, the configuration file will be
 #                 removed. Defaults to 'present'.
 #
@@ -29,6 +32,7 @@
 #                 of the corresponding vhost. This automagically sets the
 #                 vhost name and some more params. Also removes the need
 #                 for a title.
+#
 define apache::vhost::mod::rewrite (
   $rewrite_cond,
   $rewrite_rule,

@@ -1,4 +1,6 @@
-class apache {
+class apache (
+ $defaults = true
+) {
 
   include apache::module
   include apache::packages
@@ -12,6 +14,11 @@ class apache {
   case $::puppetversion {
     /^2.6/:  { require puppetlabs-create_resources }
     default: { }
+  }
+
+  if $defaults {
+    apache::listen {'80': }
+    apache::namevhost {'80': }
   }
 
 }

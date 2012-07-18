@@ -37,6 +37,7 @@ define apache::vhost::mod::rewrite (
   $rewrite_cond,
   $rewrite_rule,
   $vhost,
+  $docroot       = undef,
   $ensure        = 'present',
   $ip            = undef,
   $port          = undef,

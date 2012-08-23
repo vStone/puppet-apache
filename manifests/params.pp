@@ -89,6 +89,7 @@ class apache::params(
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => 'apache2',
       /CentOS|RedHat/ => 'httpd',
+      /Archlinux/     => 'apache',
       default         => 'httpd',
     },
     default => $apache,

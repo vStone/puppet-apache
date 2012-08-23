@@ -26,6 +26,7 @@
 #
 # $vhostroot_purge:: Purge the vhost configuration root of all configuration
 #                    files that are not managed by puppet.
+#                    Defaults to false.
 #
 # $logroot::      Root where all log files are stored.
 #                 Defaults to distro specific.
@@ -41,6 +42,7 @@
 #
 # $ssl::          Use ssl or not. On some distro's, we need to install
 #                 some additional packages for this to work properly.
+#                 Defaults to true.
 #
 # $keepalive::    Enable keepalive in the main configuration file.
 #                 Defaults to true.

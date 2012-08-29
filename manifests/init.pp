@@ -1,5 +1,14 @@
+# = Class: apache
+#
+# Setup apache for usage.
+#
+# == Parameters:
+#
+# $defaults::   With defaults, we will define a default namevhost on port 80.
+#               This includes the apache::listen and apache::namevhost directive.
+#
 class apache (
- $defaults = true
+  $defaults = true
 ) {
 
   include apache::module

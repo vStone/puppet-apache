@@ -48,6 +48,13 @@
 #                     For each entry, a ProxyPass AND ProxyPassReverse
 #                     directive will be written to the configuration file.
 #
+# $default_proxy_pass_options:: A hash containing additional options to add to
+#                     the proxypass directive. If specified, we will append these
+#                     options to each proxypass line we define.
+#                     If this is undefined, we will use the options
+#                     provided in apache::mod::reverse_proxy. To disable using those
+#                     just pass an empty hash. Defaults to undefined.
+#
 define apache::vhost::mod::reverse_proxy (
   $vhost,
   $ip           = undef,
@@ -62,8 +69,20 @@ define apache::vhost::mod::reverse_proxy (
   $proxypass    = undef,
   $proxypassreverse = undef,
   $proxypath    = undef,
+  $default_proxy_pass_options = undef,
   $automated    = false
 ) {
+
+
+  case $default_proxy_pass_options {
+    undef: {
+      require apache::mod::reverse_proxy
+      $_proxypass_options = $::apache::mod::reverse_proxy::default_proxy_pass_options
+    }
+    default: {
+      $_proxypass_options = $default_proxy_pass_options
+    }
+  }
 
   case $allow_order {
     /(?i:deny,allow)/: {}

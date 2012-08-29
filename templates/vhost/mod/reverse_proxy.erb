@@ -15,10 +15,20 @@
     end
   end
 
+  def hash_to_keypair(hash)
+    hash.collect { |key,value| "#{key}=#{value}" }.join(" ")
+  end
+
   ## Sanitize variables
   proxiez_pass = always_array(proxypass)
   proxiez_reverse = always_array(proxypassreverse)
   proxiez_path  = always_array(proxypath)
+
+  if empty?(_proxypass_options)
+    proxypass_options = ""
+  else
+    proxypass_options = " " + hash_to_keypair(_proxypass_options) ## prefix with one space!!
+  end
 
 -%>
 ### File managed with puppet ###
@@ -39,7 +49,7 @@
   </Proxy>
 
 <% proxiez_pass.each do |p| -%>
-  ProxyPass <%= p %>
+  ProxyPass <%= p %><%= proxypass_options %>
 <% end -%>
 
 <% proxiez_reverse.each do |p| -%>
@@ -47,7 +57,7 @@
 <% end -%>
 
 <% proxiez_path.each do |p| -%>
-  ProxyPass <%= p %>
+  ProxyPass <%= p %><%= proxypass_options %>
   ProxyPassReverse <%= p %>
 <% end -%>
 

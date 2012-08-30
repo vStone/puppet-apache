@@ -1,8 +1,8 @@
-# == Definition: apache::confd::symfile
+# = Definition: apache::confd::symfile
 #
 # Helper definition for confd style folders
 #
-# === Parameters:
+# == Parameters:
 #  $confd:
 #     Subfolder in conf.d directory. If use_config_root is enabled,
 #     subfolder in apache configuration folder.
@@ -32,7 +32,7 @@
 #     If enabled, only put the order in the symlink filename. Otherwise,
 #     we will also prepend the order to the regular configuration file.
 #
-# === Created resources:
+# == Created resources:
 #
 # file {$title: }
 #

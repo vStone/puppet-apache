@@ -1,8 +1,8 @@
-# == Definition: apache::confd::file
+# = Definition: apache::confd::file
 #
 #   Helper definition for confd style folders
 #
-# === Parameters
+# == Parameters
 #
 #  $confd:
 #     Subfolder in conf.d directory.

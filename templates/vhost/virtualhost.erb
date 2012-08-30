@@ -56,12 +56,6 @@
 <%  end -%>
 <% end -%>
 
-  ## apache::vhost::mod::*
-<% if ! empty?(include_blob) -%>
-  Include <%= include_blob %>
-<% end %>
-
-
   ## Logging ####
 <% if ! empty?(accesslog) -%>
   CustomLog <%= log_dir %>/<%= accesslog %> combined
@@ -71,4 +65,4 @@
   ErrorLog <%= log_dir %>/<%= errorlog %>
 <% end -%>
 
-</VirtualHost>
+<% # -- No end here. More files get added -%>

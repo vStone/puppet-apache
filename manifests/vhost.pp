@@ -244,31 +244,26 @@ define apache::vhost (
   ####################################
   ####   Generate vhost config    ####
   ####################################
-  $params_def = "${apache::params::config_base}::params"
-  require $params_def
-
-  $inc = inline_template('<%=scope.lookupvar("#{params_def}::include_path")%>')
-  $include_path = inline_template($inc)
-
-  $include_root = $apache::setup::vhost::confd
-
-  $include_blob = "${include_root}/${include_path}${name}_mod_*.include"
-
+  # The location of the file is determined by the configurition type you selected.
+  # We call the main class to create that main file.
   $style_def = "${apache::params::config_base}::main"
+
   ## Note: puppet-lint warns on "${name}". Won't work properly without quotes.
   $style_args = {
     "${name}"    => {
-      'ensure'    => $enable,
-      'name'      => $name,
-      'content'   => template('apache/vhost/virtualhost.erb'),
-      'order'     => $order,
-      'ip'        => $ip_def,
-      'port'      => $port,
-      'require'   => File[$documentroot],
+      'ensure'      => $enable,
+      'name'        => $name,
+      'content'     => template('apache/vhost/virtualhost.erb'),
+      'content_end' => template('apache/vhost/virtualhost_end.erb'),
+      'order'       => $order,
+      'ip'          => $ip_def,
+      'port'        => $port,
+      'require'     => File[$documentroot],
     }
   }
   create_resources($style_def, $style_args)
 
+  ## Create all the defined mods for this vhost.
   $defaults = {
     ensure    => $ensure,
     vhost     => $name,

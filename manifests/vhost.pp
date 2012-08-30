@@ -95,6 +95,9 @@
 #     }
 #   }
 #
+# If a module does not contain a classpath, we will prefix with apache::vhost::mod::
+# You can create custom modules outside the apache module this way. See the dummy.pp
+# module on what parameters are required for a mod.
 #
 #
 define apache::vhost (
@@ -273,6 +276,8 @@ define apache::vhost (
     docroot   => $documentroot,
   }
   if $mods != undef and $mods != '' {
+    ## Wraps arround create_resources to create the proper resource
+    #  for each defined module in the hash.
     create_mods($name, $mods, $defaults)
   }
 

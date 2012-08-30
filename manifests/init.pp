@@ -1,3 +1,10 @@
+# = Class: apache
+#
+#
+# == Todo:
+#
+# TODO: Update documentation
+#
 class apache (
  $defaults = true
 ) {

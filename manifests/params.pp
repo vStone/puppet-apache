@@ -59,27 +59,31 @@
 # $diroptions::   Default directory Options to use for a vhost.
 #                 Defaults to 'FollowSymlinks MultiViews'
 #
+# $default_logformat:: Set the default logformat to use for vhosts.
+#                      Defaults to 'combined'.
+#
 # == Todo:
 # * Finish documentation.
 # * Test /out of scope/ config_style stuff.
 #
 class apache::params(
-  $apache           = undef,
-  $apache_dev       = undef,
-  $apache_ssl       = undef,
-  $service          = undef,
-  $configroot       = undef,
-  $vhostroot        = undef,
-  $vhostroot_purge  = false,
-  $logroot          = undef,
-  $user             = undef,
-  $group            = undef,
-  $devel            = false,
-  $ssl              = true,
-  $keepalive        = true,
-  $config_style     = 'concat',
-  $default_docroot  = 'htdocs',
-  $diroptions       = ['FollowSymlinks','MultiViews']
+  $apache            = undef,
+  $apache_dev        = undef,
+  $apache_ssl        = undef,
+  $service           = undef,
+  $configroot        = undef,
+  $vhostroot         = undef,
+  $vhostroot_purge   = false,
+  $logroot           = undef,
+  $user              = undef,
+  $group             = undef,
+  $devel             = false,
+  $ssl               = true,
+  $keepalive         = true,
+  $config_style      = 'simple',
+  $default_docroot   = 'htdocs',
+  $diroptions        = ['FollowSymlinks','MultiViews'],
+  $default_logformat = 'combined'
 ) {
 
   ####################################

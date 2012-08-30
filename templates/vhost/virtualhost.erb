@@ -58,7 +58,7 @@
 
   ## Logging ####
 <% if ! empty?(accesslog) -%>
-  CustomLog <%= log_dir %>/<%= accesslog %> combined
+  CustomLog <%= log_dir %>/<%= accesslog %> <%= _logformat %>
 <% end -%>
 <% if ! empty?(errorlog) -%>
   LogLevel <%= errorlevel %>

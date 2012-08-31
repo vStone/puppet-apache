@@ -29,10 +29,10 @@ define apache::vhost::config::concat::mod (
     target  => $vhost,
     content => $content,
   }
-  if $nodepend == false {
-    Concat::Fragment[$fragment_name] {
-      require   => Apache::Vhost[$vhost],
-    }
-  }
+  #  if $nodepend == false {
+  #  Concat::Fragment[$fragment_name] {
+  #    require   => Apache::Vhost[$vhost],
+  #  }
+  #}
 
 }

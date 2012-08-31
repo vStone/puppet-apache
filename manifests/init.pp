@@ -6,6 +6,9 @@
 #
 # $defaults::   With defaults, we will define a default namevhost on port 80.
 #               This includes the apache::listen and apache::namevhost directive.
+# == Todo:
+#
+# TODO: Update documentation
 #
 class apache (
   $defaults = true

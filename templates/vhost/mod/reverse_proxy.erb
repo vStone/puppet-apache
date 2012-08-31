@@ -1,3 +1,7 @@
+### File (fragment) managed with puppet ###
+### Served by:        '<%= scope.lookupvar('::servername') %>'
+### Module:           '<%= scope.to_hash['module_name'] %>'
+### Template source:  '<%= template_source %>'
 <%
   def empty?(value)
     value == '' or value == :undef
@@ -21,10 +25,6 @@
   proxiez_path  = always_array(proxypath)
 
 -%>
-### File managed with puppet ###
-### Served by:        '<%= scope.lookupvar('::servername') %>'
-### Module:           '<%= scope.to_hash['module_name'] %>'
-### Template source:  '<%= template_source %>'
 
   ProxyRequests Off
 

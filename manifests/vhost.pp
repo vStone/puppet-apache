@@ -68,6 +68,9 @@
 #
 # $mods::         An hash with vhost mods to be enabled.
 #
+# $logformat::    Logformat to use for accesslog.
+#                 Defaults to 'combined'.
+#
 # == Usage / Best practice:
 #
 # Try and to use something unique for the name of each vhost defintion.
@@ -121,7 +124,8 @@ define apache::vhost (
   $linklogdir     = true,
   $diroptions     = undef,
   $owner          = undef,
-  $group          = undef
+  $group          = undef,
+  $logformat      = undef
 ) {
 
   if $title == '' {
@@ -194,6 +198,11 @@ define apache::vhost (
     undef   => $::apache::params::diroptions,
     ''      => 'All',
     default => $diroptions,
+  }
+
+  $log_format = $logformat ? {
+    undef   => $::apache::params::default_logformat,
+    default => $logformat,
   }
 
   ####################################

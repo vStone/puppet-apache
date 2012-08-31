@@ -1,6 +1,10 @@
 # = Definition: apache::confd::file
 #
-#   Helper definition for confd style folders
+# Helper definition for confd style folders
+# This creates a concat type and 2 fragments for the
+# content and content_end provided.
+#
+# This allows you to add other fragments to the same file.
 #
 # == Parameters
 #
@@ -24,14 +28,21 @@
 #     in the apache configuration root. Otherwise, its created inside
 #     the configured $apache::params::confd.
 #
-define apache::confd::file (
+# == Todo:
+#
+# TODO: Update documentation
+#
+define apache::confd::file_concat (
   $confd,
   $file_name        = "${title}.conf",
   $order            = undef,
   $content          = '',
+  $content_end      = '',
   $use_config_root  = false,
   $ensure           = 'present'
 ) {
+
+  require concat::setup
 
   $fname = $order ? {
     undef   => $file_name,
@@ -45,11 +56,20 @@ define apache::confd::file (
     $config_root = $apache::params::confd
   }
 
-  file {$title:
-    ensure  => $ensure,
-    path    => "${config_root}/${confd}/${fname}",
-    notify  => Service['apache'],
+  $target = "${config_root}/${confd}/${fname}"
+
+  concat {$name:
+    path   => $target,
+  }
+  concat::fragment{"${title}-main":
+    target  => $name,
+    order   => '0001',
     content => $content,
+  }
+  concat::fragment{"${title}-end":
+    target  => $name,
+    content => $content_end,
+    order   => '9999',
   }
 
 }

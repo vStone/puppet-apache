@@ -15,8 +15,7 @@ define apache::vhost::config::concat::main (
   $content_end,
   $order,
   $ip,
-  $port,
-  $notify_apache
+  $port
 ) {
 
   require apache::params

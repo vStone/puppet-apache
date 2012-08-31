@@ -51,7 +51,7 @@
 #                 If this is a simple string, the used class will be:
 #                   apache::vhost::config::${config_style}:: *
 #                 When the string contains '::', we will use that definition.
-#                 Defaults to 'simple'.
+#                 Defaults to 'concat'.
 #
 # $default_docroot::  The default document root to use beneath each
 #                     vhost documentroot folder. Defaults to 'htdocs'.
@@ -77,7 +77,7 @@ class apache::params(
   $devel            = false,
   $ssl              = true,
   $keepalive        = true,
-  $config_style     = 'simple',
+  $config_style     = 'concat',
   $default_docroot  = 'htdocs',
   $diroptions       = ['FollowSymlinks','MultiViews']
 ) {

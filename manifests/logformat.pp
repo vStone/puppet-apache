@@ -5,7 +5,8 @@
 # == Parameters:
 #
 # $format::   The format you want to use. You do NOT need to escape double
-#             double quotes. We will do that for you.
+#             double quotes. We will do that for you. If you have escaped
+#             double quotes, we will not escape them again.
 #
 # $comment::  Additional content that gets added to the logformat definition.
 #

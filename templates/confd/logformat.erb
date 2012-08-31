@@ -3,7 +3,7 @@
 ### Module:           '<%= scope.to_hash['module_name'] %>'
 ### Template source:  '<%= template_source %>'
 <%
-  log_format = format.gsub('"', '\"')
+  log_format = format.gsub(/([^\\])"/, '\1\"')
 -%>
 <% if comment != '' -%>
 # <%= comment %>

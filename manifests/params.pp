@@ -80,7 +80,7 @@ class apache::params(
   $devel             = false,
   $ssl               = true,
   $keepalive         = true,
-  $config_style      = 'simple',
+  $config_style      = 'concat',
   $default_docroot   = 'htdocs',
   $diroptions        = ['FollowSymlinks','MultiViews'],
   $default_logformat = 'combined'

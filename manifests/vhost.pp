@@ -200,7 +200,7 @@ define apache::vhost (
     default => $diroptions,
   }
 
-  $_logformat = $logformat ? {
+  $log_format = $logformat ? {
     undef   => $::apache::params::default_logformat,
     default => $logformat,
   }

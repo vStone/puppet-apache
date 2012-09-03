@@ -27,14 +27,12 @@ define apache::logformat (
   require apache::setup::logformat
 
   ####################################
-  #### Variable checks & Defaults ####
-  ####################################
-
-  ####################################
   ####       Prepare content      ####
   ####################################
 
   $fname = "logformat_${name}"
+
+  $_format = $format
 
   apache::confd::file {$fname:
     confd   => $apache::setup::logformat::confd,

@@ -80,7 +80,7 @@ class apache::params(
   $devel             = false,
   $ssl               = true,
   $keepalive         = true,
-  $config_style      = 'concat',
+  $config_style      = undef,
   $default_docroot   = 'htdocs',
   $diroptions        = ['FollowSymlinks','MultiViews'],
   $default_logformat = 'combined'
@@ -189,8 +189,16 @@ class apache::params(
     default => $logroot,
   }
 
+  if defined('::concat') {
+    $config_style_undef = 'concat'
+  }
+  else {
+    $config_style_undef = 'split'
+  }
+
   ## config_base
   $config_base = $config_style ? {
+    undef   => $config_style_undef,
     /::/    => $config_style,
     default => "apache::vhost::config::${config_style}"
   }

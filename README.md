@@ -10,6 +10,21 @@
 
     }
 
+# Release Notes:
+
+## Upgrade to 0.9
+
+If you are upgrading from a version earlier than 0.9, you no longer have to
+specify `apache::listen{'80': }` and `apache::namevhost{'80':}`. These 2 are
+now created by default. You can disable this behaviour by specifying
+
+```puppet
+class {'apache':
+  defaults => false,
+}
+```
+
+
 # Notes:
 
 You MUST define the apache::params class before importing apache if you want

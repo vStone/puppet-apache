@@ -1,8 +1,13 @@
-# = Definition: apache::confd::symfile
+# == Definition: apache::confd::symfile_concat
 #
 # Helper definition for confd style folders
 #
-# == Parameters:
+# This pretty much does the same as apache::confd::file_concat with
+# that exception we always create a file with the provided content
+# but the ensure parameter controls wether or not we create a symlink
+# to that file.
+#
+# === Parameters:
 #  $confd:
 #     Subfolder in conf.d directory. If use_config_root is enabled,
 #     subfolder in apache configuration folder.
@@ -24,6 +29,9 @@
 #  $content:
 #     Content to put into the file.
 #
+#  $content_end:
+#     Optional second part of the configuration file.
+#
 #  $use_config_root:
 #     If enabled, the $confd folder is not placed below the conf.d folder but
 #     directly in the apache root.
@@ -32,25 +40,23 @@
 #     If enabled, only put the order in the symlink filename. Otherwise,
 #     we will also prepend the order to the regular configuration file.
 #
-# == Created resources:
+# === Created resources:
 #
-# file {$title: }
+# TODO: Document.
 #
-# file {"${title}-symlink":
-#   requires => File[$title],
-# }
-#
-#
-define apache::confd::symfile (
+define apache::confd::symfile_concat (
   $confd,
   $order            = '10',
   $ensure           = 'enable',
   $link_name        = "${title}.conf",
   $file_name        = "${title}_configuration",
   $content          = '',
+  $content_end      = '',
   $use_config_root  = false,
   $order_linkonly   = true
 ) {
+
+  require concat::setup
 
   $enabled = $ensure ? {
     /enable|present/ => true,
@@ -68,22 +74,30 @@ define apache::confd::symfile (
   $linkname = "${order}_${link_name}"
 
   if $use_config_root {
-    $config_root = $apache::params::config_dir
+    $config_root = $::apache::params::config_dir
   } else {
-    $config_root = $apache::params::confd
+    $config_root = $::apache::params::confd
   }
+  $target = "${config_root}/${confd}/${filename}"
 
-  file {$title:
-    ensure  => present,
-    path    => "${config_root}/${confd}/${filename}",
-    notify  => Service['apache'],
+  concat {$name:
+    path   => $target,
+  }
+  concat::fragment{"${title}-main":
+    target  => $name,
+    order   => '0001',
     content => $content,
+  }
+  concat::fragment{"${title}-end":
+    target  => $name,
+    content => $content_end,
+    order   => '9999',
   }
 
   file {"${title}-symlink":
     path    => "${config_root}/${confd}/${linkname}",
     target  => "${config_root}/${confd}/${filename}",
-    require => File[$title],
+    require => Concat[$name],
   }
 
   if $enabled {

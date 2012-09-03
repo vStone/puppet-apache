@@ -26,6 +26,7 @@
 #
 # $vhostroot_purge:: Purge the vhost configuration root of all configuration
 #                    files that are not managed by puppet.
+#                    Defaults to false.
 #
 # $logroot::      Root where all log files are stored.
 #                 Defaults to distro specific.
@@ -41,6 +42,7 @@
 #
 # $ssl::          Use ssl or not. On some distro's, we need to install
 #                 some additional packages for this to work properly.
+#                 Defaults to true.
 #
 # $keepalive::    Enable keepalive in the main configuration file.
 #                 Defaults to true.
@@ -49,31 +51,39 @@
 #                 If this is a simple string, the used class will be:
 #                   apache::vhost::config::${config_style}:: *
 #                 When the string contains '::', we will use that definition.
-#                 Defaults to 'simple'.
+#                 Defaults to 'concat'.
 #
 # $default_docroot::  The default document root to use beneath each
 #                     vhost documentroot folder. Defaults to 'htdocs'.
+#
+# $diroptions::   Default directory Options to use for a vhost.
+#                 Defaults to 'FollowSymlinks MultiViews'
+#
+# $default_logformat:: Set the default logformat to use for vhosts.
+#                      Defaults to 'combined'.
 #
 # == Todo:
 # * Finish documentation.
 # * Test /out of scope/ config_style stuff.
 #
 class apache::params(
-  $apache           = undef,
-  $apache_dev       = undef,
-  $apache_ssl       = undef,
-  $service          = undef,
-  $configroot       = undef,
-  $vhostroot        = undef,
-  $vhostroot_purge  = false,
-  $logroot          = undef,
-  $user             = undef,
-  $group            = undef,
-  $devel            = false,
-  $ssl              = true,
-  $keepalive        = true,
-  $config_style     = 'simple',
-  $default_docroot  = 'htdocs'
+  $apache            = undef,
+  $apache_dev        = undef,
+  $apache_ssl        = undef,
+  $service           = undef,
+  $configroot        = undef,
+  $vhostroot         = undef,
+  $vhostroot_purge   = false,
+  $logroot           = undef,
+  $user              = undef,
+  $group             = undef,
+  $devel             = false,
+  $ssl               = true,
+  $keepalive         = true,
+  $config_style      = undef,
+  $default_docroot   = 'htdocs',
+  $diroptions        = ['FollowSymlinks','MultiViews'],
+  $default_logformat = 'combined'
 ) {
 
   ####################################
@@ -83,6 +93,7 @@ class apache::params(
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => 'apache2',
       /CentOS|RedHat/ => 'httpd',
+      /Archlinux/     => 'apache',
       default         => 'httpd',
     },
     default => $apache,
@@ -178,8 +189,16 @@ class apache::params(
     default => $logroot,
   }
 
+  if defined('::concat') {
+    $config_style_undef = 'concat'
+  }
+  else {
+    $config_style_undef = 'split'
+  }
+
   ## config_base
   $config_base = $config_style ? {
+    undef   => $config_style_undef,
     /::/    => $config_style,
     default => "apache::vhost::config::${config_style}"
   }

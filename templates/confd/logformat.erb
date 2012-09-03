@@ -1,0 +1,11 @@
+### File managed with puppet ###
+### Served by:        '<%= scope.lookupvar('::servername') %>'
+### Module:           '<%= scope.to_hash['module_name'] %>'
+### Template source:  '<%= template_source %>'
+<%
+  log_format = _format.gsub(/([^\\])\"/, '\1\"')
+%>
+<% if comment != '' -%>
+# <%= comment %>
+<% end -%>
+LogFormat "<%= log_format -%>" <%= name %>

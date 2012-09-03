@@ -1,29 +1,41 @@
-### File managed with puppet ###
-## Served by:        '<%= scope.lookupvar('::servername') %>'
-## Module:           '<%= scope.to_hash['module_name'] %>'
-## Template source:  '<%= template_source %>'
 <%
   def empty?(value)
     value == '' or value == :undef
   end
-%>
-
+  def always_array(var)
+    if var.is_a?(Array)
+      return var
+    elsif var.is_a?(Hash)
+      return var.map{ |k,v| "#{k} #{v}" }
+    elsif var.is_a?(String)
+      return [var]
+    else
+      return []
+    end
+  end
+-%>
+### File managed with puppet ###
+## Served by:        '<%= scope.lookupvar('::servername') %>'
+## Module:           '<%= scope.to_hash['module_name'] %>'
+## Template source:  '<%= template_source %>'
 
 <VirtualHost <%= ip_def -%>:<%= port -%>>
 
   ServerName  <%= server %>
-<%  if serveraliases.is_a?(Array) -%>
-<%    serveraliases.each do |srvalias| -%>
+<%
+  server_aliases = always_array(serveraliases)
+  server_aliases.each do |srvalias|
+-%>
   ServerAlias <%= srvalias %>
-<%    end -%>
-<%  elsif ! empty?(serveraliases) -%>
-  ServerAlias <%= serveraliases %>
 <% end -%>
   ServerAdmin <%= serveradmin %>
 
   DocumentRoot <%= documentroot %>
   <Directory <%= directoryroot %>>
-    Options <%= diroptions %>
+<%
+  diropts = always_array(dir_options)
+%>
+    Options <%= diropts.join(' ')  %>
     AllowOverride All
     Order allow,deny
     Allow from All
@@ -33,11 +45,7 @@
   ## Custom content. This is NOT created by the Apache::Vhost but has been
   #  configured in the apache::vhost definition.
 <%
-    if ! vhost_config.is_a?(Array)
-      vhost_config_arr = [ vhost_config ]
-    else
-      vhost_config_arr = vhost_config
-    end
+    vhost_config_arr = always_array(vhost_config)
     count = 0
     vhost_config_arr.each do |cfg|
       count += 1
@@ -48,19 +56,13 @@
 <%  end -%>
 <% end -%>
 
-  ## apache::vhost::mod::*
-<% if ! empty?(include_blob) -%>
-  Include <%= include_blob %>
-<% end %>
-
-
   ## Logging ####
 <% if ! empty?(accesslog) -%>
-  CustomLog <%= log_dir %>/<%= accesslog %> combined
+  CustomLog <%= log_dir %>/<%= accesslog %> <%= log_format %>
 <% end -%>
 <% if ! empty?(errorlog) -%>
   LogLevel <%= errorlevel %>
   ErrorLog <%= log_dir %>/<%= errorlog %>
 <% end -%>
 
-</VirtualHost>
+<% # -- No end here. More files get added -%>

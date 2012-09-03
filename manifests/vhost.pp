@@ -64,9 +64,12 @@
 #     in the root of the virtual host folder. Set to false to disable.
 #     Defaults to true
 #
-# $directoryoptions:: String. defaults to "FollowSymlinks MultiViews"
+# $diroptions::   String. defaults to "FollowSymlinks MultiViews"
 #
 # $mods::         An hash with vhost mods to be enabled.
+#
+# $logformat::    Logformat to use for accesslog.
+#                 Defaults to 'combined'.
 #
 # == Usage / Best practice:
 #
@@ -95,6 +98,9 @@
 #     }
 #   }
 #
+# If a module does not contain a classpath, we will prefix with apache::vhost::mod::
+# You can create custom modules outside the apache module this way. See the dummy.pp
+# module on what parameters are required for a mod.
 #
 #
 define apache::vhost (
@@ -116,9 +122,10 @@ define apache::vhost (
   $vhost_config   = undef,
   $mods           = undef,
   $linklogdir     = true,
-  $diroptions     = 'FollowSymlinks MultiViews',
+  $diroptions     = undef,
   $owner          = undef,
-  $group          = undef
+  $group          = undef,
+  $logformat      = undef
 ) {
 
   if $title == '' {
@@ -187,27 +194,20 @@ define apache::vhost (
     warning( template('apache/msg/vhost-notdef-namevhost-warning.erb') )
   }
 
-  if ($diroptions == '') {
-    $diroptions = 'All'
+  $dir_options = $diroptions ? {
+    undef   => $::apache::params::diroptions,
+    ''      => 'All',
+    default => $diroptions,
   }
 
+  $log_format = $logformat ? {
+    undef   => $::apache::params::default_logformat,
+    default => $logformat,
+  }
 
   ####################################
   ####   Create vhost structure   ####
   ####################################
-
-  case $diroptions {
-    /(?i:All|Indexes)/: {
-      apache::confd::file { 'confd/welcome.conf':
-        ensure           => 'present',
-        confd            => '',
-        file_name        => 'welcome.conf',
-        content          => template('apache/confd/welcome.erb'),
-        use_config_root  => false,
-        }
-    }
-    default: {}
-  }
 
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
@@ -256,31 +256,26 @@ define apache::vhost (
   ####################################
   ####   Generate vhost config    ####
   ####################################
-  $params_def = "${apache::params::config_base}::params"
-  require $params_def
-
-  $inc = inline_template('<%=scope.lookupvar("#{params_def}::include_path")%>')
-  $include_path = inline_template($inc)
-
-  $include_root = $apache::setup::vhost::confd
-
-  $include_blob = "${include_root}/${include_path}${name}_mod_*.include"
-
+  # The location of the file is determined by the configurition type you selected.
+  # We call the main class to create that main file.
   $style_def = "${apache::params::config_base}::main"
+
   ## Note: puppet-lint warns on "${name}". Won't work properly without quotes.
   $style_args = {
     "${name}"    => {
-      'ensure'    => $enable,
-      'name'      => $name,
-      'content'   => template('apache/vhost/virtualhost.erb'),
-      'order'     => $order,
-      'ip'        => $ip_def,
-      'port'      => $port,
-      'require'   => File[$documentroot],
+      'ensure'      => $enable,
+      'name'        => $name,
+      'content'     => template('apache/vhost/virtualhost.erb'),
+      'content_end' => template('apache/vhost/virtualhost_end.erb'),
+      'order'       => $order,
+      'ip'          => $ip_def,
+      'port'        => $port,
+      'require'     => File[$documentroot],
     }
   }
   create_resources($style_def, $style_args)
 
+  ## Create all the defined mods for this vhost.
   $defaults = {
     ensure    => $ensure,
     vhost     => $name,
@@ -290,6 +285,8 @@ define apache::vhost (
     docroot   => $documentroot,
   }
   if $mods != undef and $mods != '' {
+    ## Wraps arround create_resources to create the proper resource
+    #  for each defined module in the hash.
     create_mods($name, $mods, $defaults)
   }
 

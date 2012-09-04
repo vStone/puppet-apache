@@ -40,6 +40,7 @@ define apache::vhost::mod::rewrite (
   $port          = undef,
   $docroot       = undef,
   $automated     = false,
+  $header        = true,
 
   $rewrite_cond  = [],
   $rewrite_rule  = []

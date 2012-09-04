@@ -55,6 +55,7 @@ define apache::vhost::mod::reverse_proxy (
   $port             = '80',
   $docroot          = undef,
   $automated        = false,
+  $header           = false,
 
   $content          = undef,
   $proxy_url        = '*',

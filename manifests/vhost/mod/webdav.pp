@@ -42,6 +42,7 @@ define apache::vhost::mod::webdav (
   $ip            = undef,
   $port          = '80',
   $automated     = false,
+  $header        = true,
 
   $location      = '/',
   $allow         = undef

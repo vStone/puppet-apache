@@ -46,6 +46,7 @@ define apache::vhost::mod::passenger (
   $port                 = '80',
   $docroot              = undef,
   $automated            = false,
+  $header               = false,
 
   $content              = undef,
 

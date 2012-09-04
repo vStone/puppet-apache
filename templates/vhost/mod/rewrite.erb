@@ -10,11 +10,13 @@
   conditions = always_array(rewrite_cond)
   rules      = always_array(rewrite_rule)
 %>
-
+<% if header -%>
   RewriteEngine On
+<% end -%>
 <% conditions.each do |condition| -%>
   RewriteCond <%= condition %>
 <% end -%>
 <% rules.each do |rule| -%>
   RewriteRule <%= rule %>
 <% end -%>
+

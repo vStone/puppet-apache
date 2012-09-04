@@ -25,6 +25,12 @@
 #               specific apache::vhost::mod::* is defined) this is set
 #               to true. Required for apache::vhost::modfile.
 #
+# $header::     For some modules, a header is required which should
+#               be included only once for all mods of the same type.
+#               When using the mods parameter of a vhost, this will
+#               be done automaticly for an included mod type or only for
+#               the first if an array of a certain mod type is given.
+#
 # $content::    Custom content to put in the template.
 #
 # == Optional Parameters:
@@ -47,6 +53,7 @@ define apache::vhost::mod::dummy (
   $port          = '80',
   $docroot       = undef,
   $automated     = false,
+  $header        = true,
   $content       = ''
 ) {
 

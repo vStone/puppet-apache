@@ -50,19 +50,20 @@
 #
 define apache::vhost::mod::reverse_proxy (
   $vhost,
-  $ip           = undef,
-  $port         = '80',
-  $ensure       = 'present',
-  $docroot      = undef,
-  $content      = undef,
-  $proxy_url    = '*',
-  $allow_order  = 'Deny,Allow',
-  $allow_from   = 'All',
-  $deny_from    = undef,
-  $proxypass    = undef,
+  $ensure           = 'present',
+  $ip               = undef,
+  $port             = '80',
+  $docroot          = undef,
+  $automated        = false,
+
+  $content          = undef,
+  $proxy_url        = '*',
+  $allow_order      = 'Deny,Allow',
+  $allow_from       = 'All',
+  $deny_from        = undef,
+  $proxypass        = undef,
   $proxypassreverse = undef,
-  $proxypath    = undef,
-  $automated    = false
+  $proxypath        = undef
 ) {
 
   case $allow_order {

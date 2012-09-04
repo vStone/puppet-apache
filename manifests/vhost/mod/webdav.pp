@@ -36,14 +36,15 @@
 # == Sample Usage:
 #
 define apache::vhost::mod::webdav (
-  $vhost,
   $docroot,
-  $ip        = undef,
-  $port      = '80',
-  $ensure    = 'present',
-  $automated = false,
-  $location  = '/',
-  $allow     = undef
+  $vhost,
+  $ensure        = 'present',
+  $ip            = undef,
+  $port          = '80',
+  $automated     = false,
+
+  $location      = '/',
+  $allow         = undef
 ) {
 
 

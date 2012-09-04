@@ -34,14 +34,15 @@
 #                 for a title.
 #
 define apache::vhost::mod::rewrite (
-  $rewrite_cond,
-  $rewrite_rule,
   $vhost,
-  $docroot       = undef,
   $ensure        = 'present',
   $ip            = undef,
   $port          = undef,
-  $automated     = false
+  $docroot       = undef,
+  $automated     = false,
+
+  $rewrite_cond  = [],
+  $rewrite_rule  = []
 ) {
 
   $definition = template('apache/vhost/mod/rewrite.erb')

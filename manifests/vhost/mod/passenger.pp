@@ -41,11 +41,14 @@
 #
 define apache::vhost::mod::passenger (
   $vhost,
+  $ensure               = 'present',
   $ip                   = undef,
   $port                 = '80',
-  $ensure               = 'present',
   $docroot              = undef,
   $automated            = false,
+
+  $content              = undef,
+
   $app_root             = undef,
   $spawn_method         = undef,
   $global_queue         = undef,
@@ -62,8 +65,7 @@ define apache::vhost::mod::passenger (
   $pre_start            = undef,
   $high_performance     = undef,
   $rails_autodetect     = undef,
-  $rack_autodetect      = undef,
-  $content              = undef
+  $rack_autodetect      = undef
 ) {
 
   require apache::mod::passenger

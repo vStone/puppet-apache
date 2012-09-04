@@ -41,11 +41,11 @@
 #
 define apache::vhost::mod::dummy (
   $vhost,
-  $ip           = undef,
-  $port         = '80',
-  $ensure       = 'present',
-  $docroot      = undef,
-  $automated    = false
+  $ensure        = 'present',
+  $ip            = undef,
+  $port          = '80',
+  $docroot       = undef,
+  $automated     = false
 ) {
 
 

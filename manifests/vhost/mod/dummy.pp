@@ -20,12 +20,12 @@
 # $docroot::    Document root.
 #               Is automaticly filled in if pushed through apache::vhost.
 #
-# $automated::  This is a variable that is used under the hood.
+# $_automated:: This is a variable that is used under the hood.
 #               If a mod is enabled directly through apache::vhost (no
 #               specific apache::vhost::mod::* is defined) this is set
 #               to true. Required for apache::vhost::modfile.
 #
-# $header::     For some modules, a header is required which should
+# $_header::    For some modules, a header is required which should
 #               be included only once for all mods of the same type.
 #               When using the mods parameter of a vhost, this will
 #               be done automaticly for an included mod type or only for
@@ -52,8 +52,8 @@ define apache::vhost::mod::dummy (
   $ip            = undef,
   $port          = '80',
   $docroot       = undef,
-  $automated     = false,
-  $header        = true,
+  $_automated    = false,
+  $_header       = true,
   $content       = ''
 ) {
 
@@ -66,7 +66,7 @@ define apache::vhost::mod::dummy (
     vhost    => $vhost,
     ip       => $ip,
     port     => $port,
-    nodepend => $automated,
+    nodepend => $_automated,
     content  => $definition,
   }
 }

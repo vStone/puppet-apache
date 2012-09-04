@@ -15,11 +15,6 @@
 # $ensure::     Disable or enable this mod. This will/should remove the config
 #               file. Required for apache::vhost::modfile.
 #
-# $automated::  This is a variable that is used under the hood. If a mod is
-#               enabled directly through apache::vhost - no specific
-#               apache::vhost::mod::* is defined - this is set to true.
-#               Required for apache::vhost::modfile.
-#
 # $location::   Location of files to share, relative to the vhost docroot.
 #               Defaults to '/'.
 #
@@ -41,8 +36,8 @@ define apache::vhost::mod::webdav (
   $ensure        = 'present',
   $ip            = undef,
   $port          = '80',
-  $automated     = false,
-  $header        = true,
+  $_automated    = false,
+  $_header       = true,
 
   $location      = '/',
   $allow         = undef
@@ -57,7 +52,7 @@ define apache::vhost::mod::webdav (
     vhost    => $vhost,
     ip       => $ip,
     port     => $port,
-    nodepend => $automated,
+    nodepend => $_automated,
     content  => $definition,
   }
 }

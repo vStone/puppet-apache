@@ -25,6 +25,7 @@
 #               specific apache::vhost::mod::* is defined) this is set
 #               to true. Required for apache::vhost::modfile.
 #
+# $content::    Custom content to put in the template.
 #
 # == Optional Parameters:
 #
@@ -45,7 +46,8 @@ define apache::vhost::mod::dummy (
   $ip            = undef,
   $port          = '80',
   $docroot       = undef,
-  $automated     = false
+  $automated     = false,
+  $content       = ''
 ) {
 
 

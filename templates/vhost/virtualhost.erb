@@ -3,15 +3,7 @@
     value == '' or value == :undef
   end
   def always_array(var)
-    if var.is_a?(Array)
-      return var
-    elsif var.is_a?(Hash)
-      return var.map{ |k,v| "#{k} #{v}" }
-    elsif var.is_a?(String)
-      return [var]
-    else
-      return []
-    end
+    scope.function_always_array(var)
   end
 -%>
 ### File managed with puppet ###

@@ -28,20 +28,17 @@
 #                 the apache::vhost instance you have setup.
 #                 Defaults to the vhost default.
 #
-# $automated::    Only used when including the mod through the mods param
-#                 of the corresponding vhost. This automagically sets the
-#                 vhost name and some more params. Also removes the need
-#                 for a title.
-#
 define apache::vhost::mod::rewrite (
-  $rewrite_cond,
-  $rewrite_rule,
   $vhost,
-  $docroot       = undef,
   $ensure        = 'present',
   $ip            = undef,
   $port          = undef,
-  $automated     = false
+  $docroot       = undef,
+  $_automated    = false,
+  $_header       = true,
+
+  $rewrite_cond  = [],
+  $rewrite_rule  = []
 ) {
 
   $definition = template('apache/vhost/mod/rewrite.erb')
@@ -52,7 +49,7 @@ define apache::vhost::mod::rewrite (
     ip       => $ip,
     port     => $port,
     content  => $definition,
-    nodepend => $automated,
+    nodepend => $_automated,
   }
 
 }

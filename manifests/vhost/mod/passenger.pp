@@ -20,12 +20,6 @@
 # $docroot::    Document root.
 #               Is automaticly filled in if pushed through apache::vhost.
 #
-# $automated::  This is a variable that is used under the hood.
-#               If a mod is enabled directly through apache::vhost (no
-#               specific apache::vhost::mod::* is defined) this is set
-#               to true. Required for apache::vhost::modfile.
-#
-#
 # == Optional Parameters:
 #
 #
@@ -41,11 +35,15 @@
 #
 define apache::vhost::mod::passenger (
   $vhost,
+  $ensure               = 'present',
   $ip                   = undef,
   $port                 = '80',
-  $ensure               = 'present',
   $docroot              = undef,
-  $automated            = false,
+  $_automated           = false,
+  $_header              = false,
+
+  $content              = undef,
+
   $app_root             = undef,
   $spawn_method         = undef,
   $global_queue         = undef,
@@ -62,8 +60,7 @@ define apache::vhost::mod::passenger (
   $pre_start            = undef,
   $high_performance     = undef,
   $rails_autodetect     = undef,
-  $rack_autodetect      = undef,
-  $content              = undef
+  $rack_autodetect      = undef
 ) {
 
   require apache::mod::passenger
@@ -76,7 +73,7 @@ define apache::vhost::mod::passenger (
     vhost    => $vhost,
     ip       => $ip,
     port     => $port,
-    nodepend => $automated,
+    nodepend => $_automated,
     content  => $definition,
   }
 }

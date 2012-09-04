@@ -190,10 +190,10 @@ class apache::params(
   }
 
   if defined('::concat') {
-    $config_style_undef = 'concat'
+    $config_style_undef = 'apache::vhost::config::concat'
   }
   else {
-    $config_style_undef = 'split'
+    $config_style_undef = 'apache::vhost::config::split'
   }
 
   ## config_base

@@ -2,7 +2,19 @@
 #### Served by:        '<%= scope.lookupvar('::servername') %>'
 #### Module:           '<%= scope.to_hash['module_name'] %>'
 #### Template source:  '<%= template_source %>'
+<%
+  def always_array(var)
+    scope.function_always_array(var)
+  end
+
+  conditions = always_array(rewrite_cond)
+  rules      = always_array(rewrite_rule)
+%>
 
   RewriteEngine On
-  RewriteCond <%= rewrite_cond %>
-  RewriteRule <%= rewrite_rule %>
+<% conditions.each do |condition| -%>
+  RewriteCond <%= condition %>
+<% end -%>
+<% rules.each do |rule| -%>
+  RewriteRule <%= rule %>
+<% end -%>

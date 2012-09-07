@@ -20,8 +20,17 @@
 # $content::          Extra content to add to the configuration file.
 #
 # $proxy_url::        The proxy url is used in <Proxy></Proxy> directives to
-#                     limit access. Defaults to '*' (all).
+#                     limit access. Defaults to '*' if the _header parameter
+#                     is true. Otherwise, defaults to undef. We do this
+#                     to make sure we do not define this default proxy_url
+#                     twice.
 #                     See: http://tinyurl.com/apache-mod-proxy#proxy
+#
+# $proxy_via::         This directive controls the use of the Via: HTTP header
+#                     by the proxy. Its intended use is to control the flow of
+#                     proxy requests along a chain of proxy servers.
+#                     Defaults to off if the _header parameter is true. If not,
+#                     defaults to undefined.
 #
 # $allow_order::      Should be either deny,allow or allow,deny.
 #                     See: http://httpd.apache.org/docs/2.2/howto/access.html
@@ -66,7 +75,8 @@ define apache::vhost::mod::reverse_proxy (
   $_header          = false,
 
   $content          = undef,
-  $proxy_url        = '*',
+  $proxy_url        = undef,
+  $proxy_via        = undef,
   $allow_order      = 'Deny,Allow',
   $allow_from       = 'All',
   $deny_from        = undef,
@@ -87,11 +97,33 @@ define apache::vhost::mod::reverse_proxy (
     }
   }
 
+  # Set some defaults for some variables that most of the time only appear once.
+  # We only set these when it is the first it is defined for a vhost.
+
+  if ($_header) and ($proxy_url == undef) {
+    $proxyurl = '*'
+  } else {
+    $proxyurl = $proxy_url
+  }
+
+  if ($_header) and ($proxy_via == undef) {
+    $proxyvia = 'Off'
+  } else {
+    $proxyvia = $proxyvia
+  }
+
   case $allow_order {
     /(?i:deny,allow)/: {}
     /(?i:allow,deny)/: {}
     default: {
       fail( template('apache/msg/mod-revproxy-allow-order-fail.erb') )
+    }
+  }
+  case $proxyvia {
+    /^(?i:off|on|full|block)$/: {}
+    undef: {}
+    default: {
+      fail( template('apache/msg/mod-revproxy-via-fail.erb') )
     }
   }
 

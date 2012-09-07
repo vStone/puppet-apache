@@ -22,29 +22,33 @@
   else
     proxypass_options = " " + hash_to_keypair(_proxypass_options) ## prefix with one space!!
   end
-
 -%>
 
+<% if _header -%>
   ProxyRequests Off
+<% end -%>
+<% if ! empty?(proxyvia) -%>
+  ProxyVia <%= proxyvia %>
+<% end -%>
 
-  <Proxy <%= proxy_url %>>
+<% if ! empty?(proxyurl) %>
+  <Proxy <%= proxyurl %>>
     Order <%= allow_order %>
-<% if ! empty?(allow_from) -%>
+<%  if ! empty?(allow_from) -%>
     Allow from <%= allow_from %>
-<% end -%>
-<% if ! empty?(deny_from) -%>
+<%  end -%>
+<%  if ! empty?(deny_from) -%>
     Deny from <%= deny_from %>
-<% end -%>
+<%  end -%>
   </Proxy>
+<% end -%>
 
 <% proxiez_pass.each do |p| -%>
   ProxyPass <%= p %><%= proxypass_options %>
 <% end -%>
-
 <% proxiez_reverse.each do |p| -%>
   ProxyPassReverse  <%= p %>
 <% end -%>
-
 <% proxiez_path.each do |p| -%>
   ProxyPass <%= p %><%= proxypass_options %>
   ProxyPassReverse <%= p %>

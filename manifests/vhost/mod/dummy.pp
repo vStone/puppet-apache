@@ -52,6 +52,7 @@ define apache::vhost::mod::dummy (
   $ip            = undef,
   $port          = '80',
   $docroot       = undef,
+  $order         = undef,
   $_automated    = false,
   $_header       = true,
   $content       = ''
@@ -68,6 +69,7 @@ define apache::vhost::mod::dummy (
     port     => $port,
     nodepend => $_automated,
     content  => $definition,
+    order    => $order,
   }
 }
 

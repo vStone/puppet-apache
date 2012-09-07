@@ -61,6 +61,7 @@ define apache::vhost::mod::reverse_proxy (
   $ip               = undef,
   $port             = '80',
   $docroot          = undef,
+  $order            = undef,
   $_automated       = false,
   $_header          = false,
 
@@ -103,6 +104,7 @@ define apache::vhost::mod::reverse_proxy (
     port      => $port,
     content   => $definition,
     nodepend  => $_automated,
+    order     => $order,
   }
 
 }

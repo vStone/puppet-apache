@@ -9,7 +9,8 @@ define apache::vhost::config::split::mod (
   $port     = '80',
   $ensure   = 'present',
   $content  = '',
-  $nodepend = false
+  $nodepend = false,
+  $order    = undef
 ) {
 
 
@@ -21,7 +22,12 @@ define apache::vhost::config::split::mod (
 
   $modfile_path = "${::apache::setup::vhost::confd}/${modpath}"
 
-  $filename = "${vhost}_mod_${name}.include"
+  $_order = $order ? {
+    undef   => '',
+    default => "${order}_",
+  }
+
+  $filename = "${vhost}_mod_${_order}${name}.include"
 
   ## The apache::confd::file will make a file in a way
   # you have configured.

@@ -39,6 +39,7 @@ define apache::vhost::mod::passenger (
   $ip                   = undef,
   $port                 = '80',
   $docroot              = undef,
+  $order                = undef,
   $_automated           = false,
   $_header              = false,
 
@@ -75,6 +76,7 @@ define apache::vhost::mod::passenger (
     port     => $port,
     nodepend => $_automated,
     content  => $definition,
+    order    => $order,
   }
 }
 

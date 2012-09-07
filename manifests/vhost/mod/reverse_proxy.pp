@@ -113,8 +113,8 @@ define apache::vhost::mod::reverse_proxy (
   }
 
   case $allow_order {
-    /(?i:deny,allow)/: {}
-    /(?i:allow,deny)/: {}
+    /^(?i:deny,allow)$/: {}
+    /^(?i:allow,deny)$/: {}
     default: {
       fail( template('apache/msg/mod-revproxy-allow-order-fail.erb') )
     }

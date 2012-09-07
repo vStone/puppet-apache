@@ -10,7 +10,6 @@ is the key value separated with a space.
 '
 ) do |args|
 
-  Puppet::Parser::Functions.autoloader.loadall
   value = args
 
   if value.is_a?(Array)

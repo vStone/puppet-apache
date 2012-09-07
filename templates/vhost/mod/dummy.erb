@@ -1,8 +1,4 @@
-### File (fragment) managed with puppet ###
-#### Served by:        '<%= scope.lookupvar('::servername') %>'
-#### Module:           '<%= scope.to_hash['module_name'] %>'
-#### Template source:  '<%= template_source %>'
-#
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) %>
 <% if _header -%>
   # You can add a header here
 <% end -%>

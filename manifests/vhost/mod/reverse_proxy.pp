@@ -74,6 +74,7 @@ define apache::vhost::mod::reverse_proxy (
   $_automated       = false,
   $_header          = false,
 
+  $comment          = undef,
   $content          = undef,
   $proxy_url        = undef,
   $proxy_via        = undef,

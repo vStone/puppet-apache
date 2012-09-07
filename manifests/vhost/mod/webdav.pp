@@ -40,6 +40,7 @@ define apache::vhost::mod::webdav (
   $_automated    = false,
   $_header       = true,
 
+  $comment       = undef,
   $location      = '/',
   $allow         = undef
 ) {

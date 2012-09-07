@@ -23,6 +23,9 @@
     proxypass_options = " " + hash_to_keypair(_proxypass_options) ## prefix with one space!!
   end
 -%>
+<% if defined?(comment) and ! empty?(comment) -%>
+  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% end -%>
 
 <% if _header -%>
   ProxyRequests Off

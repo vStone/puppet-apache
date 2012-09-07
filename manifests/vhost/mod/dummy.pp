@@ -33,6 +33,9 @@
 #
 # $content::    Custom content to put in the template.
 #
+# $comment::    There is no need to comment out text using '#', this is done
+#               in the template itself.
+#
 # == Optional Parameters:
 #
 # Any other parameters you wish to use for your module. If you add other
@@ -55,6 +58,7 @@ define apache::vhost::mod::dummy (
   $order         = undef,
   $_automated    = false,
   $_header       = true,
+  $comment       = undef,
   $content       = ''
 ) {
 

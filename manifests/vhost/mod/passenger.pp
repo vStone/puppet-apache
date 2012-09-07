@@ -43,6 +43,7 @@ define apache::vhost::mod::passenger (
   $_automated           = false,
   $_header              = false,
 
+  $comment              = undef,
   $content              = undef,
 
   $app_root             = undef,

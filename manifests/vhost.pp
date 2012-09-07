@@ -277,12 +277,12 @@ define apache::vhost (
 
   ## Create all the defined mods for this vhost.
   $defaults = {
-    ensure    => $ensure,
-    vhost     => $name,
-    ip        => $ip_def,
-    port      => $port,
-    automated => true,
-    docroot   => $documentroot,
+    'ensure'        => $ensure,
+    'vhost'         => $name,
+    'ip'            => $ip_def,
+    'port'          => $port,
+    'docroot'       => $documentroot,
+    '_automated'    => true,
   }
   if $mods != undef and $mods != '' {
     ## Wraps arround create_resources to create the proper resource

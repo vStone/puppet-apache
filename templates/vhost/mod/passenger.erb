@@ -96,7 +96,9 @@
 <%  end -%>
 <% end -%>
 
-<% if ! empty?(content) -%>
-<%= content %>
+<% if ! empty?(content) %>
+  # Below you will find the extra content you have defined.
+  # This is NOT part of the puppet template.
+  <%= content %>
 <% end -%>
 

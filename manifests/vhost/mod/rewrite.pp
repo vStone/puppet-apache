@@ -38,6 +38,7 @@ define apache::vhost::mod::rewrite (
   $_automated    = false,
   $_header       = true,
 
+  $comment       = undef,
   $rewrite_cond  = [],
   $rewrite_rule  = []
 ) {

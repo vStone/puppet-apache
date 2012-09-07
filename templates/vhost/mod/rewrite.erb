@@ -1,5 +1,8 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) %>
 <%
+  def empty?(value)
+    value == '' or value == :undef
+  end
   def always_array(var)
     scope.function_always_array(var)
   end
@@ -9,6 +12,10 @@
 %>
 <% if _header -%>
   RewriteEngine On
+
+<% end -%>
+<% if defined?(comment) and ! empty?(comment) -%>
+  # <%= comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 <% conditions.each do |condition| -%>
   RewriteCond <%= condition %>

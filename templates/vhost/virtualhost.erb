@@ -41,10 +41,10 @@
     count = 0
     vhost_config_arr.each do |cfg|
       count += 1
-%>
-# Start custom config block <%= count %>
+-%>
+  # Start custom config block <%= count %>
 <%= cfg %>
-# End custom config block <%= count %>
+  # End custom config block <%= count %>
 <%  end -%>
 <% end -%>
 

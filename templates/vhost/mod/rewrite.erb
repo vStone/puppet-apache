@@ -1,4 +1,4 @@
-<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) %>
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) -%>
 <%
   def empty?(value)
     value == '' or value == :undef
@@ -9,7 +9,7 @@
 
   conditions = always_array(rewrite_cond)
   rules      = always_array(rewrite_rule)
-%>
+-%>
 <% if _header -%>
   RewriteEngine On
 

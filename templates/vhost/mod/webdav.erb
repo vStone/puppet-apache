@@ -1,4 +1,4 @@
-<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) %>
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) -%>
 <% if defined?(comment) and ! empty?(comment) -%>
   # <%= comment.gsub(/\n/, "\n  # ") %>
 <% end -%>

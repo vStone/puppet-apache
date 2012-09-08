@@ -1,4 +1,4 @@
-<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) %>
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) -%>
 <%
   def empty?(value)
     value == '' or value == :undef
@@ -26,14 +26,12 @@
 <% if defined?(comment) and ! empty?(comment) -%>
   # <%= comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-
 <% if _header -%>
   ProxyRequests Off
 <% end -%>
 <% if ! empty?(proxyvia) -%>
   ProxyVia <%= proxyvia %>
 <% end -%>
-
 <% if ! empty?(proxyurl) %>
   <Proxy <%= proxyurl %>>
     Order <%= allow_order %>
@@ -45,7 +43,6 @@
 <%  end -%>
   </Proxy>
 <% end -%>
-
 <% proxiez_pass.each do |p| -%>
   ProxyPass <%= p %><%= proxypass_options %>
 <% end -%>
@@ -56,7 +53,6 @@
   ProxyPass <%= p %><%= proxypass_options %>
   ProxyPassReverse <%= p %>
 <% end -%>
-
 <% if ! empty?(content) %>
   # Below you will find the extra content you have defined.
   # This is NOT part of the puppet template.

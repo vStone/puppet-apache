@@ -9,7 +9,8 @@ define apache::vhost::config::split::mod (
   $port     = '80',
   $ensure   = 'present',
   $content  = '',
-  $nodepend = false
+  $nodepend = false,
+  $order    = undef
 ) {
 
 
@@ -21,25 +22,28 @@ define apache::vhost::config::split::mod (
 
   $modfile_path = "${::apache::setup::vhost::confd}/${modpath}"
 
-  $filename = "${vhost}_mod_${name}.include"
+  $order_ = $order ? {
+    undef   => '',
+    default => sprintf('%04d_', $order),
+  }
+
+  $shortname = regsubst($name, "^${vhost}_(.*)", '\1')
+  $filename = "${vhost}_mod_${order_}${shortname}.include"
+
+  ## Add the header to the content for every file
+  $with_header = template('apache/vhost/config/splitconfig_mod_content.erb')
 
   ## The apache::confd::file will make a file in a way
   # you have configured.
   apache::confd::file { $filename:
     ensure          => $ensure,
     confd           => $modfile_path,
-    content         => $content,
+    content         => $with_header,
     use_config_root => $apache::setup::vhost::use_config_root,
   }
   if $nodepend == false {
     Apache::Confd::File[$filename] {
       require   => Apache::Vhost[$vhost],
-      file_name => $filename,
-    }
-  }
-  else {
-    Apache::Confd::File[$filename] {
-      file_name => "${name}.include",
     }
   }
 

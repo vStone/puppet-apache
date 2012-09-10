@@ -36,9 +36,11 @@ define apache::vhost::mod::webdav (
   $ensure        = 'present',
   $ip            = undef,
   $port          = '80',
+  $order         = undef,
   $_automated    = false,
   $_header       = true,
 
+  $comment       = undef,
   $location      = '/',
   $allow         = undef
 ) {
@@ -54,6 +56,7 @@ define apache::vhost::mod::webdav (
     port     => $port,
     nodepend => $_automated,
     content  => $definition,
+    order    => $order,
   }
 }
 

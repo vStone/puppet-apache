@@ -1,7 +1,4 @@
-### File (fragment) managed with puppet ###
-### Served by:        '<%= scope.lookupvar('::servername') %>'
-### Module:           '<%= scope.to_hash['module_name'] %>'
-### Template source:  '<%= template_source %>'
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) -%>
 <%
   def empty?(value)
     value == '' or value == :undef
@@ -14,7 +11,9 @@
     end
   end
 -%>
-
+<% if defined?(comment) and ! empty?(comment) -%>
+  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% end -%>
 <% if ! empty?(app_root) -%>
   PassengerAppRoot <%= app_root %>
 <% end -%>
@@ -45,7 +44,6 @@
 <% if ! empty?(group) -%>
   PassengerGroup <%= group %>
 <% end -%>
-
 <% if ! empty?(min_instances) -%>
   PassengerMinInstances <%= min_instances %>
 <% end -%>
@@ -95,8 +93,10 @@
   RackEnv <%= env %>
 <%  end -%>
 <% end -%>
+<% if ! empty?(content) %>
 
-<% if ! empty?(content) -%>
-<%= content %>
+  # Below you will find the extra content you have defined.
+  # This is NOT part of the puppet template.
+  <%= content %>
 <% end -%>
 

@@ -1,11 +1,19 @@
-### File (fragment) managed with puppet ###
-#### Served by:        '<%= scope.lookupvar('::servername') %>'
-#### Module:           '<%= scope.to_hash['module_name'] %>'
-#### Template source:  '<%= template_source %>'
-#
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(__FILE__)))).result(binding) -%>
+<%
+  def empty?(value)
+    value == '' or value == :undef
+  end
+-%>
 <% if _header -%>
-  # You can add a header here
-<% end -%>
+<%  # You can add a header here -%>
 
-<%= content %>
+<% end -%>
+<% if defined?(comment) and ! empty?(comment) -%>
+  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% end -%>
+<% if ! empty?(content) -%>
+  # Below you will find the extra content you have defined.
+  # This is NOT part of the puppet template.
+  <%= content %>
+<% end -%>
 

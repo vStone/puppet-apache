@@ -3,24 +3,23 @@
   def empty?(value)
     value == '' or value == :undef
   end
+
   def always_array(var)
     scope.function_always_array(var)
   end
 
-  conditions = always_array(rewrite_cond)
-  rules      = always_array(rewrite_rule)
+  ## Sanitize variables
+  headers    = always_array(header)
+  reqheaders = always_array(requestheader)
 -%>
-<% if _header -%>
-  RewriteEngine On
-
-<% end -%>
 <% if defined?(comment) and ! empty?(comment) -%>
   # <%= comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-<% conditions.each do |condition| -%>
-  RewriteCond <%= condition %>
+<% if _header -%><% end -%>
+<% reqheaders.each do |h| -%>
+  RequestHeader <%= h %>
 <% end -%>
-<% rules.each do |rule| -%>
-  RewriteRule <%= rule %>
+<% headers.each do |h| -%>
+  Header <%= h %>
 <% end -%>
 

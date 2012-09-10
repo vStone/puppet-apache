@@ -34,9 +34,11 @@ define apache::vhost::mod::rewrite (
   $ip            = undef,
   $port          = undef,
   $docroot       = undef,
+  $order         = undef,
   $_automated    = false,
   $_header       = true,
 
+  $comment       = undef,
   $rewrite_cond  = [],
   $rewrite_rule  = []
 ) {
@@ -50,6 +52,7 @@ define apache::vhost::mod::rewrite (
     port     => $port,
     content  => $definition,
     nodepend => $_automated,
+    order    => $order,
   }
 
 }

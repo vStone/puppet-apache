@@ -32,7 +32,10 @@ Puppet::Parser::Functions::newfunction(:create_mods, :doc => '
   raise ArgumentError, ("create_mods(): the second argument should be a hash (#{mods.class} must be Hash)") unless mods.is_a?(Hash)
   raise ArgumentError, ("create_mods(): the third argument should be a hash (#{defaults.class} must be Hash)") unless defaults.is_a?(Hash)
 
+  order_index = 1000
   mods.each do |type, mod|
+    order_index += 1
+
     defmerge = defaults.dup
     if type =~ /::/
       deftype = type
@@ -45,12 +48,15 @@ Puppet::Parser::Functions::newfunction(:create_mods, :doc => '
       index = 0
       mod.each do |xmod|
         params = defmerge.merge(xmod)
+        params['order'] = order_index unless params['order']
         params['_header'] = (index == 0)
         function_create_resources([deftype, {"#{name}_mod_#{type}_#{index}" => params }])
+        order_index += 1
         index += 1
       end
     else
       params = defmerge.merge(mod)
+      params['order'] = order_index unless params['order']
       params['_header'] = true
       function_create_resources([deftype, { "#{name}_mod_#{type}" => params }])
     end

@@ -31,10 +31,11 @@
 #               be done automaticly for an included mod type or only for
 #               the first if an array of a certain mod type is given.
 #
-# $content::    Custom content to put in the template.
+# $comment::    Custom comment to add before the statements.
 #
-# $comment::    There is no need to comment out text using '#', this is done
-#               in the template itself.
+# $header::     Array or single header rule.
+#
+# $requestheader::  Array or single request header rule.
 #
 # == Optional Parameters:
 #
@@ -49,7 +50,8 @@
 #
 # == Sample Usage:
 #
-define apache::vhost::mod::dummy (
+#
+define apache::vhost::mod::header (
   $vhost,
   $ensure        = 'present',
   $ip            = undef,
@@ -58,13 +60,15 @@ define apache::vhost::mod::dummy (
   $order         = undef,
   $_automated    = false,
   $_header       = true,
+
   $comment       = undef,
-  $content       = ''
+  $header        = [],
+  $requestheader = []
 ) {
 
 
   ## Generate the content for your module file:
-  $definition = template('apache/vhost/mod/dummy.erb')
+  $definition = template('apache/vhost/mod/header.erb')
 
   apache::vhost::modfile {$title:
     ensure   => $ensure,

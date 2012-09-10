@@ -14,7 +14,8 @@ define apache::vhost::modfile (
   $port     = '80',
   $ensure   = 'present',
   $content  = '',
-  $nodepend = false
+  $nodepend = false,
+  $order    = undef
 ) {
 
   $mod_def = "${::apache::params::config_base}::mod"
@@ -27,6 +28,7 @@ define apache::vhost::modfile (
       'ensure'   => $ensure,
       'content'  => $content,
       'nodepend' => $nodepend,
+      'order'    => $order
     }
   }
 

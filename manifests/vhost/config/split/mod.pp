@@ -40,6 +40,7 @@ define apache::vhost::config::split::mod (
     confd           => $modfile_path,
     content         => $with_header,
     use_config_root => $apache::setup::vhost::use_config_root,
+    file_name       => $filename,
   }
   if $nodepend == false {
     Apache::Confd::File[$filename] {

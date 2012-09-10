@@ -128,6 +128,9 @@ define apache::vhost (
   $logformat      = undef
 ) {
 
+  ## This fixes undefined method function_always_array in the templates used.
+  $_fix_always_array = always_array('')
+
   if $title == '' {
     fail('Can not create a vhost with empty title/name')
   }

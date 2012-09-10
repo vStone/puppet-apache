@@ -22,12 +22,14 @@ define apache::vhost::config::split::mod (
 
   $modfile_path = "${::apache::setup::vhost::confd}/${modpath}"
 
-  $_order = $order ? {
+  $order_ = $order ? {
     undef   => '',
-    default => "${order}_",
+    default => sprintf('%04d_', $order),
   }
 
-  $filename = "${vhost}_mod_${_order}${name}.include"
+  $shortname = regsubst($name, "^${vhost}_(.*)", '\1')
+  $filename = "${vhost}_mod_${order_}${shortname}.include"
+
 
   ## The apache::confd::file will make a file in a way
   # you have configured.
@@ -40,12 +42,6 @@ define apache::vhost::config::split::mod (
   if $nodepend == false {
     Apache::Confd::File[$filename] {
       require   => Apache::Vhost[$vhost],
-      file_name => $filename,
-    }
-  }
-  else {
-    Apache::Confd::File[$filename] {
-      file_name => "${name}.include",
     }
   }
 

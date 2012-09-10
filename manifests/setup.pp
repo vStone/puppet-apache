@@ -7,15 +7,24 @@ class apache::setup {
   require apache::params
 
   ## Apache main configuration file
-  file { 'apache-config_file':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    path    => $apache::params::config_file,
-    content => template($apache::params::config_template),
+  #file { 'apache-config_file':
+  #  ensure  => present,
+  #  owner   => 'root',
+  #  group   => 'root',
+  #  mode    => '0644',
+  #  path    => $apache::params::config_file,
+  #  content => template($apache::params::config_template),
+  #  notify  => Service['apache'],
+  #}
+
+
+  augeas{'apache-setup-prep-default':
+    lens    => '',
+    incl    => $::apache::params::config_file,
     notify  => Service['apache'],
+    changes => '',
   }
+
 
   ## conf.d directory
   $apache_confd = 'apache_confd'

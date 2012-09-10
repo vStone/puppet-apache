@@ -30,13 +30,15 @@ define apache::vhost::config::split::mod (
   $shortname = regsubst($name, "^${vhost}_(.*)", '\1')
   $filename = "${vhost}_mod_${order_}${shortname}.include"
 
+  ## Add the header to the content for every file
+  $with_header = template('apache/vhost/config/splitconfig_mod_content.erb')
 
   ## The apache::confd::file will make a file in a way
   # you have configured.
   apache::confd::file { $filename:
     ensure          => $ensure,
     confd           => $modfile_path,
-    content         => $content,
+    content         => $with_header,
     use_config_root => $apache::setup::vhost::use_config_root,
   }
   if $nodepend == false {

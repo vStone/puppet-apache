@@ -5,14 +5,6 @@ class apache::setup::listen {
   $includes = '*.conf'
   $purge  = true
 
-
-  augeas{'apache-setup-listen-config':
-    lens    => '',
-    incl    => $::apache::params::config_file,
-    changes => '',
-  }
-
-
   apache::confd {'listen':
     confd        => $apache::setup::listen::confd,
     order        => $apache::setup::listen::order,

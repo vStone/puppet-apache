@@ -17,14 +17,33 @@ class apache::setup {
   #  notify  => Service['apache'],
   #}
 
-
-  augeas{'apache-setup-prep-default':
-    lens    => '',
+  Augeas {
+    lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
-    notify  => Service['apache'],
-    changes => '',
+    context => "/files${::apache::params::config_file}",
   }
 
+
+  case $::apache::params::keepalive {
+    true,'true',/(?i:on)/:    { $_keepalive = 'On' }
+    false,'false',/(?i:off)/: { $_keepalive = 'Off' }
+    default:                  { $_keepalive = 'On' }
+  }
+
+  apache::augeas::set{'ServerRoot': value => $::apache::params::config_dir, }
+  apache::augeas::set{'KeepAlive':  value => $_keepalive, }
+  apache::augeas::set{'User':       value => $::apache::params::daemon_user, }
+  apache::augeas::set{'Group':      value => $::apache::params::daemon_group, }
+
+  augeas{'apache-setup-default-include':
+    notify  => Service['apache'],
+    changes => [
+      'ins directive after *[last()]',
+      'set directive[last()] "Include"',
+      'set directive[last()]/arg "conf.d/*.conf"',
+    ],
+    onlyif  => 'match directive[ . = "Include" and arg = "conf.d/*.conf"] size == 0',
+  }
 
   ## conf.d directory
   $apache_confd = 'apache_confd'

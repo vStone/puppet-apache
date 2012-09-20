@@ -108,7 +108,7 @@ define apache::vhost (
   $serveraliases  = undef,
   $ensure         = 'present',
   $ip             = undef,
-  $port           = '80',
+  $port           = undef,
   $admin          = undef,
   $vhostroot      = undef,
   $logdir         = undef,
@@ -150,8 +150,24 @@ define apache::vhost (
     }
   }
 
+  case $name {
+    /^([a-z_]+[0-9a-z_\.]*)_([0-9]+)$/: {
+      $default_servername = $1
+      $default_port = $2
+    }
+    default: {
+      $default_servername = $name
+      $default_port = '80'
+    }
+  }
+
+  $vhost_port = $port ? {
+    undef   => $default_port,
+    default => $port,
+  }
+
   $server = $servername ? {
-    undef   => $name,
+    undef   => $default_servername,
     default => $servername,
   }
 
@@ -185,11 +201,11 @@ define apache::vhost (
   case $ip {
     undef: {
       $ip_def = '*'
-      $listen = $port
+      $listen = $vhost_port
     }
     default: {
       $ip_def = $ip
-      $listen = "${ip}_${port}"
+      $listen = "${ip}_${vhost_port}"
     }
   }
 
@@ -272,7 +288,7 @@ define apache::vhost (
       'content_end' => template('apache/vhost/virtualhost_end.erb'),
       'order'       => $order,
       'ip'          => $ip_def,
-      'port'        => $port,
+      'port'        => $vhost_port,
       'require'     => File[$documentroot],
     }
   }
@@ -283,7 +299,7 @@ define apache::vhost (
     'ensure'        => $ensure,
     'vhost'         => $name,
     'ip'            => $ip_def,
-    'port'          => $port,
+    'port'          => $vhost_port,
     'docroot'       => $documentroot,
     '_automated'    => true,
   }

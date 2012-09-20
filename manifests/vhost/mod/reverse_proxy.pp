@@ -110,7 +110,7 @@ define apache::vhost::mod::reverse_proxy (
   if ($_header) and ($proxy_via == undef) {
     $proxyvia = 'Off'
   } else {
-    $proxyvia = $proxyvia
+    $proxyvia = $proxy_via
   }
 
   case $allow_order {

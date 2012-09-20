@@ -34,8 +34,6 @@ define apache::augeas::set (
     context => $context,
   }
 
-  notify {"Using augeas to set ${name} to ${value}": }
-
   # Update if it exists
   augeas {"apache-augeas-set-update-${name}":
     changes => "set directive[ . = '${name}']/arg ${value}",

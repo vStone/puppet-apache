@@ -17,7 +17,7 @@ class apache::setup::namevhost {
     lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
-    changes => "rm directive[ . = 'NameVirtualHost' ]",
+    changes => 'rm directive[ . = "NameVirtualHost" ]',
   }
 
   apache::confd {'namevhost':

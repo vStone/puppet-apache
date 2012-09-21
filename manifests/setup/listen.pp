@@ -18,7 +18,7 @@ class apache::setup::listen {
     lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
-    changes => "rm directive[ . = 'Listen' ]",
+    changes => 'rm directive[ . = "Listen" ]',
   }
 
   apache::confd {'listen':

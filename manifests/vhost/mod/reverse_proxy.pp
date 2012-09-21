@@ -58,11 +58,11 @@
 #                     directive will be written to the configuration file.
 #
 # $default_proxy_pass_options:: A hash containing additional options to add to
-#                     the proxypass directive. If specified, we will append these
-#                     options to each proxypass line we define.
+#                     the proxypass directive. If specified, we will append
+#                     these options to each proxypass line we define.
 #                     If this is undefined, we will use the options
-#                     provided in apache::mod::reverse_proxy. To disable using those
-#                     just pass an empty hash. Defaults to undefined.
+#                     provided in apache::mod::reverse_proxy. To disable using
+#                     those just pass an empty hash. Defaults to undefined.
 #
 #
 # === Todo:

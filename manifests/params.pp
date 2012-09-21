@@ -4,63 +4,66 @@
 #
 # === Parameters:
 #
-# $apache::       Configure the apache package name.
-#                 Defaults do distro specific.
+# $apache::             Configure the apache package name.
+#                       Defaults do distro specific.
 #
-# $apache_dev::   Package(s) to install when $devel = true.
-#                 Defaults to distro specific.
+# $apache_dev::         Package(s) to install when $devel = true.
+#                       Defaults to distro specific.
 #
-# $apache_ssl::   Packages to install when $ssl = true.
-#                 Defaults to distro specific.
+# $apache_ssl::         Packages to install when $ssl = true.
+#                       Defaults to distro specific.
 #
-# $service::      Name of the apache service.
-#                 Defaults to distro specific.
+# $service::            Name of the apache service.
+#                       Defaults to distro specific.
 #
-# $configroot::   Root of all configuration files (NOT vhosts!)
-#                 Defaults to apache configuration dir/conf.d/
+# $configroot::         Root of all configuration files (NOT vhosts!)
+#                       Defaults to apache configuration dir/conf.d/
 #
-# $vhostroot::    Root where all vhost configuration is done. The
-#                 structure beneath this folder is determined by the
-#                 used $config_style.
-#                 Defaults to distro specific.
+# $vhostroot::          Root where all vhost configuration is done. The
+#                       structure beneath this folder is determined by the
+#                       used $config_style.
+#                       Defaults to distro specific.
 #
-# $vhostroot_purge:: Purge the vhost configuration root of all configuration
-#                    files that are not managed by puppet.
-#                    Defaults to false.
+# $vhostroot_purge::    Purge the vhost configuration root of all configuration
+#                       files that are not managed by puppet.
+#                       Defaults to false.
 #
-# $logroot::      Root where all log files are stored.
-#                 Defaults to distro specific.
+# $logroot::            Root where all log files are stored.
+#                       Defaults to distro specific.
 #
-# $user::         User to run the apache daemon as.
-#                 Defaults to distro specific.
+# $user::               User to run the apache daemon as.
+#                       Defaults to distro specific.
 #
-# $group::        Group to run apache daemon as.
-#                 Defaults to distro specific.
+# $group::              Group to run apache daemon as.
+#                       Defaults to distro specific.
 #
-# $devel::        Include development packages. Sometimes required for
-#                 building custom apache modules.
+# $devel::              Include development packages. Sometimes required for
+#                       building custom apache modules.
 #
-# $ssl::          Use ssl or not. On some distro's, we need to install
-#                 some additional packages for this to work properly.
-#                 Defaults to true.
+# $ssl::                Use ssl or not. On some distro's, we need to install
+#                       some additional packages for this to work properly.
+#                       Defaults to true.
 #
-# $keepalive::    Enable keepalive in the main configuration file.
-#                 Defaults to true.
+# $keepalive::          Enable keepalive in the main configuration file.
+#                       Defaults to true.
 #
-# $config_style:: Allows to pick the configuration style you want to generate.
-#                 If this is a simple string, the used class will be:
-#                   apache::vhost::config::${config_style}:: *
-#                 When the string contains '::', we will use that definition.
-#                 Defaults to 'concat'.
+# $config_style::       Allows to pick the configuration style you want to
+#                       generate. If this is a simple string, the used class
+#                       will be:
+#                         apache::vhost::config::${config_style}:: *
+#                       When the string contains '::', we will use that
+#                       exact definition.
+#                       Defaults to 'concat'.
 #
-# $default_docroot::  The default document root to use beneath each
-#                     vhost documentroot folder. Defaults to 'htdocs'.
+# $default_docroot::    The default document root to use beneath each
+#                       vhost documentroot folder. Defaults to 'htdocs'.
 #
-# $diroptions::   Default directory Options to use for a vhost.
-#                 Defaults to 'FollowSymlinks MultiViews'
+# $diroptions::         Default directory Options to use for a vhost.
+#                       Defaults to 'FollowSymlinks MultiViews'
 #
-# $default_logformat:: Set the default logformat to use for vhosts.
-#                      Defaults to 'combined'.
+# $default_logformat::  Set the default logformat to use for vhosts.
+#                       Defaults to 'combined'.
+#
 #
 # === Todo:
 #

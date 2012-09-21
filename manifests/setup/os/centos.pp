@@ -1,4 +1,4 @@
-# = Class: apache::setup::os::centos
+# == Class: apache::setup::os::centos
 #
 # Specific setup instructions for CentOS
 #

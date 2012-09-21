@@ -1,3 +1,10 @@
+# == Class: apache::packages
+#
+# Installs the required packages.
+#
+# Optionally, depending on the configuration in apache::params,
+# also installs the devel package and/or ssl support.
+#
 class apache::packages {
   require apache::params
 

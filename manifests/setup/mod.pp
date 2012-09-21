@@ -1,3 +1,9 @@
+# == Class: apache::setup::mod
+#
+# === Todo:
+#
+# TODO: Update documentation
+#
 class apache::setup::mod {
 
   $confd = 'mod.d'

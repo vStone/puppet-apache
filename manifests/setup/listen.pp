@@ -1,3 +1,9 @@
+# == Class: apache::setup::listen
+#
+# === Todo:
+#
+# TODO: Update documentation
+#
 class apache::setup::listen {
 
   $confd = 'listen.d'

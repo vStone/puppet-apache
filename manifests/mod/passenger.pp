@@ -1,3 +1,10 @@
+# == Class: apache::mod::passenger
+#
+# === Todo:
+#
+# TODO: Update documentation
+# TODO: Add or use LoadModule support
+#
 class apache::mod::passenger {
 
   if defined('::passenger::module') {

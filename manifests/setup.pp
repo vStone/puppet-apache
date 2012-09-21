@@ -2,7 +2,6 @@
 #
 # This class configures apache. So its more of a setup than config really.
 #
-#
 class apache::setup {
   require apache::params
 

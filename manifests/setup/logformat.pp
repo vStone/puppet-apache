@@ -1,3 +1,9 @@
+# == Class: apache::setup::logformat
+#
+# === Todo:
+#
+# TODO: Update documentation
+#
 class apache::setup::logformat {
 
   $confd    = 'logformat.d'

@@ -1,8 +1,8 @@
-# = Definition: apache::vhost::mod::dummy
+# == Definition: apache::vhost::mod::dummy
 #
 # This dummy is an example on how to add your own vhost mod.
 #
-# == Required Parameters:
+# === Required Parameters:
 #
 # Your definition should always take the following parameters. When
 # using the mods parameter from vhost, these get set automaticly.
@@ -37,19 +37,22 @@
 #
 # $requestheader::  Array or single request header rule.
 #
-# == Optional Parameters:
+# === Optional Parameters:
 #
 # Any other parameters you wish to use for your module. If you add other
 # parameters, make sure to add the required parameters without default
 # values before those with default parameters. There is no shame in
 # changing the order of the Required Parameters.
 #
-# == Actions:
+# === Actions:
 #
 # Creates a apache::vhost::modfile for the vhost that has been selected.
 #
-# == Sample Usage:
+# === Sample Usage:
 #
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::mod::header (
   $vhost,

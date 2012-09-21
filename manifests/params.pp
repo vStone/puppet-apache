@@ -1,8 +1,8 @@
-# = Class: apache::params
+# == Class: apache::params
 #
 # Configure various apache settings and initialize distro specific settings.
 #
-# == Parameters:
+# === Parameters:
 #
 # $apache::       Configure the apache package name.
 #                 Defaults do distro specific.
@@ -62,9 +62,10 @@
 # $default_logformat:: Set the default logformat to use for vhosts.
 #                      Defaults to 'combined'.
 #
-# == Todo:
-# * Finish documentation.
-# * Test /out of scope/ config_style stuff.
+# === Todo:
+#
+# TODO: Finish documentation.
+# TODO: Test /out of scope/ config_style stuff.
 #
 class apache::params(
   $apache            = undef,

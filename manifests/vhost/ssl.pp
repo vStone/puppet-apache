@@ -42,7 +42,7 @@
 #
 # === Todo:
 #
-# * Update documentation
+# TODO: Update documentation
 #
 define apache::vhost::ssl (
   $ssl_cert,

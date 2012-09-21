@@ -1,6 +1,6 @@
-# = Definition: apache::vhost::mod::webdav
+# == Definition: apache::vhost::mod::webdav
 #
-# == Parameters:
+# === Parameters:
 #
 # Your definition should always take the following parameters. When
 # using the mods parameter from vhost, these get set automaticly.
@@ -24,11 +24,16 @@
 #               mostly useful to restrict access to a certain location to a
 #               specific person or group.
 #
-# == Actions:
+# === Actions:
 #
 # Creates a apache::vhost::modfile for the vhost that has been selected.
 #
-# == Sample Usage:
+# === Sample Usage:
+#
+#
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::mod::webdav (
   $docroot,

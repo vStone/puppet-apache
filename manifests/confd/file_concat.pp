@@ -1,4 +1,4 @@
-# = Definition: apache::confd::file
+# == Definition: apache::confd::file_concat
 #
 # Helper definition for confd style folders
 # This creates a concat type and 2 fragments for the
@@ -6,7 +6,7 @@
 #
 # This allows you to add other fragments to the same file.
 #
-# == Parameters
+# === Parameters
 #
 #  $confd:
 #     Subfolder in conf.d directory.
@@ -28,7 +28,7 @@
 #     in the apache configuration root. Otherwise, its created inside
 #     the configured $apache::params::confd.
 #
-# == Todo:
+# === Todo:
 #
 # TODO: Update documentation
 #

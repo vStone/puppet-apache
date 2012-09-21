@@ -1,8 +1,8 @@
-# = Definition: apache::vhost::mod::proxy
+# == Definition: apache::vhost::mod::proxy
 #
 # Setup mod_proxy in a vhost.
 #
-# == Parameters:
+# === Parameters:
 #
 # $vhost::            The name of the vhost to work on. This should be
 #                     identical to the apache::vhost{NAME:} you have setup.
@@ -63,6 +63,11 @@
 #                     If this is undefined, we will use the options
 #                     provided in apache::mod::reverse_proxy. To disable using those
 #                     just pass an empty hash. Defaults to undefined.
+#
+#
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::mod::reverse_proxy (
   $vhost,

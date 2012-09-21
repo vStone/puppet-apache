@@ -1,4 +1,4 @@
-# = Definition: apache::vhost::config::concat::main
+# == Definition: apache::vhost::config::concat::main
 #
 # Create the config file using the following style:
 #
@@ -8,6 +8,11 @@
 #
 # Disabling this vhost will not remove the main vhost configuration
 # but rather remove the symlink.
+#
+#
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::config::concat::main (
   $ensure,

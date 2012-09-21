@@ -1,8 +1,8 @@
-# = Definition: apache::vhost::mod::rewrite
+# == Definition: apache::vhost::mod::rewrite
 #
 # Setup mod_rewrite in a vhost
 #
-# == Parameters:
+# === Parameters:
 #
 # $rewrite_cond:: The rewrite condition to use. Standard apache syntax.
 #                 For now only one string is supported, array support
@@ -27,6 +27,10 @@
 # $port::         Port of the vhost to work on. Should be identical to
 #                 the apache::vhost instance you have setup.
 #                 Defaults to the vhost default.
+#
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::mod::rewrite (
   $vhost,

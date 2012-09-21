@@ -1,4 +1,4 @@
-# = Class: apache::module
+# == Class: apache::module
 #
 # Stores module data
 #

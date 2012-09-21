@@ -1,10 +1,10 @@
-# = Definition: apache::vhost::modfile
+# == Definition: apache::vhost::modfile
 #
 # Modules use this type to add content to a virtualhost.
 # The configuration type selected is responsible for making
 # sure that the content is added to the virtualhost config.
 #
-# = Parameters:
+# === Parameters:
 #
 # $vhost::        Name of the vhost definition this is for.
 #
@@ -19,7 +19,7 @@
 #                 this will default to false. In which case it
 #                 will depend on the apache::vhost[$vhost]
 #
-# == Todo:
+# === Todo:
 #
 # TODO: Update documentation
 #

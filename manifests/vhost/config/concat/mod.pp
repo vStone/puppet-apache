@@ -1,14 +1,19 @@
-# = Definition: apache::vhost::config::concat::mod
+# == Definition: apache::vhost::config::concat::mod
 #
 # Helper file wrapper for extra mods for a certain vhost.
 # This will be added to the vhost configuration using the
 # concat module.
 #
-# == Parameters:
+# === Parameters:
 #
 # $vhost:
 #
 # $ensure:
+#
+#
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::config::concat::mod (
   $vhost,

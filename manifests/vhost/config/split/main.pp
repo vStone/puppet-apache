@@ -1,3 +1,10 @@
+# == Definition: apache::vhost::config::split::main
+#
+#
+# === Todo:
+#
+# TODO: Update documentation
+#
 define apache::vhost::config::split::main (
   $ensure,
   $content,

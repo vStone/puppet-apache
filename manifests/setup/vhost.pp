@@ -1,3 +1,9 @@
+# == Class: apache::setup::vhost
+#
+# === Todo:
+#
+# TODO: Update documentation
+#
 class apache::setup::vhost {
 
   $confd = 'vhost.d'

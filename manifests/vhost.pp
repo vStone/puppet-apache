@@ -1,8 +1,8 @@
-# = Definition: apache::vhost
+# == Definition: apache::vhost
 #
 #  Define a apache vhost.
 #
-# == Parameters:
+# === Parameters:
 #
 # $name::         The name is used for the filenames of various config files.
 #                 It is a good idea to use <servername>_<port> so there is no
@@ -71,7 +71,7 @@
 # $logformat::    Logformat to use for accesslog.
 #                 Defaults to 'combined'.
 #
-# == Usage / Best practice:
+# === Usage / Best practice:
 #
 # Try and to use something unique for the name of each vhost defintion.
 # You can use the same  port, ip and servername for different definitions,
@@ -102,6 +102,9 @@
 # You can create custom modules outside the apache module this way. See the dummy.pp
 # module on what parameters are required for a mod.
 #
+# === Todo:
+#
+# TODO: Add more examples.
 #
 define apache::vhost (
   $servername     = undef,

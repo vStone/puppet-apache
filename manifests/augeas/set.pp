@@ -1,22 +1,22 @@
-# = Definition: apache::augeas::set
+# == Definition: apache::augeas::set
 #
 # Description of apache::augeas::set
 #
-# == Parameters:
+# === Parameters:
 #
 # $param::   description of parameter. default value if any.
 #
-# == Actions:
+# === Actions:
 #
 # Describe what this class does. What gets configured and how.
 #
-# == Requires:
+# === Requires:
 #
 # Requirements. This could be packages that should be made available.
 #
-# == Sample Usage:
+# === Sample Usage:
 #
-# == Todo:
+# === Todo:
 #
 # TODO: Update documentation
 #

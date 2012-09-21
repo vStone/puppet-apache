@@ -1,3 +1,11 @@
+# == Definition: apache::confd::file_exists
+#
+# Defines a file if, and only if, the file is not defined
+# anywhere else.
+#
+# Uses the +path+  as name for the file resource. Also defaults the
+# owner and group to what is defined in apache::params (daemon_user/group)
+#
 define apache::confd::file_exists (
   $ensure,
   $path,

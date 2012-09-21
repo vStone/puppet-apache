@@ -1,3 +1,7 @@
+# == Class: apache::service
+#
+# Sets up and enables the apache service.
+#
 class apache::service {
   require apache::params
 

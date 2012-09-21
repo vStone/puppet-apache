@@ -1,3 +1,10 @@
+# == Class: apache::mod::php
+#
+# === Todo:
+#
+# TODO: Update documentation
+# TODO: Add or use LoadModule support
+#
 class apache::mod::php {
 
   $pkg_name =  $::operatingsystem ? {

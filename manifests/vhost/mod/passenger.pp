@@ -1,8 +1,8 @@
-# = Definition: apache::vhost::mod::passenger
+# == Definition: apache::vhost::mod::passenger
 #
 # Enable a passenger configuration in this vhost.
 #
-# == Required Parameters:
+# === Required Parameters:
 #
 # Your definition should always take the following parameters. When
 # using the mods parameter from vhost, these get set automaticly.
@@ -20,18 +20,19 @@
 # $docroot::    Document root.
 #               Is automaticly filled in if pushed through apache::vhost.
 #
-# == Optional Parameters:
+# === Optional Parameters:
 #
 #
-# == Actions:
+# === Actions:
 #
 # Creates a apache::vhost::modfile for the vhost that has been selected.
 #
-# == Sample Usage:
+# === Sample Usage:
 #
-# == Todo:
+# === Todo:
 #
-#  * Implement remaining parameters
+# TODO: Implement remaining parameters
+# TODO: Update documentation
 #
 define apache::vhost::mod::passenger (
   $vhost,

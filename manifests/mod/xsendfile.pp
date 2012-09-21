@@ -1,7 +1,14 @@
-# Class: apache::mod::xsendfile
+# == Class: apache::mod::xsendfile
 #
-# Requirements:
-#  CentOS: epel repository.
+# === Requirements:
+#
+# Packages!
+#
+# === Todo:
+#
+# TODO: Update documentation
+# TODO: Add or use LoadModule support
+# TODO: Allow configuration/overriding of packages to use.
 #
 class apache::mod::xsendfile {
 

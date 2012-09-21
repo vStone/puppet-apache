@@ -1,7 +1,11 @@
-# = Definition: apache::vhost::config::split::mod
+# == Definition: apache::vhost::config::split::mod
 #
 # This will place the configuration for this apache mod in a
 # separate file that will be included (apache) by the main.
+#
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::config::split::mod (
   $vhost,

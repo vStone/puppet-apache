@@ -131,19 +131,23 @@ define apache::vhost (
   $logformat      = undef
 ) {
 
+  require apache::params
+  require apache::setup::vhost
+
   ## This fixes undefined method function_always_array in the templates used.
   $_fix_always_array = always_array('')
 
-  if $title == '' {
-    fail('Can not create a vhost with empty title/name')
-  }
-
-  require apache::params
-  require apache::setup::vhost
 
   ####################################
   ####  Param checks & Defaults   ####
   ####################################
+
+  # What the error message says...
+  if $title == '' {
+    fail('Can not create a vhost with empty title/name')
+  }
+
+  # Sanitize the ensure value and translate into an enable parameter.
   case $ensure {
     /enable|present/, true:   { $enable = true }
     /disable|absent/, false:  { $enable = false }
@@ -153,6 +157,8 @@ define apache::vhost (
     }
   }
 
+  # Try to determine the servername and port from the name of the definition
+  # if no servername and/or port have been explicitly set.
   case $name {
     /^([a-z_]+[0-9a-z_\.]*)_([0-9]+)$/: {
       $default_servername = $1
@@ -164,43 +170,57 @@ define apache::vhost (
     }
   }
 
+  # Use provided port or the default value.
   $vhost_port = $port ? {
     undef   => $default_port,
     default => $port,
   }
 
+  # Use the provided servername or the default value.
   $server = $servername ? {
     undef   => $default_servername,
     default => $servername,
   }
 
+  # Use the provided admin mail address or use the default value.
   $serveradmin = $admin ? {
     undef   => "admin@${server}",
     default => $admin,
   }
 
+  # Use the provided vhostroot or use the default value.
   $vhost_root = $vhostroot ? {
     undef   => "${apache::params::vhost_root}/${server}",
     default =>  $vhostroot,
   }
+
+  # Use the provided logdir or use the default value.
   $log_dir = $logdir ? {
     undef   => "${apache::params::vhost_log_dir}/${server}",
     default => $logdir,
   }
 
+  # When linklogdir is true, this is the location of the link we are creating
+  # to the logdir.
   $log_link_target = "${vhost_root}/logs"
 
+  # Use the provided docroot or use the default value.
+  # This is used in the template in the DocumentRoot directive.
   $documentroot = $docroot ? {
     undef   => "${vhost_root}/${apache::params::default_docroot}",
     default => $docroot,
   }
 
+  # Use the provided dirroot or use the default value.
+  # This is used in the template in the <Directory ...> directive.
   $directoryroot =  $dirroot ? {
     undef   => $documentroot,
     default => $dirroot,
   }
 
   ## Check for matching apache::namevhost
+  # $ip_def::    Used in the template in the <Virtualhost ...> directive.
+  # $listen::    Used for checking if an apache::namevhost definition exists.
   case $ip {
     undef: {
       $ip_def = '*'
@@ -216,12 +236,15 @@ define apache::vhost (
     warning( template('apache/msg/vhost-notdef-namevhost-warning.erb') )
   }
 
+  # Use the provided diroptions, 'All' when diroptions is empty or the default.
   $dir_options = $diroptions ? {
     undef   => $::apache::params::diroptions,
     ''      => 'All',
     default => $diroptions,
   }
 
+  # Use the provided logformat or use the default. This is the logformat for
+  # the access log (combined, common, ...)
   $log_format = $logformat ? {
     undef   => $::apache::params::default_logformat,
     default => $logformat,

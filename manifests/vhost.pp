@@ -335,8 +335,8 @@ define apache::vhost (
   ####################################
   ####   Generate vhost config    ####
   ####################################
-  # The location of the file is determined by the configurition type you selected.
-  # We call the main class to create that main file.
+  # The location of the file is determined by the configurition type you
+  # selected. We call the main class from that namespace to create the file.
   $style_def = "${apache::params::config_base}::main"
 
   ## Note: puppet-lint warns on "${name}". Won't work properly without quotes.

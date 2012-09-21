@@ -63,7 +63,7 @@ define apache::vhost::ssl (
   $serveraliases     = undef,
   $ensure            = 'present',
   $ip                = undef,
-  $port              = '443',
+  $port              = undef,
   $admin             = undef,
   $vhostroot         = undef,
   $logdir            = undef,
@@ -82,13 +82,30 @@ define apache::vhost::ssl (
 ) {
 
   ## Same logic as apache::vhost but we redo this since we need $server
+  # and the default port is different.
+  case $name {
+    /^([a-z_]+[0-9a-z_\.]*)_([0-9]+)$/: {
+      $default_servername = $1
+      $default_port = $2
+    }
+    default: {
+      $default_servername = $name
+      $default_port = '443'
+    }
+  }
+
+  $vhost_port = $port ? {
+    undef   => $default_port,
+    default => $port,
+  }
+
   $server = $servername ? {
-    undef   => $name,
+    undef   => $default_servername,
     default => $servername,
   }
 
   $log_dir = $logdir ? {
-    undef   => "${apache::params::vhost_log_dir}/${server}",
+    undef   => "${::apache::params::vhost_log_dir}/${server}",
     default => $logdir,
   }
 
@@ -102,7 +119,7 @@ define apache::vhost::ssl (
     docroot       => $docroot,
     vhostroot     => $vhostroot,
     ip            => $ip,
-    port          => $port,
+    port          => $vhost_port,
     admin         => $admin,
     logdir        => $logdir,
     accesslog     => $accesslog,

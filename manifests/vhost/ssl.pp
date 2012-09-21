@@ -60,7 +60,7 @@ define apache::vhost::ssl (
   $ssl_verify_client = undef,
   $ssl_verify_depth  = undef,
   $servername        = undef,
-  $serveraliases     = '',
+  $serveraliases     = undef,
   $ensure            = 'present',
   $ip                = undef,
   $port              = '443',

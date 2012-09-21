@@ -15,11 +15,15 @@
 
   ServerName  <%= server %>
 <%
-  server_aliases = always_array(serveraliases)
-  server_aliases.each do |srvalias|
+  if ! empty?(serveraliases)
+    server_aliases = always_array(serveraliases)
+    server_aliases.each do |srvalias|
 -%>
   ServerAlias <%= srvalias %>
-<% end -%>
+<%
+    end
+  end
+-%>
   ServerAdmin <%= serveradmin %>
 
   DocumentRoot <%= documentroot %>

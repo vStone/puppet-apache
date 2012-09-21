@@ -1,4 +1,4 @@
-# == Definition: apache::vhost::config::split::mod
+# == Definition: apache::sys::config::split::mod
 #
 # This will place the configuration for this apache mod in a
 # separate file that will be included (apache) by the main.
@@ -7,7 +7,7 @@
 #
 # TODO: Update documentation
 #
-define apache::vhost::config::split::mod (
+define apache::sys::config::split::mod (
   $vhost,
   $ip       = undef,
   $port     = '80',
@@ -19,10 +19,10 @@ define apache::vhost::config::split::mod (
 
 
   ## Get the configured configuration style.
-  require apache::vhost::config::split::params
+  require apache::sys::config::split::params
 
   ## The path to a module configuration is configured by the config style.
-  $modpath = $::apache::vhost::config::split::params::mod_path
+  $modpath = $::apache::sys::config::split::params::mod_path
 
   $modfile_path = "${::apache::setup::vhost::confd}/${modpath}"
 

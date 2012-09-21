@@ -50,7 +50,7 @@
 # $config_style::       Allows to pick the configuration style you want to
 #                       generate. If this is a simple string, the used class
 #                       will be:
-#                         apache::vhost::config::${config_style}:: *
+#                         apache::sys::config::${config_style}:: *
 #                       When the string contains '::', we will use that
 #                       exact definition.
 #                       Defaults to 'concat'.
@@ -241,17 +241,17 @@ class apache::params(
   }
 
   if defined('::concat') {
-    $config_style_undef = 'apache::vhost::config::concat'
+    $config_style_undef = 'apache::sys::config::concat'
   }
   else {
-    $config_style_undef = 'apache::vhost::config::split'
+    $config_style_undef = 'apache::sys::config::split'
   }
 
   ## config_base
   $config_base = $config_style ? {
     undef   => $config_style_undef,
     /::/    => $config_style,
-    default => "apache::vhost::config::${config_style}"
+    default => "apache::sys::config::${config_style}"
   }
 
 

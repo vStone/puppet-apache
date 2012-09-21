@@ -8,14 +8,14 @@
 # using the mods parameter from vhost, these get set automaticly.
 #
 # $ensure::     Disable or enable this mod. This will/should remove the config
-#               file. Required for apache::vhost::modfile.
+#               file. Required for apache::sys::modfile.
 #
 # $vhost::      Defined what vhost this module is for.
-#               Required for apache::vhost::modfile
+#               Required for apache::sys::modfile
 #
-# $ip::         Required for apache::vhost::modfile.
+# $ip::         Required for apache::sys::modfile.
 #
-# $port::       Required for apache::vhost::modfile.
+# $port::       Required for apache::sys::modfile.
 #
 # $docroot::    Document root.
 #               Is automaticly filled in if pushed through apache::vhost.
@@ -25,7 +25,7 @@
 #
 # === Actions:
 #
-# Creates a apache::vhost::modfile for the vhost that has been selected.
+# Creates a apache::sys::modfile for the vhost that has been selected.
 #
 # === Sample Usage:
 #
@@ -71,7 +71,7 @@ define apache::vhost::mod::passenger (
   ## Generate the content for your module file:
   $definition = template('apache/vhost/mod/passenger.erb')
 
-  apache::vhost::modfile {$title:
+  apache::sys::modfile {$title:
     ensure   => $ensure,
     vhost    => $vhost,
     ip       => $ip,

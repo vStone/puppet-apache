@@ -1,4 +1,4 @@
-# == Definition: apache::vhost::config::concat::main
+# == Definition: apache::sys::config::concat::main
 #
 # Create the config file using the following style:
 #
@@ -14,7 +14,7 @@
 #
 # TODO: Update documentation
 #
-define apache::vhost::config::concat::main (
+define apache::sys::config::concat::main (
   $ensure,
   $content,
   $content_end,
@@ -24,7 +24,7 @@ define apache::vhost::config::concat::main (
 ) {
 
   require apache::params
-  require apache::vhost::config::concat::params
+  require apache::sys::config::concat::params
 
   apache::confd::symfile_concat {$name:
     ensure          => $ensure,

@@ -1,4 +1,4 @@
-# == Definition: apache::vhost::config::concat::mod
+# == Definition: apache::sys::config::concat::mod
 #
 # Helper file wrapper for extra mods for a certain vhost.
 # This will be added to the vhost configuration using the
@@ -15,7 +15,7 @@
 #
 # TODO: Update documentation
 #
-define apache::vhost::config::concat::mod (
+define apache::sys::config::concat::mod (
   $vhost,
   $ip       = undef,
   $port     = '80',
@@ -26,7 +26,7 @@ define apache::vhost::config::concat::mod (
 ) {
 
   ## Get the configured configuration style.
-  require apache::vhost::config::concat::params
+  require apache::sys::config::concat::params
 
   $fragment_name = "${vhost}_mod_${name}"
 

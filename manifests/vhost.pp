@@ -103,9 +103,10 @@
 #     }
 #   }
 #
-# If a module does not contain a classpath, we will prefix with apache::vhost::mod::
-# You can create custom modules outside the apache module this way. See the dummy.pp
-# module on what parameters are required for a mod.
+# If a module does not contain a classpath, we will prefix with
+# +apache::vhost::mod::+. You can create custom modules outside the apache
+# module this way. See the +apache::vhost::mod::dummy+ module on what parameters
+# are required for a mod.
 #
 # === Todo:
 #

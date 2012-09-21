@@ -8,7 +8,7 @@
 # TODO: Add or use LoadModule support
 #
 class apache::mod::reverse_proxy (
-  $proxy_pass_default_options = {}
+  $default_proxy_pass_options = {}
 ) {
 
 }

@@ -17,10 +17,14 @@
   proxiez_reverse = always_array(proxypassreverse)
   proxiez_path  = always_array(proxypath)
 
-  if empty?(_proxypass_options)
+  if empty?(_proxypass_options) or _proxypass_options == [] or _proxypass_options == {}
     proxypass_options = ""
-  else
-    proxypass_options = " " + hash_to_keypair(_proxypass_options) ## prefix with one space!!
+  elsif _proxypass_options.is_a?(String)
+    proxypass_options = " " + _proxypass_options
+  elsif _proxypass_options.is_a?(Hash)
+    proxypass_options = " " + hash_to_keypair(_proxypass_options) ## prefix with one space.
+  elsif _proxypass_options.is_a?(Array)
+    proxypass_options = " " + _proxypass_options.join(" ") ## prefix with one space.
   end
 -%>
 <% if defined?(comment) and ! empty?(comment) -%>

@@ -96,7 +96,8 @@ define apache::vhost::mod::reverse_proxy (
   case $default_proxy_pass_options {
     undef: {
       require apache::mod::reverse_proxy
-      $_proxypass_options = $::apache::mod::reverse_proxy::default_proxy_pass_options
+      $_proxypass_options =           # 80char limit :)
+        $::apache::mod::reverse_proxy::default_proxy_pass_options
     }
     default: {
       $_proxypass_options = $default_proxy_pass_options

@@ -67,8 +67,9 @@ define apache::vhost::ssl (
   $admin             = undef,
   $vhostroot         = undef,
   $logdir            = undef,
-  $accesslog         = 'access.log',
-  $errorlog          = 'error.log',
+  $accesslog         = undef,
+  $errorlog          = undef,
+  $placeholder_ssl   = undef,
   $errorlevel        = 'warn',
   $docroot           = undef,
   $docroot_purge     = false,
@@ -111,6 +112,25 @@ define apache::vhost::ssl (
 
   $ssl_content = template('apache/vhost/virtualhost_ssl.erb')
 
+  # Replacing the ssl placeholder on the log formats.
+  $placeholderssl = $placeholder_ssl ? {
+    undef   => $::apache::params::placeholder_ssl,
+    default => $placeholder_ssl,
+  }
+
+  $placeholders = {
+    'ssl' => $placeholderssl,
+  }
+
+  $access_log = $accesslog ? {
+    undef   => $::apache::params::default_accesslog,
+    default => $accesslog,
+  }
+  $error_log = $errorlog ? {
+    undef   => $::apache::params::default_errorlog,
+    default => $errorlog,
+  }
+
   apache::vhost{$title:
     ensure        => $ensure,
     name          => $name,
@@ -122,8 +142,8 @@ define apache::vhost::ssl (
     port          => $vhost_port,
     admin         => $admin,
     logdir        => $logdir,
-    accesslog     => $accesslog,
-    errorlog      => $errorlog,
+    accesslog     => format_logfile($access_log, $placeholders),
+    errorlog      => format_logfile($error_log, $placeholders),
     errorlevel    => $errorlevel,
     docroot_purge => $docroot_purge,
     dirroot       => $dirroot,

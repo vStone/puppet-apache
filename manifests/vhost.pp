@@ -49,11 +49,16 @@
 #                 Defaults to 'warn'.
 #
 # $accesslog::    Filename of the access log. Set to '' to disable logging.
-#                 Defaults to 'access.log'
+#                 Defaults to whatever is configured in apache::params using
+#                 the default_accesslog parameter.
+#                 This can be a string with certain placeholders. See the
+#                 _Log Placeholders_ section in the apache::params docs.
 #
 # $errorlog::     Filename of the error log. Set to '' to disable logging.
-#                 Defaults to 'error.log'
-#
+#                 Defaults to whatever is configured in apache::params using
+#                 the default_errorlog parameter.
+#                 This can be a string with certain placeholders. See the
+#                 _Log Placeholders_ section in the apache::params docs.
 #
 # $vhost_config:: Custom virtualhost configuration.
 #                 This does not override the complete config but is included
@@ -115,8 +120,8 @@ define apache::vhost (
   $admin          = undef,
   $vhostroot      = undef,
   $logdir         = undef,
-  $accesslog      = 'access.log',
-  $errorlog       = 'error.log',
+  $accesslog      = undef,
+  $errorlog       = undef,
   $errorlevel     = 'warn',
   $docroot        = undef,
   $docroot_purge  = false,
@@ -219,14 +224,17 @@ define apache::vhost (
   }
 
   ## Check for matching apache::namevhost
+  # $log_ip::    Used in the placeholders for log filenames.
   # $ip_def::    Used in the template in the <Virtualhost ...> directive.
   # $listen::    Used for checking if an apache::namevhost definition exists.
   case $ip {
     undef: {
+      $log_ip = 'all'
       $ip_def = '*'
       $listen = $vhost_port
     }
     default: {
+      $log_ip = $ip
       $ip_def = $ip
       $listen = "${ip}_${vhost_port}"
     }
@@ -249,6 +257,31 @@ define apache::vhost (
     undef   => $::apache::params::default_logformat,
     default => $logformat,
   }
+
+  # Use provided accesslog or use the default if none is provided.
+  $_access_log = $accesslog ? {
+    undef   => $::apache::params::default_accesslog,
+    default => $accesslog,
+  }
+  # Use provided errorlog or use the default if none is provided.
+  $_error_log = $errorlog ? {
+    undef   => $::apache::params::default_errorlog,
+    default => $errorlog,
+  }
+
+  # Log (access- and errorlog) filename placeholders.
+  $placeholders = {
+    'servername' => $server,
+    'name'       => $name,
+    'port'       => $vhost_port,
+    'listen'     => $listen,
+    'ip'         => $log_ip,
+    'ssl'        => '',           # Filter out %ssl placeholders.
+  }
+
+  # Replace placeholders in log filenames.
+  $access_log = format_logfile($_access_log, $placeholders)
+  $error_log = format_logfile($_error_log, $placeholders)
 
   ####################################
   ####   Create vhost structure   ####

@@ -64,6 +64,50 @@
 # $default_logformat::  Set the default logformat to use for vhosts.
 #                       Defaults to 'combined'.
 #
+# $default_accesslog::  Default accesslog format. Defaults to 'access.log'.
+#                       You can use some placeholders in the format. See
+#                       _Log Placeholders_ for more information.
+#
+# $default_errorlog::   Default errorlog format. Defaults to 'error.log'.
+#                       You can use some placeholders in the format. See
+#                       _Log Placeholders_ for more information.
+#
+# $placeholder_ssl::    The string to use as the is_ssl placeholder if the
+#                       vhost is ssl enabled. If the vhost does not use ssl,
+#                       it will be empty. Defaults to '_ssl' (including! the
+#                       underscore).
+#
+# === Log Placeholders:
+#
+# The following placeholders can be used when providing the format for the
+# access and/or errorlog.
+#
+# name::                Is replaced with the apache::vhost name provided.
+# servername::          Is replaced with the ServerName that is configured.
+# port::                Is replaced with the port.
+# listen::              Is replaced with the Listen directive this vhost is
+#                       using. This is a combination of +ip+:+port+ or just
+#                       +port+.
+# ip::                  This is the IP this vhost is for or '+all+' if the
+#                       vhost is for all (ip is '*')
+# ssl::                 Is replaced with the +$placeholder_ssl+ for a ssl vhost.
+#
+#
+# ==== Example:
+#
+#   class {'apache::params':
+#     $default_accesslog => '%servername_%port%ssl_access.log',
+#     $placeholder_ssl   => '_ssl',
+#   }
+#
+#   apache::vhost::ssl {'localhost_443':
+#     /* SSL PARAMETERS */
+#   }
+#   # the access log will be called: 'localhost_443_ssl_access.log'
+#
+#   apache::vhost {'localhost_80': }
+#   # the access log will be called: 'localhost_80_access.log'
+#
 #
 # === Todo:
 #
@@ -87,7 +131,10 @@ class apache::params(
   $config_style      = undef,
   $default_docroot   = 'htdocs',
   $diroptions        = ['FollowSymlinks','MultiViews'],
-  $default_logformat = 'combined'
+  $default_logformat = 'combined',
+  $default_accesslog = 'access.log',
+  $default_errorlog  = 'error.log',
+  $placeholder_ssl   = '_ssl'
 ) {
 
   ####################################

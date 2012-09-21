@@ -1,11 +1,11 @@
-# == Definition: apache::vhost::config::split::main
+# == Definition: apache::sys::config::split::main
 #
 #
 # === Todo:
 #
 # TODO: Update documentation
 #
-define apache::vhost::config::split::main (
+define apache::sys::config::split::main (
   $ensure,
   $content,
   $content_end,
@@ -15,10 +15,10 @@ define apache::vhost::config::split::main (
 ) {
 
   require apache::params
-  require apache::vhost::config::split::params
+  require apache::sys::config::split::params
 
   $include_root = $::apache::setup::vhost::confd
-  $include_path = $::apache::vhost::config::split::params::include_path
+  $include_path = $::apache::sys::config::split::params::include_path
 
   $include_blob = "${include_root}/${include_path}${name}_mod_*.include"
 

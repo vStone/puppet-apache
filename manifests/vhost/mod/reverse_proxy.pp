@@ -135,7 +135,7 @@ define apache::vhost::mod::reverse_proxy (
 
   $definition = template('apache/vhost/mod/reverse_proxy.erb')
 
-  apache::vhost::modfile {$title:
+  apache::sys::modfile {$title:
     ensure    => $ensure,
     vhost     => $vhost,
     ip        => $ip,

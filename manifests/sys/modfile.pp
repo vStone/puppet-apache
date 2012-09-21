@@ -1,4 +1,4 @@
-# == Definition: apache::vhost::modfile
+# == Definition: apache::sys::modfile
 #
 # Modules use this type to add content to a virtualhost.
 # The configuration type selected is responsible for making
@@ -23,7 +23,7 @@
 #
 # TODO: Update documentation
 #
-define apache::vhost::modfile (
+define apache::sys::modfile (
   $vhost,
   $ip       = undef,
   $port     = '80',

@@ -18,12 +18,12 @@ define apache::confd::file_exists (
   require apache::params
 
   $fowner = $owner ? {
-    undef   => $apache::params::daemon_user,
+    undef   => $::apache::params::daemon_user,
     default => $owner,
   }
 
   $fgroup = $group ? {
-    undef   => $apache::params::daemon_group,
+    undef   => $::apache::params::daemon_group,
     default => $group,
   }
 

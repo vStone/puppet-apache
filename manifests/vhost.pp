@@ -21,7 +21,8 @@
 #                 Defaults to '80'
 #
 # $admin::        Admin email address.
-#                 Defaults to admin@SERVERNAME
+#                 Defaults to apache::params::default_admin if defined,
+#                 otherwise to admin@<servername>
 #
 # $vhostroot::    Root where all other files for this vhost will be placed.
 #                 Defaults to the globally defined vhost root folder.
@@ -189,8 +190,13 @@ define apache::vhost (
   }
 
   # Use the provided admin mail address or use the default value.
-  $serveradmin = $admin ? {
+  $default_admin = $::apache::params::default_admin ? {
     undef   => "admin@${server}",
+    default => $::apache::params::default_admin,
+  }
+
+  $serveradmin = $admin ? {
+    undef   => $default_admin,
     default => $admin,
   }
 

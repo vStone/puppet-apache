@@ -135,6 +135,7 @@ class apache::params(
   $default_logformat = 'combined',
   $default_accesslog = 'access.log',
   $default_errorlog  = 'error.log',
+  $default_admin     = undef,
   $placeholder_ssl   = '_ssl'
 ) {
 

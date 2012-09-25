@@ -22,16 +22,14 @@
 #
 define apache::augeas::set (
   $value,
-  $lens = 'Httpd.lns',
-  $incl = $::apache::params::config_file
 ) {
 
-  $context = "/files${incl}"
+  require apache::params
 
   Augeas {
-    lens    => $lens,
-    incl    => $incl,
-    context => $context,
+    lens    => 'Httpd.lns',
+    incl    => $::apache::params::config_file,
+    context => "/files${::apache::params::config_file}",
   }
 
   # Update if it exists
@@ -43,8 +41,7 @@ define apache::augeas::set (
   # Create if it does not exist.
   augeas {"apache-augeas-set-insert-${name}":
     changes => [
-      'ins directive after *[last()]',
-      "set directive[last()] '${name}'",
+      "set directive[last() + 1] '${name}'",
       "set directive[last()]/arg '${value}'"
     ],
     onlyif  => "match directive[ . = '${name}'] size == 0",

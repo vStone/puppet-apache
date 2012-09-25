@@ -120,6 +120,7 @@ class apache::params(
   $apache_ssl        = undef,
   $service           = undef,
   $configroot        = undef,
+  $moduleroot        = undef,
   $vhostroot         = undef,
   $vhostroot_purge   = false,
   $logroot           = undef,
@@ -254,6 +255,12 @@ class apache::params(
     default => "apache::sys::config::${config_style}"
   }
 
+  $module_root = $moduleroot ? {
+    undef   => $::operatingsystem ? {
+      default => 'module'
+    },
+    default => $moduleroot,
+  }
 
   ####################################
   ####    Apache Daemon Config    ####

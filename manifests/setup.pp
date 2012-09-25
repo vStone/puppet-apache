@@ -29,10 +29,10 @@ class apache::setup {
     default:                  { $_keepalive = 'On' }
   }
 
-  apache::augeas::set{'ServerRoot': value => $::apache::params::config_dir, }
-  apache::augeas::set{'KeepAlive':  value => $_keepalive, }
-  apache::augeas::set{'User':       value => $::apache::params::daemon_user, }
-  apache::augeas::set{'Group':      value => $::apache::params::daemon_group, }
+  apache::augeas::set {'ServerRoot': value => $::apache::params::config_dir, }
+  apache::augeas::set {'KeepAlive':  value => $_keepalive, }
+  apache::augeas::set {'User':       value => $::apache::params::daemon_user, }
+  apache::augeas::set {'Group':      value => $::apache::params::daemon_group, }
 
   augeas{'apache-setup-default-include':
     notify  => Service['apache'],

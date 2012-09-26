@@ -55,7 +55,7 @@ class apache::mod::cluster (
     case $::mod_cluster::module::id {
       default, undef: {
         $mod_id = $::mod_cluster::module::id
-        fail ("The selected module ($mod_id) is not supported by this module.")
+        fail ("The selected module (${mod_id}) is not supported by this module.")
       }
       'unifiedpost-puppet-module': {
         include mod_cluster

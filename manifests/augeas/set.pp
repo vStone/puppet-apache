@@ -46,10 +46,7 @@ define apache::augeas::set (
 
   # Create if it does not exist.
   augeas {"apache-augeas-set-insert-${name}":
-    changes => [
-      "set directive[last() + 1] '${name}'",
-      "set directive[last()]/arg '${value}'"
-    ],
+    changes => template('apache/augeas/set-insert.erb'),
     onlyif  => "match directive[ . = '${name}'] size == 0",
   }
 

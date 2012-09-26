@@ -1,0 +1,14 @@
+set directive[last() + 1] '<%= name %>'
+<%
+  if value.is_a?(Array)
+    index = 1
+    value.each do |val|
+%>
+set directive[last()]/arg[<%= index %>] '<%= val %>'
+<%
+    index += 1
+    end
+  else
+%>
+set directive[last()]/arg '<%= value %>'
+<% end -%>

@@ -34,7 +34,7 @@ class apache::setup {
   apache::augeas::set {'User':       value => $::apache::params::daemon_user, }
   apache::augeas::set {'Group':      value => $::apache::params::daemon_group, }
 
-  augeas{'apache-setup-default-include':
+  augeas {'apache-setup-default-include':
     notify  => Service['apache'],
     changes => [
       'ins directive after *[last()]',

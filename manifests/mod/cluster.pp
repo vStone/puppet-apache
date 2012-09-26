@@ -16,14 +16,14 @@
 #
 #
 class apache::mod::cluster (
-  $manager_vhost          = true,
-  $manager_port           = 80,
-  $manager_ip             = undef,
-  $manager_servername     = $::fqdn,
-  $manager_location       = undef,
-  $manager_allow_order    = undef,
-  $manager_allow_from     = undef,
-  $manager_deny_from      = undef,
+  $manager_vhost        = true,
+  $manager_port         = 80,
+  $manager_ip           = undef,
+  $manager_servername   = $::fqdn,
+  $manager_location     = undef,
+  $manager_allow_order  = undef,
+  $manager_allow_from   = undef,
+  $manager_deny_from    = undef,
 
   $advertise_vhost      = true,
   $advertise_port       = 6666,

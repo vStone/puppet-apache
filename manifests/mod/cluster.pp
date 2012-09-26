@@ -5,7 +5,12 @@
 # == Parameters:
 #
 #
-#
+# $create_balancers::   Possible values are: (use the number or keyword)
+#                         0 / All   Create in all VirtualHosts defined in httpd.
+#                         1 / No    Don't create balancers (requires at least
+#                                   one ProxyPass/ProxyPassMatch to define the
+#                                   balancer names)
+#                         2 / Main  Create only the main server.
 #
 # === Todo:
 #
@@ -29,6 +34,11 @@ class apache::mod::cluster (
   $advertise_port       = 6666,
   $advertise_ip         = undef,
   $advertise_servername = $::fqdn,
+
+  $create_balancers     = undef,
+  $use_alias            = undef,
+  $lbstatus_recal_time  = undef,
+  $wait_for_remove      = undef,
 
   $mem_manager_file     = undef,
   $max_context          = undef,
@@ -94,6 +104,38 @@ class apache::mod::cluster (
   apache::config::loadmodule {'proxy_cluster': }
   apache::config::loadmodule {'advertise': }
   apache::config::loadmodule {'proxy_balancer': ensure => 'absent', }
+
+
+  case $create_balancers {
+    /^(?i:0|all)$/:  { $createbalancers = 0 }
+    /^(?i:1|no)$/:   { $createbalancers = 1 }
+    /^(?i:2|main)$/: { $createbalancers = 2 }
+    default: {
+      fail ("Unrecognized value for create_balancers. Must be one of 0,1,2,all,no,main. given: '${create_balancers}'")
+    }
+  }
+  case $use_alias {
+    /^(?i:1|yes|on)$/: { $usealias = 1 }
+    /^(?i:0|no|off)$/: { $usealias = 0 }
+    true: { $usealias = 1 }
+    false: { $usealias = 0 }
+    default: {
+      fail('Unrecognized value for use_alias. Must be one of 0,1,true or false.')
+    }
+  }
+  case $lbstatus_recal_time {
+    /^[0-9]+$/: {}
+    default: {
+      fail('lbstatus_recal_time must be a time in seconds (a number!)')
+    }
+  }
+  case $wait_for_remove {
+    /^[0-9]+$/: {}
+    default: {
+      fail('wait_for_remove must be a time in seconds (a number!)')
+    }
+  }
+
 
   ## Global configuration
   apache::confd::file {'mod_cluster':

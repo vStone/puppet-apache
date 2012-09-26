@@ -8,6 +8,20 @@
   end
 %>
 
+# mod_proxy_cluster
+<% if ! empty?(createbalancers) -%>
+CreateBalancers <%= createbalancers %>
+<% end -%>
+<% if ! empty?(usealias) -%>
+UseAlias <%= usealias %>
+<% end -%>
+<% if ! empty?(lbstatus_recal_time) -%>
+LBstatusRecalTime  <%= lbstatus_recal_time %>
+<% end -%>
+<% if ! empty?(wait_for_remove) -%>
+WaitForRemove  <%= wait_for_remove %>
+<% end -%>
+
 # mod_manager
 <% if ! empty?(mem_manager_file) -%>
 MemManagerFile <%= mem_manager_file %>

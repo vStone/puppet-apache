@@ -123,7 +123,7 @@ define apache::vhost::mod::reverse_proxy (
     /^(?i:deny,allow)$/: {}
     /^(?i:allow,deny)$/: {}
     default: {
-      fail( template('apache/msg/mod-revproxy-allow-order-fail.erb') )
+      fail( template('apache/msg/directive-allow-order-fail.erb') )
     }
   }
   case $proxyvia {

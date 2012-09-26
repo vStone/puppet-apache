@@ -7,22 +7,24 @@
     value == '' or value == :undef
   end
 %>
+
+# mod_manager
 <% if ! empty?(mem_manager_file) -%>
-  MemManagerFile <%= mem_manager_file %>
+MemManagerFile <%= mem_manager_file %>
 <% end -%>
 <% if ! empty?(max_context) -%>
-  Maxcontext <%= max_context %>
+Maxcontext <%= max_context %>
 <% end -%>
 <% if ! empty?(max_node) -%>
-  Maxnode <%= max_node %>
+Maxnode <%= max_node %>
 <% end -%>
 <% if ! empty?(max_host) -%>
-  Maxhost <%= max_host %>
+Maxhost <%= max_host %>
 <% end -%>
 <% if ! empty?(max_sessionid) -%>
-  Maxsessionid <%= max_sessionid %>
+Maxsessionid <%= max_sessionid %>
 <% end -%>
 <% if ! empty?(persist_slots) -%>
-  PersistSlots <%= persist_slots%>
+PersistSlots <%= persist_slots%>
 <% end -%>
 

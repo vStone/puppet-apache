@@ -25,6 +25,11 @@ class apache::mod::cluster (
   $manager_allow_from     = undef,
   $manager_deny_from      = undef,
 
+  $advertise_vhost      = true,
+  $advertise_port       = 6666,
+  $advertise_ip         = undef,
+  $advertise_servername = $::fqdn,
+
   $mem_manager_file     = undef,
   $max_context          = undef,
   $max_node             = undef,
@@ -140,6 +145,37 @@ class apache::mod::cluster (
       deny_from   => $manager_deny_from,
     }
 
+  }
+  if $advertise_vhost {
+    ## Listen
+    $advertise_listen = $advertise_ip ? {
+      undef   => $advertise_port,
+      default => "${advertise_ip}_${advertise_port}",
+    }
+    if ! defined(Apache::Listen[$advertise_listen]) {
+      apache::listen {$advertise_listen: }
+    }
+
+    $advertise_vhost_name = $advertise_vhost ? {
+      true    => "${advertise_servername}_${advertise_port}",
+      default => $advertise_vhost,
+    }
+
+    if $advertise_vhost and (! defined(Apache::Vhost[$advertise_vhost_name])) {
+      apache::vhost {$advertise_vhost_name:
+        servername => $advertise_servername,
+        ip         => $advertise_ip,
+        port       => $advertise_port,
+        require    => Apache::Listen[$advertise_listen],
+      }
+    }
+
+    apache::vhost::mod::advertise {$advertise_vhost_name:
+      vhost => $advertise_vhost_name,
+      ip    => $advertise_ip,
+      port  => $advertise_port,
+      ## mod::advertise specific configuration
+    }
   }
 
 }

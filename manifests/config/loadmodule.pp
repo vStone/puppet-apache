@@ -46,15 +46,6 @@ define apache::config::loadmodule (
     default => "${path}/${file}",
   }
 
-  notify {"apache-config-loadmodule-${name}":
-    message => "
-    name: ${name}
-    module: ${module}
-    file: ${file}
-    modfile: ${modfile}
-    ",
-  }
-
   case $ensure {
     default,'present',true: {
 

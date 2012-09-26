@@ -22,15 +22,20 @@
 #
 define apache::augeas::rm (
   $value = undef,
-
+  $config = undef
 ) {
 
   require apache::params
 
+  $config_file = $config ? {
+    undef   => $::apache::params::config_file,
+    default => $config,
+  }
+
   Augeas {
     lens    => 'Httpd.lns',
-    incl    => $::apache::params::config_file,
-    context => "/files${::apache::params::config_file}",
+    incl    => $config_file,
+    context => "/files${config_file}",
   }
 
   case $value {

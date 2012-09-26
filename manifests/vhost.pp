@@ -247,8 +247,8 @@ define apache::vhost (
     }
   }
 
-  if ($ensure == 'present') and ( ! defined (Apache::Namevhost[$listen])) {
-    warning( template('apache/msg/vhost-notdef-namevhost-warning.erb') )
+  if ($ensure == 'present') and ( ! defined (Apache::Listen[$listen])) {
+    warning( template('apache/msg/vhost-notdef-listen-warning.erb') )
   }
 
   # Use the provided diroptions, 'All' when diroptions is empty or the default.

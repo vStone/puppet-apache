@@ -21,10 +21,10 @@
 # TODO: Update documentation
 #
 define apache::config::loadmodule (
-  $module = "${name}_module",
-  $ensure = 'present',
-  $file   = "mod_${name}.so",
-  $path   = undef
+  $module   = "${name}_module",
+  $ensure   = 'present',
+  $file     = "mod_${name}.so",
+  $path     = undef
 ) {
 
   require apache::params

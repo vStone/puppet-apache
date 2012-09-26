@@ -5,10 +5,8 @@
   end
   def onoff (var)
     return var if var.is_a?(String)
-    if var == true or var == false
-      return 'on' if var
-      return 'off'
-    end
+    return 'on' if var == true
+    return 'off' if var == false
   end
 -%>
 <% if defined?(comment) and ! empty?(comment) -%>

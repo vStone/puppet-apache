@@ -16,6 +16,15 @@
 #
 #
 class apache::mod::cluster (
+  $manager_vhost          = true,
+  $manager_port           = 80,
+  $manager_ip             = undef,
+  $manager_servername     = $::fqdn,
+  $manager_location       = undef,
+  $manager_allow_order    = undef,
+  $manager_allow_from     = undef,
+  $manager_deny_from      = undef,
+
   $mem_manager_file     = undef,
   $max_context          = undef,
   $max_node             = undef,
@@ -85,6 +94,52 @@ class apache::mod::cluster (
   apache::confd::file {'mod_cluster':
     confd   => $::apache::setup::mod::confd,
     content => template('apache/mod/cluster.erb'),
+  }
+
+
+  #######################################
+  #       |              |
+  # .    ,|---.,---.,---.|--- ,---.
+  #  \  / |   ||   |`---.|    `---.
+  #   `'  `   '`---'`---'`---'`---'
+  #
+
+  if $manager_vhost {
+    ## Listen
+    $manager_listen = $manager_ip ? {
+      undef   => $manager_port,
+      default => "${manager_ip}_${manager_port}",
+    }
+
+    $manager_vhost_name = $manager_vhost ? {
+      true    => "${manager_servername}_${manager_port}",
+      default => $manager_vhost,
+    }
+
+    if ! defined(Apache::Listen[$manager_listen]) {
+      apache::listen {$manager_listen: }
+    }
+
+    if $manager_vhost and ( ! defined(Apache::Vhost[$manager_vhost_name])) {
+      apache::vhost {$manager_vhost_name:
+        servername  => $manager_servername,
+        ip          => $manager_ip,
+        port        => $manager_port,
+        require     => Apache::Listen[$manager_listen],
+      }
+    }
+
+    apache::vhost::mod::manager {$manager_vhost_name:
+      vhost       => $manager_vhost_name,
+      ip          => $manager_ip,
+      port        => $manager_port,
+      ## mod::manager specific configuration
+      location    => $manager_location,
+      allow_order => $manager_allow_order,
+      allow_from  => $manager_allow_from,
+      deny_from   => $manager_deny_from,
+    }
+
   }
 
 }

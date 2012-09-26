@@ -16,8 +16,9 @@
 # $service::            Name of the apache service.
 #                       Defaults to distro specific.
 #
-# $configroot::         Root of all configuration files (NOT vhosts!)
-#                       Defaults to apache configuration dir/conf.d/
+# $configroot::         Root of all configuration files.
+#                       Defaults to distro specific. This should NOT include
+#                       a trailing '/' (forward-slash)
 #
 # $vhostroot::          Root where all vhost configuration is done. The
 #                       structure beneath this folder is determined by the
@@ -210,6 +211,7 @@ class apache::params(
   }
 
   ## Main configuration template to use.
+  ## TODO: DEPRECATED. Remove!
   $config_template = $::operatingsystem ? {
     /Archlinux/     => 'apache/config/archlinux-apache.conf.erb',
     /CentOS|RedHat/ => $::operatingsystemrelease ? {

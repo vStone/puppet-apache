@@ -13,6 +13,7 @@
   end
 
   ## Sanitize variables
+  proxiez_pass_match = always_array(proxypassmatch)
   proxiez_pass = always_array(proxypass)
   proxiez_reverse = always_array(proxypassreverse)
   proxiez_path  = always_array(proxypath)
@@ -46,6 +47,9 @@
     Deny from <%= deny_from %>
 <%  end -%>
   </Proxy>
+<% end -%>
+<% proxiez_pass_match.each do |p| -%>
+  ProxyPassMatch <%= p %>
 <% end -%>
 <% proxiez_pass.each do |p| -%>
   ProxyPass <%= p %><%= proxypass_options %>

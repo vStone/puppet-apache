@@ -43,6 +43,11 @@
 #                     Defaults to '' (empty).
 #                     See: http://httpd.apache.org/docs/2.2/howto/access.html.
 #
+# $proxypassmatch::   This can be a single string, an array or a hash.
+#                     For each entry, a ProxyPassMatch directive will be
+#                     written to the configuration file.
+#                     See: http://tinyurl.com/apache-mod-proxy#proxypassmatch
+#
 # $proxypass::        This can either be a single string, an array or a hash.
 #                     For each entry, a ProxyPass directive will be written to
 #                     the configuration file.
@@ -86,6 +91,7 @@ define apache::vhost::mod::reverse_proxy (
   $allow_order      = 'Deny,Allow',
   $allow_from       = 'All',
   $deny_from        = undef,
+  $proxypassmatch   = undef,
   $proxypass        = undef,
   $proxypassreverse = undef,
   $proxypath        = undef,

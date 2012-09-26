@@ -258,7 +258,7 @@ class apache::params(
 
   $module_root = $moduleroot ? {
     undef   => $::operatingsystem ? {
-      default => 'module'
+      default => 'modules'
     },
     default => $moduleroot,
   }

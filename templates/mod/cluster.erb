@@ -1,0 +1,28 @@
+### File managed with puppet ###
+## Served by:        '<%= scope.lookupvar('::servername') %>'
+## Module:           '<%= scope.to_hash['module_name'] %>'
+## Template source:  '<%= template_source %>'
+<%
+  def empty?(value)
+    value == '' or value == :undef
+  end
+%>
+<% if ! empty?(mem_manager_file) -%>
+  MemManagerFile <%= mem_manager_file %>
+<% end -%>
+<% if ! empty?(max_context) -%>
+  Maxcontext <%= max_context %>
+<% end -%>
+<% if ! empty?(max_node) -%>
+  Maxnode <%= max_node %>
+<% end -%>
+<% if ! empty?(max_host) -%>
+  Maxhost <%= max_host %>
+<% end -%>
+<% if ! empty?(max_sessionid) -%>
+  Maxsessionid <%= max_sessionid %>
+<% end -%>
+<% if ! empty?(persist_slots) -%>
+  PersistSlots <%= persist_slots%>
+<% end -%>
+

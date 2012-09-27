@@ -79,6 +79,7 @@ define apache::vhost::ssl (
   $mods              = undef,
   $owner             = undef,
   $group             = undef,
+  $logformat         = undef,
   $diroptions        = 'FollowSymlinks MultiViews'
 ) {
 
@@ -151,6 +152,7 @@ define apache::vhost::ssl (
     mods          => $mods,
     owner         => $owner,
     group         => $group,
+    logformat     => $logformat,
     vhost_config  => $ssl_content, # This is the only thing that is different.
     diroptions    => $diroptions,
   }

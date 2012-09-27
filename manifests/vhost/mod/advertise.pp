@@ -63,9 +63,45 @@ define apache::vhost::mod::advertise (
   $_automated    = false,
   $_header       = true,
   $comment       = undef,
-  $content       = ''
+  $content       = '',
+
+  $enable_mcpm_receive = true,
+  $server_advertise    = undef,
+  $group               = undef,
+  $frequency           = undef,
+  $security_key        = undef,
+  $bind_address        = undef
 ) {
 
+
+
+  case $server_advertise {
+    true,false,undef: {}
+    default: {
+      fail('server_advertise: allowed values: true,false or leave undefined.')
+    }
+  }
+  case $group {
+    /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(:[0-9]+)?$/: {}
+    undef: {}
+    default: {
+      fail('group: value must be either an IP or IP:PORT.')
+    }
+  }
+  case $frequency {
+    /^[0-9]+(\.[0-9]+)$/: {}
+    undef: {}
+    default: {
+      fail('frequency: allowed value must be <seconds> or <seconds>.<miliseconds>.')
+    }
+  }
+  case $bind_address {
+    /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+$/: {}
+    undef: {}
+    default: {
+      fail('bind_address: value must be an IP:PORT.')
+    }
+  }
 
   ## Generate the content for your module file:
   $definition = template('apache/vhost/mod/advertise.erb')

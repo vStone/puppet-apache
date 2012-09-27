@@ -107,30 +107,34 @@ class apache::mod::cluster (
 
 
   case $create_balancers {
-    /^(?i:0|all)$/:  { $createbalancers = 0 }
-    /^(?i:1|no)$/:   { $createbalancers = 1 }
-    /^(?i:2|main)$/: { $createbalancers = 2 }
+    /^(?i:0|all)$/:   { $createbalancers = 0 }
+    /^(?i:1|no)$/:    { $createbalancers = 1 }
+    /^(?i:2|main)$/:  { $createbalancers = 2 }
+    undef:            { $createbalancers = undef }
     default: {
       fail ("Unrecognized value for create_balancers. Must be one of 0,1,2,all,no,main. given: '${create_balancers}'")
     }
   }
   case $use_alias {
-    /^(?i:1|yes|on)$/: { $usealias = 1 }
-    /^(?i:0|no|off)$/: { $usealias = 0 }
-    true: { $usealias = 1 }
-    false: { $usealias = 0 }
+    /^(?i:1|yes|on)$/:  { $usealias = 1 }
+    /^(?i:0|no|off)$/:  { $usealias = 0 }
+    true:               { $usealias = 1 }
+    false:              { $usealias = 0 }
+    undef:              { $usealias = undef }
     default: {
       fail('Unrecognized value for use_alias. Must be one of 0,1,true or false.')
     }
   }
   case $lbstatus_recal_time {
     /^[0-9]+$/: {}
+    undef: {}
     default: {
       fail('lbstatus_recal_time must be a time in seconds (a number!)')
     }
   }
   case $wait_for_remove {
     /^[0-9]+$/: {}
+    undef: {}
     default: {
       fail('wait_for_remove must be a time in seconds (a number!)')
     }

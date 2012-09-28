@@ -30,11 +30,8 @@ define apache::sys::config::concat::mod (
   require apache::params
   require apache::sys::config::concat::params
 
-  case $notify_service {
-    undef: {}
-    default: {
-      warn('Setting the notify_service parameter explicitly for a mod will have no impact using the concat configuration style. This should be configured in the vhost or globally.')
-    }
+  if ($notify_service != undef) and ($nodepend == false) {
+    warning('Setting the notify_service parameter explicitly for a mod will have no impact using the concat configuration style. This should be configured in the vhost or globally.')
   }
 
   $fragment_name = "${vhost}_mod_${name}"

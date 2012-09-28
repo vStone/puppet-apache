@@ -62,8 +62,9 @@ define apache::listen (
     $fname = "listen_${listen_ip}_${listen_port}"
 
     apache::confd::file {$fname:
-      confd   => $apache::setup::listen::confd,
-      content => template('apache/confd/listen.erb'),
+      confd          => $apache::setup::listen::confd,
+      content        => template('apache/confd/listen.erb'),
+      notify_service => $::apache::params::notify_service,
     }
   }
 

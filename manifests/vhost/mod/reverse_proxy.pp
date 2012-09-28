@@ -76,6 +76,7 @@
 #
 define apache::vhost::mod::reverse_proxy (
   $vhost,
+  $notify_service   = undef,
   $ensure           = 'present',
   $ip               = undef,
   $port             = '80',
@@ -150,6 +151,7 @@ define apache::vhost::mod::reverse_proxy (
     content        => $definition,
     nodepend       => $_automated,
     order          => $order,
+    notify_service => $notify_service,
   }
 
 }

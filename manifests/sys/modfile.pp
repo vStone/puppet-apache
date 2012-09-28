@@ -25,12 +25,13 @@
 #
 define apache::sys::modfile (
   $vhost,
-  $ip       = undef,
-  $port     = '80',
-  $ensure   = 'present',
-  $content  = '',
-  $nodepend = false,
-  $order    = undef
+  $notify_service = undef,
+  $ip             = undef,
+  $port           = '80',
+  $ensure         = 'present',
+  $content        = '',
+  $nodepend       = false,
+  $order          = undef
 ) {
 
   $mod_def = "${::apache::params::config_base}::mod"
@@ -44,6 +45,7 @@ define apache::sys::modfile (
       'content'        => $content,
       'nodepend'       => $nodepend,
       'order'          => $order,
+      'notify_service' => $notify_service,
     }
   }
 

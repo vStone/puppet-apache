@@ -34,6 +34,7 @@
 #
 define apache::vhost::mod::rewrite (
   $vhost,
+  $notify_service = undef,
   $ensure         = 'present',
   $ip             = undef,
   $port           = undef,
@@ -57,6 +58,7 @@ define apache::vhost::mod::rewrite (
     content        => $definition,
     nodepend       => $_automated,
     order          => $order,
+    notify_service => $notify_service,
   }
 
 }

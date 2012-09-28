@@ -56,6 +56,7 @@
 #
 define apache::vhost::mod::header (
   $vhost,
+  $notify_service = undef,
   $ensure         = 'present',
   $ip             = undef,
   $port           = '80',
@@ -81,6 +82,7 @@ define apache::vhost::mod::header (
     nodepend       => $_automated,
     content        => $definition,
     order          => $order,
+    notify_service => $notify_service,
   }
 }
 

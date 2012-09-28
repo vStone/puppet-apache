@@ -1,0 +1,41 @@
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
+<%
+  def empty?(value)
+    value == '' or value == :undef
+  end
+  def onoff(var)
+    return var if var.is_a?(String)
+    return 'on' if var == true
+    return 'off' if var == false
+  end
+-%>
+<% if _header -%>
+<%  # You can add a header here -%>
+<% end -%>
+<% if defined?(comment) and ! empty?(comment) -%>
+  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% end -%>
+<% if ! empty?(enable_mcpm_receive) and enable_mcpm_receive == true -%>
+  EnableMCPMReceive
+<% end -%>
+<% if ! empty?(server_advertise) -%>
+  ServerAdvertise <%= onoff(server_advertise) %>
+<% end -%>
+<% if ! empty?(group) -%>
+  AdvertiseGroup <%= group %>
+<% end -%>
+<% if ! empty?(frequency) -%>
+  AdvertiseFrequency <%= frequency %>
+<% end -%>
+<% if ! empty?(security_key) -%>
+  AdvertiseSecurityKey <%= security_key %>
+<% end -%>
+<% if ! empty?(bind_address) -%>
+  AdvertiseBindAddress <%= bind_address %>
+<% end -%>
+<% if ! empty?(content) -%>
+  # Below you will find the extra content you have defined.
+  # This is NOT part of the puppet template.
+  <%= content %>
+<% end -%>
+

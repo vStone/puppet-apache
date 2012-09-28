@@ -83,11 +83,8 @@ class apache::mod::cluster (
       }
     }
 
-    package { $pkg_name:
-      ensure  => installed,
-      alias   => 'apache_mod_cluster',
-      require => Package['apache'],
-      notify  => Service['apache'],
+    apache::sys::modpackage { 'cluster':
+      package        => $pkg_name,
     }
   }
 

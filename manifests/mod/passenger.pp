@@ -1,11 +1,18 @@
 # == Class: apache::mod::passenger
 #
+# For CentOS/Redhat, we use rubygems to install mod_passenger!
+#
 # === Todo:
 #
 # TODO: Update documentation
 # TODO: Add or use LoadModule support
+# TODO: Implement basic configuration for those that do not have the passenger
+#       module.
+# TODO: Support installing using gems or use system packages
 #
-class apache::mod::passenger {
+class apache::mod::passenger (
+  $package       = undef
+) {
 
   if defined('::passenger::module') {
     require passenger::module
@@ -14,13 +21,19 @@ class apache::mod::passenger {
     }
   } else {
 
-    ## @Todo: Do we even need this here? I'm unsure it still works.
-
-
-    $pkg_name = $::operatingsystem ? {
-      /Debian|Ubuntu/ => 'libapache2-mod-passenger',
-      /Centos|RedHat/ => 'passenger',
-      default         => [],
+    case $package {
+      undef: {
+        case $::operatingsystem {
+          /(?i:debian|ubuntu)/: { $pkg_name = 'libapache2-mod-passenger' }
+          /(?i:centos|redhat)/: { $pkg_name = 'passenger' }
+          default: {
+            fail('Your operatingsystem is not supported by apache::mod:passenger')
+          }
+        }
+      }
+      default: {
+        $pkg_name = $package
+      }
     }
 
     package { $pkg_name:
@@ -44,4 +57,5 @@ class apache::mod::passenger {
       default: {}
     }
   }
+
 }

@@ -6,9 +6,13 @@
 # Uses the +path+  as name for the file resource. Also defaults the
 # owner and group to what is defined in apache::params (daemon_user/group)
 #
+# For these kind of files, we do not notify the service my default since
+# the resource that called this will probably do so on itself.
+#
 define apache::confd::file_exists (
   $ensure,
   $path,
+  $notify_service = false,
   $owner          = undef,
   $group          = undef,
   $purge          = false,
@@ -37,6 +41,11 @@ define apache::confd::file_exists (
       group  => $fgroup,
       purge  => $purge,
       target => $target,
+    }
+    if $notify_service {
+      File[$path] {
+        notify => Service['apache'],
+      }
     }
   }
 

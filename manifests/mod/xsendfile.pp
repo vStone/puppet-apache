@@ -12,9 +12,12 @@
 #
 class apache::mod::xsendfile {
 
-  $pkg_name = $::operatingsystem ? {
-    /Debian|Ubuntu/         => 'libapache2-mod-xsendfile',
-    /CentOS|Fedora|RedHat/  => 'mod_xsendfile',
+  case $::operatingsystem {
+    /(?i:debian|ubuntu)/: { $pkg_name = 'libapache2-mod-xsendfile' }
+    /(?i:centos|redhat)/: { $pkg_name = 'mod_xsendfile' }
+    default: {
+      fail('Your operatingsystem is not supported by apache::mod::xsendfile')
+    }
   }
 
   package { $pkg_name:

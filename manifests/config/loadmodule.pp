@@ -59,7 +59,7 @@ define apache::config::loadmodule (
           "set directive[. = 'LoadModule' ][last()]/arg[1] ${module}",
           "set directive[. = 'LoadModule' ][last()]/arg[2] ${modfile}",
         ],
-        onlyif => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size == 0",
+        onlyif  => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size == 0",
       }
     }
     'absent': {

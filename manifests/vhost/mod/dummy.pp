@@ -55,15 +55,16 @@
 #
 define apache::vhost::mod::dummy (
   $vhost,
-  $ensure        = 'present',
-  $ip            = undef,
-  $port          = '80',
-  $docroot       = undef,
-  $order         = undef,
-  $_automated    = false,
-  $_header       = true,
-  $comment       = undef,
-  $content       = ''
+  $notify_service = undef,
+  $ensure         = 'present',
+  $ip             = undef,
+  $port           = '80',
+  $docroot        = undef,
+  $order          = undef,
+  $_automated     = false,
+  $_header        = true,
+  $comment        = undef,
+  $content        = ''
 ) {
 
 
@@ -71,13 +72,14 @@ define apache::vhost::mod::dummy (
   $definition = template('apache/vhost/mod/dummy.erb')
 
   apache::sys::modfile {$title:
-    ensure   => $ensure,
-    vhost    => $vhost,
-    ip       => $ip,
-    port     => $port,
-    nodepend => $_automated,
-    content  => $definition,
-    order    => $order,
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    nodepend       => $_automated,
+    content        => $definition,
+    order          => $order,
+    notify_service => $notify_service,
   }
 }
 

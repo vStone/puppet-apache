@@ -46,6 +46,7 @@
 #
 define apache::confd::symfile_concat (
   $confd,
+  $notify_service,
   $order            = '10',
   $ensure           = 'enable',
   $link_name        = "${title}.conf",
@@ -83,6 +84,12 @@ define apache::confd::symfile_concat (
   concat {$name:
     path   => $target,
   }
+  if $notify_service {
+    Concat[$name] {
+      notify => Service['apache'],
+    }
+  }
+
   concat::fragment{"${title}-main":
     target  => $name,
     order   => '0001',

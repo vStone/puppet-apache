@@ -34,29 +34,31 @@
 #
 define apache::vhost::mod::rewrite (
   $vhost,
-  $ensure        = 'present',
-  $ip            = undef,
-  $port          = undef,
-  $docroot       = undef,
-  $order         = undef,
-  $_automated    = false,
-  $_header       = true,
+  $notify_service = undef,
+  $ensure         = 'present',
+  $ip             = undef,
+  $port           = undef,
+  $docroot        = undef,
+  $order          = undef,
+  $_automated     = false,
+  $_header        = true,
 
-  $comment       = undef,
-  $rewrite_cond  = [],
-  $rewrite_rule  = []
+  $comment        = undef,
+  $rewrite_cond   = [],
+  $rewrite_rule   = []
 ) {
 
   $definition = template('apache/vhost/mod/rewrite.erb')
 
   apache::sys::modfile {$title:
-    ensure   => $ensure,
-    vhost    => $vhost,
-    ip       => $ip,
-    port     => $port,
-    content  => $definition,
-    nodepend => $_automated,
-    order    => $order,
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    content        => $definition,
+    nodepend       => $_automated,
+    order          => $order,
+    notify_service => $notify_service,
   }
 
 }

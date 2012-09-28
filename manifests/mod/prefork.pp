@@ -5,16 +5,25 @@
 # TODO: Update documentation
 # TODO: Add or use LoadModule support
 #
-class apache::mod::prefork {
+class apache::mod::prefork (
+  $notify_service = undef
+) {
 
-  $pkg_name = $::operatingsystem ? {
-    /CentOS|RedHat/ => [],
-    /Debian|Ubuntu/ => 'apache2-prefork-dev',
-    default         => [],
+  case $::operatingsystem {
+    /(?i:debian|ubuntu)/: {
+      $pkg_name = 'apache2-prefork-dev'
+    }
+    /(?i:centos|redhat)/: {
+      $pkg_name = undef
+    }
+    default: {
+      fail('Your operatingsystem is not supported by apache::mod::prefork')
+    }
   }
 
-  package { $pkg_name:
-    ensure  => installed,
-    alias   => 'apache_mod_prefork'
+  apache::sys::modpackage {'prefork':
+    package       => $pkg_name,
+    notify_service => $notify_service,
   }
+
 }

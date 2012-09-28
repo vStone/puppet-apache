@@ -7,6 +7,8 @@
 # TODO: Update documentation
 # TODO: LoadModule support
 #
-class apache::mod::header {
+class apache::mod::header (
+  $notify_service = undef
+) {
 
 }

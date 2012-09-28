@@ -9,17 +9,24 @@
 #
 define apache::sys::config::split::mod (
   $vhost,
-  $ip       = undef,
-  $port     = '80',
-  $ensure   = 'present',
-  $content  = '',
-  $nodepend = false,
-  $order    = undef
+  $notify_service = undef,
+  $ip             = undef,
+  $port           = '80',
+  $ensure         = 'present',
+  $content        = '',
+  $nodepend       = false,
+  $order          = undef
 ) {
 
 
   ## Get the configured configuration style.
+  require apache::params
   require apache::sys::config::split::params
+
+  $notifyservice = $notify_service ? {
+    undef   => $::apache::params::notify_service,
+    default => $notify_service,
+  }
 
   ## The path to a module configuration is configured by the config style.
   $modpath = $::apache::sys::config::split::params::mod_path
@@ -45,6 +52,7 @@ define apache::sys::config::split::mod (
     content         => $with_header,
     use_config_root => $apache::setup::vhost::use_config_root,
     file_name       => $filename,
+    notify_service  => $notifyservice,
   }
   if $nodepend == false {
     Apache::Confd::File[$filename] {

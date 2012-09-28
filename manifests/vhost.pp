@@ -135,7 +135,8 @@ define apache::vhost (
   $diroptions     = undef,
   $owner          = undef,
   $group          = undef,
-  $logformat      = undef
+  $logformat      = undef,
+  $notify_service = undef
 ) {
 
   require apache::params
@@ -228,6 +229,11 @@ define apache::vhost (
   $directoryroot =  $dirroot ? {
     undef   => $documentroot,
     default => $dirroot,
+  }
+
+  $notifyservice = $notify_service ? {
+    undef   => $::apache::params::notify_service,
+    default => $notify_service,
   }
 
   ## Check for matching apache::namevhost
@@ -347,27 +353,29 @@ define apache::vhost (
 
   ## Note: puppet-lint warns on "${name}". Won't work properly without quotes.
   $style_args = {
-    "${name}"    => {
-      'ensure'      => $enable,
-      'name'        => $name,
-      'content'     => template('apache/vhost/virtualhost.erb'),
-      'content_end' => template('apache/vhost/virtualhost_end.erb'),
-      'order'       => $order,
-      'ip'          => $ip_def,
-      'port'        => $vhost_port,
-      'require'     => File[$documentroot],
+    "${name}"          => {
+      'ensure'         => $enable,
+      'name'           => $name,
+      'content'        => template('apache/vhost/virtualhost.erb'),
+      'content_end'    => template('apache/vhost/virtualhost_end.erb'),
+      'order'          => $order,
+      'ip'             => $ip_def,
+      'port'           => $vhost_port,
+      'require'        => File[$documentroot],
+      'notify_service' => $notifyservice,
     }
   }
   create_resources($style_def, $style_args)
 
   ## Create all the defined mods for this vhost.
   $defaults = {
-    'ensure'        => $ensure,
-    'vhost'         => $name,
-    'ip'            => $ip_def,
-    'port'          => $vhost_port,
-    'docroot'       => $documentroot,
-    '_automated'    => true,
+    'ensure'         => $ensure,
+    'vhost'          => $name,
+    'ip'             => $ip_def,
+    'port'           => $vhost_port,
+    'docroot'        => $documentroot,
+    'notify_service' => $notifyservice,
+    '_automated'     => true,
   }
   if $mods != undef and $mods != '' {
     ## Wraps arround create_resources to create the proper resource

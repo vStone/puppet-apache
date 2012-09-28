@@ -38,16 +38,17 @@
 define apache::vhost::mod::webdav (
   $docroot,
   $vhost,
-  $ensure        = 'present',
-  $ip            = undef,
-  $port          = '80',
-  $order         = undef,
-  $_automated    = false,
-  $_header       = true,
+  $notify_service = undef,
+  $ensure         = 'present',
+  $ip             = undef,
+  $port           = '80',
+  $order          = undef,
+  $_automated     = false,
+  $_header        = true,
 
-  $comment       = undef,
-  $location      = '/',
-  $allow         = undef
+  $comment        = undef,
+  $location       = '/',
+  $allow          = undef
 ) {
 
 
@@ -55,13 +56,14 @@ define apache::vhost::mod::webdav (
   $definition = template('apache/vhost/mod/webdav.erb')
 
   apache::sys::modfile {$title:
-    ensure   => $ensure,
-    vhost    => $vhost,
-    ip       => $ip,
-    port     => $port,
-    nodepend => $_automated,
-    content  => $definition,
-    order    => $order,
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    nodepend       => $_automated,
+    content        => $definition,
+    order          => $order,
+    notify_service => $notify_service,
   }
 }
 

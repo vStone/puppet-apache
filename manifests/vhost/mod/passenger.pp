@@ -36,6 +36,7 @@
 #
 define apache::vhost::mod::passenger (
   $vhost,
+  $notify_service       = undef,
   $ensure               = 'present',
   $ip                   = undef,
   $port                 = '80',
@@ -72,13 +73,14 @@ define apache::vhost::mod::passenger (
   $definition = template('apache/vhost/mod/passenger.erb')
 
   apache::sys::modfile {$title:
-    ensure   => $ensure,
-    vhost    => $vhost,
-    ip       => $ip,
-    port     => $port,
-    nodepend => $_automated,
-    content  => $definition,
-    order    => $order,
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    nodepend       => $_automated,
+    content        => $definition,
+    order          => $order,
+    notify_service => $notify_service,
   }
 }
 

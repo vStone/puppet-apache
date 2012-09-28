@@ -43,6 +43,7 @@
 #
 define apache::confd::symfile (
   $confd,
+  $notify_service,
   $order            = '10',
   $ensure           = 'enable',
   $link_name        = "${title}.conf",
@@ -76,8 +77,13 @@ define apache::confd::symfile (
   file {$title:
     ensure  => present,
     path    => "${config_root}/${confd}/${filename}",
-    notify  => Service['apache'],
     content => $content,
+  }
+
+  if $notify_service {
+    File[$title] {
+      notify  => Service['apache'],
+    }
   }
 
   file {"${title}-symlink":

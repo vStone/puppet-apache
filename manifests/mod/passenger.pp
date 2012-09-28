@@ -1,11 +1,19 @@
 # == Class: apache::mod::passenger
 #
+# For CentOS/Redhat, we use rubygems to install mod_passenger!
+#
 # === Todo:
 #
 # TODO: Update documentation
 # TODO: Add or use LoadModule support
+# TODO: Implement basic configuration for those that do not have the passenger
+#       module.
+# TODO: Support installing using gems or use system packages
 #
-class apache::mod::passenger {
+class apache::mod::passenger (
+  $package       = undef,
+  $notify_service = undef
+) {
 
   if defined('::passenger::module') {
     require passenger::module
@@ -14,29 +22,34 @@ class apache::mod::passenger {
     }
   } else {
 
-    ## @Todo: Do we even need this here? I'm unsure it still works.
-
-
-    $pkg_name = $::operatingsystem ? {
-      /Debian|Ubuntu/ => 'libapache2-mod-passenger',
-      /Centos|RedHat/ => 'passenger',
-      default         => [],
+    case $package {
+      undef: {
+        case $::operatingsystem {
+          /(?i:debian|ubuntu)/: { $pkg_name = 'libapache2-mod-passenger' }
+          /(?i:centos|redhat)/: { $pkg_name = 'passenger' }
+          default: {
+            fail('Your operatingsystem is not supported by apache::mod:passenger')
+          }
+        }
+      }
+      default: {
+        $pkg_name = $package
+      }
     }
 
-    package { $pkg_name:
-      ensure  => installed,
-      alias   => 'apache_mod_passenger',
-      require => Package['apache'],
+    apache::sys::modpackage {'passenger':
+      package       => $pkg_name,
+      notify_service => $notify_service,
     }
 
     case $::operatingsystem {
-      /Debian|Ubuntu/: {
-        Package[$pkg_name] {
+      /(?i:debian|ubuntu)/: {
+        Apache::Sys::Package['passenger'] {
           provider  => 'apt',
         }
       }
-      /CentOS|RedHat/: {
-        Package[$pkg_name] {
+      /(?i:centos|redhat)/: {
+        Apache::Sys::Package['passenger'] {
           provider  => 'gem',
           require   +> Package['rubygems'],
         }
@@ -44,4 +57,5 @@ class apache::mod::passenger {
       default: {}
     }
   }
+
 }

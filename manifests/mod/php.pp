@@ -7,10 +7,16 @@
 #
 class apache::mod::php {
 
-  $pkg_name =  $::operatingsystem ? {
-    /Debian|Ubuntu/ => 'libapache2-mod-php',
-    /CentOS|RedHat/ => '',
-    default         => [],
+  case $::operatingsystem {
+    /(?i:debian|ubuntu)/: {
+      $pkg_name = 'libapache2-mod-php'
+    }
+    /(?i:centos|redhat)/: {
+      $pkg_name = 'php'
+    }
+    default: {
+      fail('Your operatingsystem is not supported by apache::mod:php')
+    }
   }
 
 
@@ -20,4 +26,5 @@ class apache::mod::php {
     require => Package['apache'],
     notify  => Service['apache'],
   }
+
 }

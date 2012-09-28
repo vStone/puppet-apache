@@ -21,6 +21,8 @@
 #
 #
 class apache::mod::cluster (
+  $notify_service       = undef,
+
   $manager_vhost        = true,
   $manager_port         = 80,
   $manager_ip           = undef,
@@ -85,6 +87,7 @@ class apache::mod::cluster (
 
     apache::sys::modpackage { 'cluster':
       package        => $pkg_name,
+      notify_service => $notify_service,
     }
   }
 
@@ -142,6 +145,7 @@ class apache::mod::cluster (
   apache::confd::file {'mod_cluster':
     confd          => $::apache::setup::mod::confd,
     content        => template('apache/mod/cluster.erb'),
+    notify_service => $notify_service,
   }
 
 
@@ -174,6 +178,7 @@ class apache::mod::cluster (
         ip             => $manager_ip,
         port           => $manager_port,
         require        => Apache::Listen[$manager_listen],
+        notify_service => $notify_service ,
       }
     }
 
@@ -186,6 +191,7 @@ class apache::mod::cluster (
       allow_order    => $manager_allow_order,
       allow_from     => $manager_allow_from,
       deny_from      => $manager_deny_from,
+      notify_service => $notify_service,
     }
 
   }
@@ -210,6 +216,7 @@ class apache::mod::cluster (
         ip             => $advertise_ip,
         port           => $advertise_port,
         require        => Apache::Listen[$advertise_listen],
+        notify_service => $notify_service,
       }
     }
 
@@ -218,6 +225,7 @@ class apache::mod::cluster (
       ip             => $advertise_ip,
       port           => $advertise_port,
       ## mod::advertise specific configuration
+      notify_service => $notify_service,
     }
   }
 

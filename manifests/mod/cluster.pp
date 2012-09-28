@@ -143,8 +143,8 @@ class apache::mod::cluster (
 
   ## Global configuration
   apache::confd::file {'mod_cluster':
-    confd   => $::apache::setup::mod::confd,
-    content => template('apache/mod/cluster.erb'),
+    confd          => $::apache::setup::mod::confd,
+    content        => template('apache/mod/cluster.erb'),
   }
 
 
@@ -173,22 +173,22 @@ class apache::mod::cluster (
 
     if $manager_vhost and ( ! defined(Apache::Vhost[$manager_vhost_name])) {
       apache::vhost {$manager_vhost_name:
-        servername  => $manager_servername,
-        ip          => $manager_ip,
-        port        => $manager_port,
-        require     => Apache::Listen[$manager_listen],
+        servername     => $manager_servername,
+        ip             => $manager_ip,
+        port           => $manager_port,
+        require        => Apache::Listen[$manager_listen],
       }
     }
 
     apache::vhost::mod::manager {$manager_vhost_name:
-      vhost       => $manager_vhost_name,
-      ip          => $manager_ip,
-      port        => $manager_port,
+      vhost         => $manager_vhost_name,
+      ip            => $manager_ip,
+      port          => $manager_port,
       ## mod::manager specific configuration
-      location    => $manager_location,
-      allow_order => $manager_allow_order,
-      allow_from  => $manager_allow_from,
-      deny_from   => $manager_deny_from,
+      location       => $manager_location,
+      allow_order    => $manager_allow_order,
+      allow_from     => $manager_allow_from,
+      deny_from      => $manager_deny_from,
     }
 
   }
@@ -209,17 +209,17 @@ class apache::mod::cluster (
 
     if $advertise_vhost and (! defined(Apache::Vhost[$advertise_vhost_name])) {
       apache::vhost {$advertise_vhost_name:
-        servername => $advertise_servername,
-        ip         => $advertise_ip,
-        port       => $advertise_port,
-        require    => Apache::Listen[$advertise_listen],
+        servername     => $advertise_servername,
+        ip             => $advertise_ip,
+        port           => $advertise_port,
+        require        => Apache::Listen[$advertise_listen],
       }
     }
 
     apache::vhost::mod::advertise {$advertise_vhost_name:
-      vhost => $advertise_vhost_name,
-      ip    => $advertise_ip,
-      port  => $advertise_port,
+      vhost          => $advertise_vhost_name,
+      ip             => $advertise_ip,
+      port           => $advertise_port,
       ## mod::advertise specific configuration
     }
   }

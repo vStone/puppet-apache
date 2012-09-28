@@ -108,13 +108,13 @@ define apache::vhost::mod::manager (
   $manager = template('apache/vhost/mod/manager.erb')
 
   apache::sys::modfile {$title:
-    ensure   => $ensure,
-    vhost    => $vhost,
-    ip       => $ip,
-    port     => $port,
-    nodepend => $_automated,
-    content  => $manager,
-    order    => $order,
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    nodepend       => $_automated,
+    content        => $manager,
+    order          => $order,
   }
 }
 

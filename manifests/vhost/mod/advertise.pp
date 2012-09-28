@@ -55,15 +55,15 @@
 #
 define apache::vhost::mod::advertise (
   $vhost,
-  $ensure        = 'present',
-  $ip            = undef,
-  $port          = '80',
-  $docroot       = undef,
-  $order         = undef,
-  $_automated    = false,
-  $_header       = true,
-  $comment       = undef,
-  $content       = '',
+  $ensure         = 'present',
+  $ip             = undef,
+  $port           = '80',
+  $docroot        = undef,
+  $order          = undef,
+  $_automated     = false,
+  $_header        = true,
+  $comment        = undef,
+  $content        = '',
 
   $enable_mcpm_receive = true,
   $server_advertise    = undef,
@@ -107,13 +107,13 @@ define apache::vhost::mod::advertise (
   $definition = template('apache/vhost/mod/advertise.erb')
 
   apache::sys::modfile {$title:
-    ensure   => $ensure,
-    vhost    => $vhost,
-    ip       => $ip,
-    port     => $port,
-    nodepend => $_automated,
-    content  => $definition,
-    order    => $order,
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    nodepend       => $_automated,
+    content        => $definition,
+    order          => $order,
   }
 }
 

@@ -135,7 +135,8 @@ define apache::vhost (
   $diroptions     = undef,
   $owner          = undef,
   $group          = undef,
-  $logformat      = undef
+  $logformat      = undef,
+  $notify_service = undef
 ) {
 
   require apache::params
@@ -228,6 +229,11 @@ define apache::vhost (
   $directoryroot =  $dirroot ? {
     undef   => $documentroot,
     default => $dirroot,
+  }
+
+  $notifyservice = $notify_service ? {
+    undef   => $::apache::params::notify_service,
+    default => $notify_service,
   }
 
   ## Check for matching apache::namevhost
@@ -356,6 +362,7 @@ define apache::vhost (
       'ip'             => $ip_def,
       'port'           => $vhost_port,
       'require'        => File[$documentroot],
+      'notify_service' => $notifyservice,
     }
   }
   create_resources($style_def, $style_args)
@@ -367,6 +374,7 @@ define apache::vhost (
     'ip'             => $ip_def,
     'port'           => $vhost_port,
     'docroot'        => $documentroot,
+    'notify_service' => $notifyservice,
     '_automated'     => true,
   }
   if $mods != undef and $mods != '' {

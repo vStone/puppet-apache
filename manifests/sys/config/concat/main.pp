@@ -16,6 +16,7 @@
 #
 define apache::sys::config::concat::main (
   $ensure,
+  $notify_service,
   $content,
   $content_end,
   $order,
@@ -35,7 +36,7 @@ define apache::sys::config::concat::main (
     file_name       => "${name}_configuration",
     link_name       => "${name}.conf",
     use_config_root => $apache::setup::vhost::use_config_root,
-    notify          => Service[$apache::params::service_name],
+    notify_service  => $notify_service,
   }
 
 }

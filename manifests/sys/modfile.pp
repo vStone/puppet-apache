@@ -35,15 +35,15 @@ define apache::sys::modfile (
 
   $mod_def = "${::apache::params::config_base}::mod"
   $mod_args = {
-    "${name}"    => {
-      'name'     => $name,
-      'vhost'    => $vhost,
-      'ip'       => $ip,
-      'port'     => $port,
-      'ensure'   => $ensure,
-      'content'  => $content,
-      'nodepend' => $nodepend,
-      'order'    => $order
+    "${name}" => {
+      'name'           => $name,
+      'vhost'          => $vhost,
+      'ip'             => $ip,
+      'port'           => $port,
+      'ensure'         => $ensure,
+      'content'        => $content,
+      'nodepend'       => $nodepend,
+      'order'          => $order,
     }
   }
 

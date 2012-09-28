@@ -41,10 +41,5 @@ define apache::sys::config::concat::mod (
     content => $content,
     order   => $forder,
   }
-  #  if $nodepend == false {
-  #  Concat::Fragment[$fragment_name] {
-  #    require   => Apache::Vhost[$vhost],
-  #  }
-  #}
 
 }

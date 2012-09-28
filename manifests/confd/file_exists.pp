@@ -9,10 +9,10 @@
 define apache::confd::file_exists (
   $ensure,
   $path,
-  $owner = undef,
-  $group = undef,
-  $purge = false,
-  $target = undef
+  $owner          = undef,
+  $group          = undef,
+  $purge          = false,
+  $target         = undef
 ) {
 
   require apache::params

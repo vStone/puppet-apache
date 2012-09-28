@@ -20,9 +20,8 @@ class apache::mod::xsendfile {
     }
   }
 
-  package { $pkg_name:
-    ensure  => installed,
-    alias   => 'apache_mod_xsendfile',
+  apache::sys::modpackage {'xsendfile':
+    package       => $pkg_name,
   }
 
 }

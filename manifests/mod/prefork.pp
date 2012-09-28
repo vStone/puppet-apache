@@ -19,9 +19,8 @@ class apache::mod::prefork {
     }
   }
 
-  package { $pkg_name:
-    ensure  => installed,
-    alias   => 'apache_mod_prefork'
+  apache::sys::modpackage {'prefork':
+    package       => $pkg_name,
   }
 
 }

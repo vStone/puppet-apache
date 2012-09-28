@@ -19,12 +19,8 @@ class apache::mod::php {
     }
   }
 
-
-  package { $pkg_name:
-    ensure  => installed,
-    alias   => 'apache_mod_php',
-    require => Package['apache'],
-    notify  => Service['apache'],
+  apache::sys::modpackage {'php':
+    package       => $pkg_name,
   }
 
 }

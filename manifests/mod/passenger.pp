@@ -36,20 +36,18 @@ class apache::mod::passenger (
       }
     }
 
-    package { $pkg_name:
-      ensure  => installed,
-      alias   => 'apache_mod_passenger',
-      require => Package['apache'],
+    apache::sys::modpackage {'passenger':
+      package       => $pkg_name,
     }
 
     case $::operatingsystem {
-      /Debian|Ubuntu/: {
-        Package[$pkg_name] {
+      /(?i:debian|ubuntu)/: {
+        Apache::Sys::Package['passenger'] {
           provider  => 'apt',
         }
       }
-      /CentOS|RedHat/: {
-        Package[$pkg_name] {
+      /(?i:centos|redhat)/: {
+        Apache::Sys::Package['passenger'] {
           provider  => 'gem',
           require   +> Package['rubygems'],
         }

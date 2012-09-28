@@ -34,6 +34,7 @@
 #
 define apache::confd::file_concat (
   $confd,
+  $notify_service,
   $file_name        = "${title}.conf",
   $order            = undef,
   $content          = '',
@@ -61,6 +62,13 @@ define apache::confd::file_concat (
   concat {$name:
     path   => $target,
   }
+
+  if $notify_service {
+    Concat[$name] {
+      notify => Service['apache'],
+    }
+  }
+
   concat::fragment{"${title}-main":
     target  => $name,
     order   => '0001',

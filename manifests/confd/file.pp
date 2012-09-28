@@ -26,6 +26,7 @@
 #
 define apache::confd::file (
   $confd,
+  $notify_service,
   $file_name        = "${title}.conf",
   $order            = undef,
   $content          = '',
@@ -48,8 +49,13 @@ define apache::confd::file (
   file {$title:
     ensure  => $ensure,
     path    => "${config_root}/${confd}/${fname}",
-    notify  => Service['apache'],
     content => $content,
+  }
+
+  if $notify_service {
+    File[$title] {
+      notify => Service['apache'],
+    }
   }
 
 }

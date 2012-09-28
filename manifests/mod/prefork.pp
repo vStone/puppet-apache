@@ -5,7 +5,9 @@
 # TODO: Update documentation
 # TODO: Add or use LoadModule support
 #
-class apache::mod::prefork {
+class apache::mod::prefork (
+  $notify_service = undef
+) {
 
   case $::operatingsystem {
     /(?i:debian|ubuntu)/: {
@@ -21,6 +23,7 @@ class apache::mod::prefork {
 
   apache::sys::modpackage {'prefork':
     package       => $pkg_name,
+    notify_service => $notify_service,
   }
 
 }

@@ -11,7 +11,8 @@
 # TODO: Support installing using gems or use system packages
 #
 class apache::mod::passenger (
-  $package       = undef
+  $package       = undef,
+  $notify_service = undef
 ) {
 
   if defined('::passenger::module') {
@@ -38,6 +39,7 @@ class apache::mod::passenger (
 
     apache::sys::modpackage {'passenger':
       package       => $pkg_name,
+      notify_service => $notify_service,
     }
 
     case $::operatingsystem {

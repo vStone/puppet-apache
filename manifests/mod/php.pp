@@ -5,7 +5,9 @@
 # TODO: Update documentation
 # TODO: Add or use LoadModule support
 #
-class apache::mod::php {
+class apache::mod::php (
+  $notify_service = undef
+) {
 
   case $::operatingsystem {
     /(?i:debian|ubuntu)/: {
@@ -21,6 +23,7 @@ class apache::mod::php {
 
   apache::sys::modpackage {'php':
     package       => $pkg_name,
+    notify_service => $notify_service,
   }
 
 }

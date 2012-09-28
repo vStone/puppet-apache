@@ -24,8 +24,15 @@ define apache::sys::modpackage (
   $package,
   $ensure        = 'installed',
   $provider      = undef,
-  $package_alias = "apache_mod_${name}"
+  $package_alias = "apache_mod_${name}",
+  $notify_service = undef
 ) {
+
+  require apache::params
+  $notifyservice = $notify_service ? {
+    undef   => $::apache::params::notify_service,
+    default => $notify_service,
+  }
 
   if $package != undef {
     package {$package:
@@ -33,9 +40,13 @@ define apache::sys::modpackage (
       alias    => $package_alias,
       provider => $provider,
       require  => Package['apache'],
-      notify   => Service['apache'],
     }
 
+    if $notifyservice {
+      Package[$package] {
+        notify => Service['apache'],
+      }
+    }
   }
   else {
     notify {"No package to install provided for ${name}":}

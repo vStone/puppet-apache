@@ -23,8 +23,8 @@ class apache::mod::xsendfile (
   }
 
   apache::sys::modpackage {'xsendfile':
-    package       => $pkg_name,
-    notify_service => $notify_service,
+    package         => $pkg_name,
+    notify_service  => $notify_service,
   }
 
 }

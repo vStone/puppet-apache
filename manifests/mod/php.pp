@@ -22,8 +22,8 @@ class apache::mod::php (
   }
 
   apache::sys::modpackage {'php':
-    package       => $pkg_name,
-    notify_service => $notify_service,
+    package         => $pkg_name,
+    notify_service  => $notify_service,
   }
 
 }

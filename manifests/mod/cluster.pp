@@ -183,15 +183,15 @@ class apache::mod::cluster (
     }
 
     apache::vhost::mod::manager {$manager_vhost_name:
-      vhost         => $manager_vhost_name,
-      ip            => $manager_ip,
-      port          => $manager_port,
+      vhost           => $manager_vhost_name,
+      ip              => $manager_ip,
+      port            => $manager_port,
       ## mod::manager specific configuration
-      location       => $manager_location,
-      allow_order    => $manager_allow_order,
-      allow_from     => $manager_allow_from,
-      deny_from      => $manager_deny_from,
-      notify_service => $notify_service,
+      location        => $manager_location,
+      allow_order     => $manager_allow_order,
+      allow_from      => $manager_allow_from,
+      deny_from       => $manager_deny_from,
+      notify_service  => $notify_service,
     }
 
   }

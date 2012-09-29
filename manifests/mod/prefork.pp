@@ -22,8 +22,8 @@ class apache::mod::prefork (
   }
 
   apache::sys::modpackage {'prefork':
-    package       => $pkg_name,
-    notify_service => $notify_service,
+    package         => $pkg_name,
+    notify_service  => $notify_service,
   }
 
 }

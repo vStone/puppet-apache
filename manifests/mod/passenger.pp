@@ -38,8 +38,8 @@ class apache::mod::passenger (
     }
 
     apache::sys::modpackage {'passenger':
-      package       => $pkg_name,
-      notify_service => $notify_service,
+      package         => $pkg_name,
+      notify_service  => $notify_service,
     }
 
     case $::operatingsystem {

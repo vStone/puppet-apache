@@ -29,13 +29,13 @@ define apache::sys::config::concat::main (
 
   apache::confd::symfile_concat {$name:
     ensure          => $ensure,
-    confd           => $apache::setup::vhost::confd,
+    confd           => $::apache::setup::vhost::confd,
     order           => $order,
     content         => $content,
     content_end     => $content_end,
     file_name       => "${name}_configuration",
     link_name       => "${name}.conf",
-    use_config_root => $apache::setup::vhost::use_config_root,
+    use_config_root => $::apache::setup::vhost::use_config_root,
     notify_service  => $notify_service,
   }
 

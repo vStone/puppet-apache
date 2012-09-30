@@ -50,7 +50,7 @@ define apache::sys::config::split::mod (
     ensure          => $ensure,
     confd           => $modfile_path,
     content         => $with_header,
-    use_config_root => $apache::setup::vhost::use_config_root,
+    use_config_root => $::apache::setup::vhost::use_config_root,
     file_name       => $filename,
     notify_service  => $notifyservice,
   }

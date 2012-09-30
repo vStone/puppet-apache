@@ -16,7 +16,7 @@ class apache::setup::os::debian {
 
   file {$files_to_remove:
     ensure  => 'absent',
-    require => Package[$apache::params::package],
+    require => Package[$::apache::params::package],
   }
 
 }

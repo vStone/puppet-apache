@@ -8,10 +8,10 @@ class apache::service {
   service { 'apache':
     ensure      => running,
     enable      => true,
-    name        => $apache::params::service_name,
-    path        => $apache::params::service_path,
-    hasrestart  => $apache::params::service_hasrestart,
-    hasstatus   => $apache::params::service_hasstatus,
+    name        => $::apache::params::service_name,
+    path        => $::apache::params::service_path,
+    hasrestart  => $::apache::params::service_hasrestart,
+    hasstatus   => $::apache::params::service_hasstatus,
     require     => Package['apache'],
   }
 }

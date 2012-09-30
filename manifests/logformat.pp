@@ -35,7 +35,7 @@ define apache::logformat (
   $_format = $format
 
   apache::confd::file {$fname:
-    confd          => $apache::setup::logformat::confd,
+    confd          => $::apache::setup::logformat::confd,
     content        => template('apache/confd/logformat.erb'),
     notify_service => $::apache::params::notify_service,
   }

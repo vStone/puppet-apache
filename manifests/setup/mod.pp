@@ -12,12 +12,12 @@ class apache::setup::mod {
   $purge  = false
 
   apache::confd {'mod':
-    confd        => $apache::setup::mod::confd,
-    order        => $apache::setup::mod::order,
+    confd        => $::apache::setup::mod::confd,
+    order        => $::apache::setup::mod::order,
     load_content => '',
     warn_content => '',
-    includes     => $apache::setup::mod::includes,
-    purge        => $apache::setup::mod::purge,
+    includes     => $::apache::setup::mod::includes,
+    purge        => $::apache::setup::mod::purge,
   }
 
 }

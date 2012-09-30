@@ -26,12 +26,12 @@ define apache::sys::config::split::main (
 
   apache::confd::symfile {$name:
     ensure          => $ensure,
-    confd           => $apache::setup::vhost::confd,
+    confd           => $::apache::setup::vhost::confd,
     order           => $order,
     content         => template('apache/vhost/config/splitconfig_vhost.erb'),
     file_name       => "${name}_configuration",
     link_name       => "${name}.conf",
-    use_config_root => $apache::setup::vhost::use_config_root,
+    use_config_root => $::apache::setup::vhost::use_config_root,
     notify_service  => $notify_service,
   }
 

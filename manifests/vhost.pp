@@ -203,13 +203,13 @@ define apache::vhost (
 
   # Use the provided vhostroot or use the default value.
   $vhost_root = $vhostroot ? {
-    undef   => "${apache::params::vhost_root}/${server}",
+    undef   => "${::apache::params::vhost_root}/${server}",
     default =>  $vhostroot,
   }
 
   # Use the provided logdir or use the default value.
   $log_dir = $logdir ? {
-    undef   => "${apache::params::vhost_log_dir}/${server}",
+    undef   => "${::apache::params::vhost_log_dir}/${server}",
     default => $logdir,
   }
 
@@ -220,7 +220,7 @@ define apache::vhost (
   # Use the provided docroot or use the default value.
   # This is used in the template in the DocumentRoot directive.
   $documentroot = $docroot ? {
-    undef   => "${vhost_root}/${apache::params::default_docroot}",
+    undef   => "${vhost_root}/${::apache::params::default_docroot}",
     default => $docroot,
   }
 
@@ -349,7 +349,7 @@ define apache::vhost (
   ####################################
   # The location of the file is determined by the configurition type you
   # selected. We call the main class from that namespace to create the file.
-  $style_def = "${apache::params::config_base}::main"
+  $style_def = "${::apache::params::config_base}::main"
 
   ## Note: puppet-lint warns on "${name}". Won't work properly without quotes.
   $style_args = {

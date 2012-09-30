@@ -22,12 +22,12 @@ class apache::setup::listen {
   }
 
   apache::confd {'listen':
-    confd        => $apache::setup::listen::confd,
-    order        => $apache::setup::listen::order,
+    confd        => $::apache::setup::listen::confd,
+    order        => $::apache::setup::listen::order,
     load_content => '',
     warn_content => '',
-    includes     => $apache::setup::listen::includes,
-    purge        => $apache::setup::listen::purge,
+    includes     => $::apache::setup::listen::includes,
+    purge        => $::apache::setup::listen::purge,
   }
 
 }

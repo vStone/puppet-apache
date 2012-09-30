@@ -12,12 +12,12 @@ class apache::setup::logformat {
   $purge    = true
 
   apache::confd {'logformat':
-    confd        => $apache::setup::logformat::confd,
-    order        => $apache::setup::logformat::order,
+    confd        => $::apache::setup::logformat::confd,
+    order        => $::apache::setup::logformat::order,
     load_content => '',
     warn_content => '',
-    includes     => $apache::setup::logformat::includes,
-    purge        => $apache::setup::logformat::purge,
+    includes     => $::apache::setup::logformat::includes,
+    purge        => $::apache::setup::logformat::purge,
   }
 
 }

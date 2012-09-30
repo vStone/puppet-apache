@@ -21,12 +21,12 @@ class apache::setup::namevhost {
   }
 
   apache::confd {'namevhost':
-    confd        => $apache::setup::namevhost::confd,
-    order        => $apache::setup::namevhost::order,
+    confd        => $::apache::setup::namevhost::confd,
+    order        => $::apache::setup::namevhost::order,
     load_content => '',
     warn_content => '',
-    includes     => $apache::setup::namevhost::includes,
-    purge        => $apache::setup::namevhost::purge,
+    includes     => $::apache::setup::namevhost::includes,
+    purge        => $::apache::setup::namevhost::purge,
   }
 
 }

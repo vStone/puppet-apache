@@ -69,9 +69,9 @@ define apache::confd::symfile (
   $linkname = "${order}_${link_name}"
 
   if $use_config_root {
-    $config_root = $apache::params::config_dir
+    $config_root = $::apache::params::config_dir
   } else {
-    $config_root = $apache::params::confd
+    $config_root = $::apache::params::confd
   }
 
   file {$title:

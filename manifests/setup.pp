@@ -11,8 +11,8 @@ class apache::setup {
   #  owner   => 'root',
   #  group   => 'root',
   #  mode    => '0644',
-  #  path    => $apache::params::config_file,
-  #  content => template($apache::params::config_template),
+  #  path    => $::apache::params::config_file,
+  #  content => template($::apache::params::config_template),
   #  notify  => Service['apache'],
   #}
 
@@ -48,7 +48,7 @@ class apache::setup {
   $apache_confd = 'apache_confd'
   file { $apache_confd:
     ensure  => directory,
-    path    => $apache::params::confd,
+    path    => $::apache::params::confd,
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
@@ -57,7 +57,7 @@ class apache::setup {
   ## log folders
   file {'apache-log_root':
     ensure => directory,
-    path   => $apache::params::log_dir,
+    path   => $::apache::params::log_dir,
     owner  => 'root',
     group  => 'root',
     mode   => '0755',

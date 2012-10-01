@@ -33,6 +33,11 @@ LoadModule userdir_module modules/mod_userdir.so
     #
     UserDir disabled root
 
+    <Directory /home/*/public_html>
+        AllowOverride FileInfo AuthConfig Limit
+        Options +Includes MultiViews Indexes SymLinksIfOwnerMatch
+    </Directory>
+
 </IfModule>
 
 #

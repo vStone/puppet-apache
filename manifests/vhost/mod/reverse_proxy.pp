@@ -1,8 +1,8 @@
-# = Definition: apache::vhost::mod::proxy
+# == Definition: apache::vhost::mod::proxy
 #
 # Setup mod_proxy in a vhost.
 #
-# == Parameters:
+# === Parameters:
 #
 # $vhost::            The name of the vhost to work on. This should be
 #                     identical to the apache::vhost{NAME:} you have setup.
@@ -43,6 +43,11 @@
 #                     Defaults to '' (empty).
 #                     See: http://httpd.apache.org/docs/2.2/howto/access.html.
 #
+# $proxypassmatch::   This can be a single string, an array or a hash.
+#                     For each entry, a ProxyPassMatch directive will be
+#                     written to the configuration file.
+#                     See: http://tinyurl.com/apache-mod-proxy#proxypassmatch
+#
 # $proxypass::        This can either be a single string, an array or a hash.
 #                     For each entry, a ProxyPass directive will be written to
 #                     the configuration file.
@@ -58,14 +63,20 @@
 #                     directive will be written to the configuration file.
 #
 # $default_proxy_pass_options:: A hash containing additional options to add to
-#                     the proxypass directive. If specified, we will append these
-#                     options to each proxypass line we define.
+#                     the proxypass directive. If specified, we will append
+#                     these options to each proxypass line we define.
 #                     If this is undefined, we will use the options
-#                     provided in apache::mod::reverse_proxy. To disable using those
-#                     just pass an empty hash. Defaults to undefined.
+#                     provided in apache::mod::reverse_proxy. To disable using
+#                     those just pass an empty hash. Defaults to undefined.
+#
+#
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::mod::reverse_proxy (
   $vhost,
+  $notify_service   = undef,
   $ensure           = 'present',
   $ip               = undef,
   $port             = '80',
@@ -81,6 +92,7 @@ define apache::vhost::mod::reverse_proxy (
   $allow_order      = 'Deny,Allow',
   $allow_from       = 'All',
   $deny_from        = undef,
+  $proxypassmatch   = undef,
   $proxypass        = undef,
   $proxypassreverse = undef,
   $proxypath        = undef,
@@ -91,7 +103,8 @@ define apache::vhost::mod::reverse_proxy (
   case $default_proxy_pass_options {
     undef: {
       require apache::mod::reverse_proxy
-      $_proxypass_options = $::apache::mod::reverse_proxy::default_proxy_pass_options
+      $_proxypass_options =           # 80char limit :)
+        $::apache::mod::reverse_proxy::default_proxy_pass_options
     }
     default: {
       $_proxypass_options = $default_proxy_pass_options
@@ -117,7 +130,7 @@ define apache::vhost::mod::reverse_proxy (
     /^(?i:deny,allow)$/: {}
     /^(?i:allow,deny)$/: {}
     default: {
-      fail( template('apache/msg/mod-revproxy-allow-order-fail.erb') )
+      fail( template('apache/msg/directive-allow-order-fail.erb') )
     }
   }
   case $proxyvia {
@@ -130,14 +143,15 @@ define apache::vhost::mod::reverse_proxy (
 
   $definition = template('apache/vhost/mod/reverse_proxy.erb')
 
-  apache::vhost::modfile {$title:
-    ensure    => $ensure,
-    vhost     => $vhost,
-    ip        => $ip,
-    port      => $port,
-    content   => $definition,
-    nodepend  => $_automated,
-    order     => $order,
+  apache::sys::modfile {$title:
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    content        => $definition,
+    nodepend       => $_automated,
+    order          => $order,
+    notify_service => $notify_service,
   }
 
 }

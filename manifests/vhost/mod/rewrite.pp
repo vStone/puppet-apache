@@ -1,8 +1,8 @@
-# = Definition: apache::vhost::mod::rewrite
+# == Definition: apache::vhost::mod::rewrite
 #
 # Setup mod_rewrite in a vhost
 #
-# == Parameters:
+# === Parameters:
 #
 # $rewrite_cond:: The rewrite condition to use. Standard apache syntax.
 #                 For now only one string is supported, array support
@@ -28,31 +28,37 @@
 #                 the apache::vhost instance you have setup.
 #                 Defaults to the vhost default.
 #
+# === Todo:
+#
+# TODO: Update documentation
+#
 define apache::vhost::mod::rewrite (
   $vhost,
-  $ensure        = 'present',
-  $ip            = undef,
-  $port          = undef,
-  $docroot       = undef,
-  $order         = undef,
-  $_automated    = false,
-  $_header       = true,
+  $notify_service = undef,
+  $ensure         = 'present',
+  $ip             = undef,
+  $port           = undef,
+  $docroot        = undef,
+  $order          = undef,
+  $_automated     = false,
+  $_header        = true,
 
-  $comment       = undef,
-  $rewrite_cond  = [],
-  $rewrite_rule  = []
+  $comment        = undef,
+  $rewrite_cond   = [],
+  $rewrite_rule   = []
 ) {
 
   $definition = template('apache/vhost/mod/rewrite.erb')
 
-  apache::vhost::modfile {$title:
-    ensure   => $ensure,
-    vhost    => $vhost,
-    ip       => $ip,
-    port     => $port,
-    content  => $definition,
-    nodepend => $_automated,
-    order    => $order,
+  apache::sys::modfile {$title:
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    content        => $definition,
+    nodepend       => $_automated,
+    order          => $order,
+    notify_service => $notify_service,
   }
 
 }

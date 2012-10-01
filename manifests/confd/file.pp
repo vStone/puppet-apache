@@ -22,10 +22,11 @@
 #  $use_config_root:
 #     When true, we will create the file in the defined $confd folder
 #     in the apache configuration root. Otherwise, its created inside
-#     the configured $apache::params::confd.
+#     the configured $::apache::params::confd.
 #
 define apache::confd::file (
   $confd,
+  $notify_service,
   $file_name        = "${title}.conf",
   $order            = undef,
   $content          = '',
@@ -39,17 +40,22 @@ define apache::confd::file (
   }
 
   if $use_config_root {
-    $config_root = $apache::params::config_dir
+    $config_root = $::apache::params::config_dir
   } else {
     ## The confd used here is the GLOBAL conf.d folder.
-    $config_root = $apache::params::confd
+    $config_root = $::apache::params::confd
   }
 
   file {$title:
     ensure  => $ensure,
     path    => "${config_root}/${confd}/${fname}",
-    notify  => Service['apache'],
     content => $content,
+  }
+
+  if $notify_service {
+    File[$title] {
+      notify => Service['apache'],
+    }
   }
 
 }

@@ -1,24 +1,35 @@
-# = Definition: apache::vhost::config::split::mod
+# == Definition: apache::sys::config::split::mod
 #
 # This will place the configuration for this apache mod in a
 # separate file that will be included (apache) by the main.
 #
-define apache::vhost::config::split::mod (
+# === Todo:
+#
+# TODO: Update documentation
+#
+define apache::sys::config::split::mod (
   $vhost,
-  $ip       = undef,
-  $port     = '80',
-  $ensure   = 'present',
-  $content  = '',
-  $nodepend = false,
-  $order    = undef
+  $notify_service = undef,
+  $ip             = undef,
+  $port           = '80',
+  $ensure         = 'present',
+  $content        = '',
+  $nodepend       = false,
+  $order          = undef
 ) {
 
 
   ## Get the configured configuration style.
-  require apache::vhost::config::split::params
+  require apache::params
+  require apache::sys::config::split::params
+
+  $notifyservice = $notify_service ? {
+    undef   => $::apache::params::notify_service,
+    default => $notify_service,
+  }
 
   ## The path to a module configuration is configured by the config style.
-  $modpath = $::apache::vhost::config::split::params::mod_path
+  $modpath = $::apache::sys::config::split::params::mod_path
 
   $modfile_path = "${::apache::setup::vhost::confd}/${modpath}"
 
@@ -39,8 +50,9 @@ define apache::vhost::config::split::mod (
     ensure          => $ensure,
     confd           => $modfile_path,
     content         => $with_header,
-    use_config_root => $apache::setup::vhost::use_config_root,
+    use_config_root => $::apache::setup::vhost::use_config_root,
     file_name       => $filename,
+    notify_service  => $notifyservice,
   }
   if $nodepend == false {
     Apache::Confd::File[$filename] {

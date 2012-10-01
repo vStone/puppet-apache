@@ -11,15 +11,19 @@
 ## Module:           '<%= scope.to_hash['module_name'] %>'
 ## Template source:  '<%= template_source %>'
 
-<VirtualHost <%= ip_def -%>:<%= port -%>>
+<VirtualHost <%= ip_def -%>:<%= vhost_port -%>>
 
   ServerName  <%= server %>
 <%
-  server_aliases = always_array(serveraliases)
-  server_aliases.each do |srvalias|
+  if ! empty?(serveraliases)
+    server_aliases = always_array(serveraliases)
+    server_aliases.each do |srvalias|
 -%>
   ServerAlias <%= srvalias %>
-<% end -%>
+<%
+    end
+  end
+-%>
   ServerAdmin <%= serveradmin %>
 
   DocumentRoot <%= documentroot %>
@@ -49,12 +53,12 @@
 <% end -%>
 
   ## Logging ####
-<% if ! empty?(accesslog) -%>
-  CustomLog <%= log_dir %>/<%= accesslog %> <%= log_format %>
+<% if ! empty?(access_log) -%>
+  CustomLog <%= log_dir %>/<%= access_log %> <%= log_format %>
 <% end -%>
-<% if ! empty?(errorlog) -%>
+<% if ! empty?(error_log) -%>
   LogLevel <%= errorlevel %>
-  ErrorLog <%= log_dir %>/<%= errorlog %>
+  ErrorLog <%= log_dir %>/<%= error_log %>
 <% end -%>
 
 <% # -- No end here. More files get added -%>

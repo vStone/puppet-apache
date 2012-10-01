@@ -1,12 +1,14 @@
-# = Class: apache
+# == Class: apache
 #
 # Setup apache for usage.
 #
-# == Parameters:
+# === Parameters:
 #
 # $defaults::   With defaults, we will define a default namevhost on port 80.
-#               This includes the apache::listen and apache::namevhost directive.
-# == Todo:
+#               This includes apache::listen {'80': }
+#               and apache::namevhost {'80': }
+#
+# === Todo:
 #
 # TODO: Update documentation
 #

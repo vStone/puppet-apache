@@ -46,9 +46,10 @@ define apache::namevhost (
 
   $fname = "namevhost_${ip}_${port}"
   apache::confd::file {$fname:
-    confd     => $apache::setup::namevhost::confd,
-    content   => template('apache/confd/namevhost.erb'),
-    require   => Apache::Listen[$name],
+    confd          => $::apache::setup::namevhost::confd,
+    content        => template('apache/confd/namevhost.erb'),
+    require        => Apache::Listen[$name],
+    notify_service => $::apache::params::notify_service,
   }
 
 }

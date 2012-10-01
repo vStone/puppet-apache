@@ -1,4 +1,4 @@
-# = Definition: apache::confd::file
+# == Definition: apache::confd::file_concat
 #
 # Helper definition for confd style folders
 # This creates a concat type and 2 fragments for the
@@ -6,7 +6,7 @@
 #
 # This allows you to add other fragments to the same file.
 #
-# == Parameters
+# === Parameters
 #
 #  $confd:
 #     Subfolder in conf.d directory.
@@ -26,14 +26,15 @@
 #  $use_config_root:
 #     When true, we will create the file in the defined $confd folder
 #     in the apache configuration root. Otherwise, its created inside
-#     the configured $apache::params::confd.
+#     the configured $::apache::params::confd.
 #
-# == Todo:
+# === Todo:
 #
 # TODO: Update documentation
 #
 define apache::confd::file_concat (
   $confd,
+  $notify_service,
   $file_name        = "${title}.conf",
   $order            = undef,
   $content          = '',
@@ -50,10 +51,10 @@ define apache::confd::file_concat (
   }
 
   if $use_config_root {
-    $config_root = $apache::params::config_dir
+    $config_root = $::apache::params::config_dir
   } else {
     ## The confd used here is the GLOBAL conf.d folder.
-    $config_root = $apache::params::confd
+    $config_root = $::apache::params::confd
   }
 
   $target = "${config_root}/${confd}/${fname}"
@@ -61,6 +62,13 @@ define apache::confd::file_concat (
   concat {$name:
     path   => $target,
   }
+
+  if $notify_service {
+    Concat[$name] {
+      notify => Service['apache'],
+    }
+  }
+
   concat::fragment{"${title}-main":
     target  => $name,
     order   => '0001',

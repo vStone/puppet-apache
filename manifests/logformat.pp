@@ -1,8 +1,8 @@
-# = Definition: apache::logformat
+# == Definition: apache::logformat
 #
 # Define custom logformats.
 #
-# == Parameters:
+# === Parameters:
 #
 # $format::   The format you want to use. You do NOT need to escape double
 #             double quotes. We will do that for you. If you have escaped
@@ -12,7 +12,7 @@
 #
 # $name::     The name of the logformat, you can use this in your vhosts.
 #
-# == Example:
+# === Example:
 #
 #   apache::listen { '10.0.0.1_80': }
 #   apache::listen { '80': }
@@ -35,8 +35,9 @@ define apache::logformat (
   $_format = $format
 
   apache::confd::file {$fname:
-    confd   => $apache::setup::logformat::confd,
-    content => template('apache/confd/logformat.erb'),
+    confd          => $::apache::setup::logformat::confd,
+    content        => template('apache/confd/logformat.erb'),
+    notify_service => $::apache::params::notify_service,
   }
 
 }

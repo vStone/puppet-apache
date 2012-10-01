@@ -1,10 +1,10 @@
-# = Definition: apache::vhost::modfile
+# == Definition: apache::sys::modfile
 #
 # Modules use this type to add content to a virtualhost.
 # The configuration type selected is responsible for making
 # sure that the content is added to the virtualhost config.
 #
-# = Parameters:
+# === Parameters:
 #
 # $vhost::        Name of the vhost definition this is for.
 #
@@ -19,31 +19,33 @@
 #                 this will default to false. In which case it
 #                 will depend on the apache::vhost[$vhost]
 #
-# == Todo:
+# === Todo:
 #
 # TODO: Update documentation
 #
-define apache::vhost::modfile (
+define apache::sys::modfile (
   $vhost,
-  $ip       = undef,
-  $port     = '80',
-  $ensure   = 'present',
-  $content  = '',
-  $nodepend = false,
-  $order    = undef
+  $notify_service = undef,
+  $ip             = undef,
+  $port           = '80',
+  $ensure         = 'present',
+  $content        = '',
+  $nodepend       = false,
+  $order          = undef
 ) {
 
   $mod_def = "${::apache::params::config_base}::mod"
   $mod_args = {
-    "${name}"    => {
-      'name'     => $name,
-      'vhost'    => $vhost,
-      'ip'       => $ip,
-      'port'     => $port,
-      'ensure'   => $ensure,
-      'content'  => $content,
-      'nodepend' => $nodepend,
-      'order'    => $order
+    "${name}" => {
+      'name'           => $name,
+      'vhost'          => $vhost,
+      'ip'             => $ip,
+      'port'           => $port,
+      'ensure'         => $ensure,
+      'content'        => $content,
+      'nodepend'       => $nodepend,
+      'order'          => $order,
+      'notify_service' => $notify_service,
     }
   }
 

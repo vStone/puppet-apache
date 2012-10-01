@@ -8,7 +8,7 @@
 #     Name of the confd style folder
 #
 #  $confd:
-#     Subpath to use below the $apache::params::confd folder.
+#     Subpath to use below the $::apache::params::confd folder.
 #
 #  $order:
 #     Order in the conf.d folder.
@@ -62,10 +62,10 @@ define apache::confd (
 
   ## Some default folder configuration/magic
   if $use_config_root == false {
-    $name_d = "${apache::params::confd}/${path_name}"
+    $name_d = "${::apache::params::confd}/${path_name}"
     $include_root = "conf.d/${path_name}"
   } else {
-    $name_d = "${apache::params::config_dir}/${path_name}"
+    $name_d = "${::apache::params::config_dir}/${path_name}"
     $include_root = $path_name
   }
 
@@ -80,7 +80,7 @@ define apache::confd (
     mode    => '0644',
     recurse => true,
     purge   => $purge,
-    require => File[$apache::setup::apache_confd],
+    require => File[$::apache::setup::apache_confd],
   }
 
   ## Use the include template. Maybe we should put more stuff in the template.
@@ -88,7 +88,7 @@ define apache::confd (
 
   file {"apache-confd_${name}_load":
     ensure  => present,
-    path    => "${apache::params::confd}/${order}_${name}.conf",
+    path    => "${::apache::params::confd}/${order}_${name}.conf",
     content => $include,
     require => File[$name_dir_name]
   }
@@ -104,6 +104,4 @@ define apache::confd (
       require => File[$name_dir_name]
     }
   }
-
-
 }

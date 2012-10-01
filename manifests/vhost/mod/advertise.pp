@@ -1,6 +1,6 @@
-# == Definition: apache::vhost::mod::dummy
+# == Definition: apache::vhost::mod::advertise
 #
-# This dummy is an example on how to add your own vhost mod.
+# This advertise is an example on how to add your own vhost mod.
 #
 # === Required Parameters:
 #
@@ -31,11 +31,10 @@
 #               be done automaticly for an included mod type or only for
 #               the first if an array of a certain mod type is given.
 #
-# $comment::    Custom comment to add before the statements.
+# $content::    Custom content to put in the template.
 #
-# $header::     Array or single header rule.
-#
-# $requestheader::  Array or single request header rule.
+# $comment::    There is no need to comment out text using '#', this is done
+#               in the template itself.
 #
 # === Optional Parameters:
 #
@@ -54,7 +53,7 @@
 #
 # TODO: Update documentation
 #
-define apache::vhost::mod::header (
+define apache::vhost::mod::advertise (
   $vhost,
   $notify_service = undef,
   $ensure         = 'present',
@@ -64,15 +63,49 @@ define apache::vhost::mod::header (
   $order          = undef,
   $_automated     = false,
   $_header        = true,
-
   $comment        = undef,
-  $header         = [],
-  $requestheader  = []
+  $content        = '',
+
+  $enable_mcpm_receive = true,
+  $server_advertise    = undef,
+  $group               = undef,
+  $frequency           = undef,
+  $security_key        = undef,
+  $bind_address        = undef
 ) {
 
 
+
+  case $server_advertise {
+    true,false,undef: {}
+    default: {
+      fail('server_advertise: allowed values: true,false or leave undefined.')
+    }
+  }
+  case $group {
+    /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(:[0-9]+)?$/: {}
+    undef: {}
+    default: {
+      fail('group: value must be either an IP or IP:PORT.')
+    }
+  }
+  case $frequency {
+    /^[0-9]+(\.[0-9]+)$/: {}
+    undef: {}
+    default: {
+      fail('frequency: allowed value must be <seconds> or <seconds>.<miliseconds>.')
+    }
+  }
+  case $bind_address {
+    /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+$/: {}
+    undef: {}
+    default: {
+      fail('bind_address: value must be an IP:PORT.')
+    }
+  }
+
   ## Generate the content for your module file:
-  $definition = template('apache/vhost/mod/header.erb')
+  $definition = template('apache/vhost/mod/advertise.erb')
 
   apache::sys::modfile {$title:
     ensure         => $ensure,

@@ -1,3 +1,9 @@
+# == Class: apache::setup::namevhost
+#
+# === Todo:
+#
+# TODO: Update documentation
+#
 class apache::setup::namevhost {
 
   $confd = 'namevhost.d'
@@ -11,16 +17,16 @@ class apache::setup::namevhost {
     lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
-    changes => "rm directive[ . = 'NameVirtualHost' ]",
+    changes => 'rm directive[ . = "NameVirtualHost" ]',
   }
 
   apache::confd {'namevhost':
-    confd        => $apache::setup::namevhost::confd,
-    order        => $apache::setup::namevhost::order,
+    confd        => $::apache::setup::namevhost::confd,
+    order        => $::apache::setup::namevhost::order,
     load_content => '',
     warn_content => '',
-    includes     => $apache::setup::namevhost::includes,
-    purge        => $apache::setup::namevhost::purge,
+    includes     => $::apache::setup::namevhost::includes,
+    purge        => $::apache::setup::namevhost::purge,
   }
 
 }

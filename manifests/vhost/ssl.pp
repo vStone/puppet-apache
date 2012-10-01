@@ -42,7 +42,7 @@
 #
 # === Todo:
 #
-# * Update documentation
+# TODO: Update documentation
 #
 define apache::vhost::ssl (
   $ssl_cert,
@@ -60,15 +60,16 @@ define apache::vhost::ssl (
   $ssl_verify_client = undef,
   $ssl_verify_depth  = undef,
   $servername        = undef,
-  $serveraliases     = '',
+  $serveraliases     = undef,
   $ensure            = 'present',
   $ip                = undef,
-  $port              = '443',
+  $port              = undef,
   $admin             = undef,
   $vhostroot         = undef,
   $logdir            = undef,
-  $accesslog         = 'access.log',
-  $errorlog          = 'error.log',
+  $accesslog         = undef,
+  $errorlog          = undef,
+  $placeholder_ssl   = undef,
   $errorlevel        = 'warn',
   $docroot           = undef,
   $docroot_purge     = false,
@@ -78,21 +79,58 @@ define apache::vhost::ssl (
   $mods              = undef,
   $owner             = undef,
   $group             = undef,
+  $logformat         = undef,
   $diroptions        = 'FollowSymlinks MultiViews'
 ) {
 
   ## Same logic as apache::vhost but we redo this since we need $server
+  # and the default port is different.
+  case $name {
+    /^([a-z_]+[0-9a-z_\.]*)_([0-9]+)$/: {
+      $default_servername = $1
+      $default_port = $2
+    }
+    default: {
+      $default_servername = $name
+      $default_port = '443'
+    }
+  }
+
+  $vhost_port = $port ? {
+    undef   => $default_port,
+    default => $port,
+  }
+
   $server = $servername ? {
-    undef   => $name,
+    undef   => $default_servername,
     default => $servername,
   }
 
   $log_dir = $logdir ? {
-    undef   => "${apache::params::vhost_log_dir}/${server}",
+    undef   => "${::apache::params::vhost_log_dir}/${server}",
     default => $logdir,
   }
 
   $ssl_content = template('apache/vhost/virtualhost_ssl.erb')
+
+  # Replacing the ssl placeholder on the log formats.
+  $placeholderssl = $placeholder_ssl ? {
+    undef   => $::apache::params::placeholder_ssl,
+    default => $placeholder_ssl,
+  }
+
+  $placeholders = {
+    'ssl' => $placeholderssl,
+  }
+
+  $access_log = $accesslog ? {
+    undef   => $::apache::params::default_accesslog,
+    default => $accesslog,
+  }
+  $error_log = $errorlog ? {
+    undef   => $::apache::params::default_errorlog,
+    default => $errorlog,
+  }
 
   apache::vhost{$title:
     ensure        => $ensure,
@@ -102,11 +140,11 @@ define apache::vhost::ssl (
     docroot       => $docroot,
     vhostroot     => $vhostroot,
     ip            => $ip,
-    port          => $port,
+    port          => $vhost_port,
     admin         => $admin,
     logdir        => $logdir,
-    accesslog     => $accesslog,
-    errorlog      => $errorlog,
+    accesslog     => format_logfile($access_log, $placeholders),
+    errorlog      => format_logfile($error_log, $placeholders),
     errorlevel    => $errorlevel,
     docroot_purge => $docroot_purge,
     dirroot       => $dirroot,
@@ -114,6 +152,7 @@ define apache::vhost::ssl (
     mods          => $mods,
     owner         => $owner,
     group         => $group,
+    logformat     => $logformat,
     vhost_config  => $ssl_content, # This is the only thing that is different.
     diroptions    => $diroptions,
   }

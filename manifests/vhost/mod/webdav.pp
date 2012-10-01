@@ -1,19 +1,19 @@
-# = Definition: apache::vhost::mod::webdav
+# == Definition: apache::vhost::mod::webdav
 #
-# == Parameters:
+# === Parameters:
 #
 # Your definition should always take the following parameters. When
 # using the mods parameter from vhost, these get set automaticly.
 #
 # $vhost::      Defined what vhost this module is for.
-#               Required for apache::vhost::modfile
+#               Required for apache::sys::modfile
 #
-# $ip::         Required for apache::vhost::modfile.
+# $ip::         Required for apache::sys::modfile.
 #
-# $port::       Required for apache::vhost::modfile.
+# $port::       Required for apache::sys::modfile.
 #
 # $ensure::     Disable or enable this mod. This will/should remove the config
-#               file. Required for apache::vhost::modfile.
+#               file. Required for apache::sys::modfile.
 #
 # $location::   Location of files to share, relative to the vhost docroot.
 #               Defaults to '/'.
@@ -24,39 +24,46 @@
 #               mostly useful to restrict access to a certain location to a
 #               specific person or group.
 #
-# == Actions:
+# === Actions:
 #
-# Creates a apache::vhost::modfile for the vhost that has been selected.
+# Creates a apache::sys::modfile for the vhost that has been selected.
 #
-# == Sample Usage:
+# === Sample Usage:
+#
+#
+# === Todo:
+#
+# TODO: Update documentation
 #
 define apache::vhost::mod::webdav (
   $docroot,
   $vhost,
-  $ensure        = 'present',
-  $ip            = undef,
-  $port          = '80',
-  $order         = undef,
-  $_automated    = false,
-  $_header       = true,
+  $notify_service = undef,
+  $ensure         = 'present',
+  $ip             = undef,
+  $port           = '80',
+  $order          = undef,
+  $_automated     = false,
+  $_header        = true,
 
-  $comment       = undef,
-  $location      = '/',
-  $allow         = undef
+  $comment        = undef,
+  $location       = '/',
+  $allow          = undef
 ) {
 
 
   ## Generate the content for your module file:
   $definition = template('apache/vhost/mod/webdav.erb')
 
-  apache::vhost::modfile {$title:
-    ensure   => $ensure,
-    vhost    => $vhost,
-    ip       => $ip,
-    port     => $port,
-    nodepend => $_automated,
-    content  => $definition,
-    order    => $order,
+  apache::sys::modfile {$title:
+    ensure         => $ensure,
+    vhost          => $vhost,
+    ip             => $ip,
+    port           => $port,
+    nodepend       => $_automated,
+    content        => $definition,
+    order          => $order,
+    notify_service => $notify_service,
   }
 }
 

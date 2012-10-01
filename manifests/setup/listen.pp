@@ -1,3 +1,9 @@
+# == Class: apache::setup::listen
+#
+# === Todo:
+#
+# TODO: Update documentation
+#
 class apache::setup::listen {
 
   $confd = 'listen.d'
@@ -12,16 +18,16 @@ class apache::setup::listen {
     lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
-    changes => "rm directive[ . = 'Listen' ]",
+    changes => 'rm directive[ . = "Listen" ]',
   }
 
   apache::confd {'listen':
-    confd        => $apache::setup::listen::confd,
-    order        => $apache::setup::listen::order,
+    confd        => $::apache::setup::listen::confd,
+    order        => $::apache::setup::listen::order,
     load_content => '',
     warn_content => '',
-    includes     => $apache::setup::listen::includes,
-    purge        => $apache::setup::listen::purge,
+    includes     => $::apache::setup::listen::includes,
+    purge        => $::apache::setup::listen::purge,
   }
 
 }

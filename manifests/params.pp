@@ -1,70 +1,119 @@
-# = Class: apache::params
+# == Class: apache::params
 #
 # Configure various apache settings and initialize distro specific settings.
 #
-# == Parameters:
+# === Parameters:
 #
-# $apache::       Configure the apache package name.
-#                 Defaults do distro specific.
+# $apache::             Configure the apache package name.
+#                       Defaults do distro specific.
 #
-# $apache_dev::   Package(s) to install when $devel = true.
-#                 Defaults to distro specific.
+# $apache_dev::         Package(s) to install when $devel = true.
+#                       Defaults to distro specific.
 #
-# $apache_ssl::   Packages to install when $ssl = true.
-#                 Defaults to distro specific.
+# $apache_ssl::         Packages to install when $ssl = true.
+#                       Defaults to distro specific.
 #
-# $service::      Name of the apache service.
-#                 Defaults to distro specific.
+# $service::            Name of the apache service.
+#                       Defaults to distro specific.
 #
-# $configroot::   Root of all configuration files (NOT vhosts!)
-#                 Defaults to apache configuration dir/conf.d/
+# $configroot::         Root of all configuration files.
+#                       Defaults to distro specific. This should NOT include
+#                       a trailing '/' (forward-slash)
 #
-# $vhostroot::    Root where all vhost configuration is done. The
-#                 structure beneath this folder is determined by the
-#                 used $config_style.
-#                 Defaults to distro specific.
+# $vhostroot::          Root where all vhost configuration is done. The
+#                       structure beneath this folder is determined by the
+#                       used $config_style.
+#                       Defaults to distro specific.
 #
-# $vhostroot_purge:: Purge the vhost configuration root of all configuration
-#                    files that are not managed by puppet.
-#                    Defaults to false.
+# $vhostroot_purge::    Purge the vhost configuration root of all configuration
+#                       files that are not managed by puppet.
+#                       Defaults to false.
 #
-# $logroot::      Root where all log files are stored.
-#                 Defaults to distro specific.
+# $logroot::            Root where all log files are stored.
+#                       Defaults to distro specific.
 #
-# $user::         User to run the apache daemon as.
-#                 Defaults to distro specific.
+# $user::               User to run the apache daemon as.
+#                       Defaults to distro specific.
 #
-# $group::        Group to run apache daemon as.
-#                 Defaults to distro specific.
+# $group::              Group to run apache daemon as.
+#                       Defaults to distro specific.
 #
-# $devel::        Include development packages. Sometimes required for
-#                 building custom apache modules.
+# $devel::              Include development packages. Sometimes required for
+#                       building custom apache modules.
 #
-# $ssl::          Use ssl or not. On some distro's, we need to install
-#                 some additional packages for this to work properly.
-#                 Defaults to true.
+# $ssl::                Use ssl or not. On some distro's, we need to install
+#                       some additional packages for this to work properly.
+#                       Defaults to true.
 #
-# $keepalive::    Enable keepalive in the main configuration file.
-#                 Defaults to true.
+# $keepalive::          Enable keepalive in the main configuration file.
+#                       Defaults to true.
 #
-# $config_style:: Allows to pick the configuration style you want to generate.
-#                 If this is a simple string, the used class will be:
-#                   apache::vhost::config::${config_style}:: *
-#                 When the string contains '::', we will use that definition.
-#                 Defaults to 'concat'.
+# $config_style::       Allows to pick the configuration style you want to
+#                       generate. If this is a simple string, the used class
+#                       will be:
+#                         apache::sys::config::${config_style}:: *
+#                       When the string contains '::', we will use that
+#                       exact definition.
+#                       Defaults to 'concat'.
 #
-# $default_docroot::  The default document root to use beneath each
-#                     vhost documentroot folder. Defaults to 'htdocs'.
+# $default_docroot::    The default document root to use beneath each
+#                       vhost documentroot folder. Defaults to 'htdocs'.
 #
-# $diroptions::   Default directory Options to use for a vhost.
-#                 Defaults to 'FollowSymlinks MultiViews'
+# $diroptions::         Default directory Options to use for a vhost.
+#                       Defaults to 'FollowSymlinks MultiViews'
 #
-# $default_logformat:: Set the default logformat to use for vhosts.
-#                      Defaults to 'combined'.
+# $default_logformat::  Set the default logformat to use for vhosts.
+#                       Defaults to 'combined'.
 #
-# == Todo:
-# * Finish documentation.
-# * Test /out of scope/ config_style stuff.
+# $default_accesslog::  Default accesslog format. Defaults to 'access.log'.
+#                       You can use some placeholders in the format. See
+#                       _Log Placeholders_ for more information.
+#
+# $default_errorlog::   Default errorlog format. Defaults to 'error.log'.
+#                       You can use some placeholders in the format. See
+#                       _Log Placeholders_ for more information.
+#
+# $placeholder_ssl::    The string to use as the is_ssl placeholder if the
+#                       vhost is ssl enabled. If the vhost does not use ssl,
+#                       it will be empty. Defaults to '_ssl' (including! the
+#                       underscore).
+#
+# === Log Placeholders:
+#
+# The following placeholders can be used when providing the format for the
+# access and/or errorlog.
+#
+# name::                Is replaced with the apache::vhost name provided.
+# servername::          Is replaced with the ServerName that is configured.
+# port::                Is replaced with the port.
+# listen::              Is replaced with the Listen directive this vhost is
+#                       using. This is a combination of +ip+:+port+ or just
+#                       +port+.
+# ip::                  This is the IP this vhost is for or '+all+' if the
+#                       vhost is for all (ip is '*')
+# ssl::                 Is replaced with the +$placeholder_ssl+ for a ssl vhost.
+#
+#
+# ==== Example:
+#
+#   class {'apache::params':
+#     $default_accesslog => '%servername_%port%ssl_access.log',
+#     $placeholder_ssl   => '_ssl',
+#   }
+#
+#   apache::vhost::ssl {'localhost_443':
+#     /* SSL PARAMETERS */
+#   }
+#   # the access log will be called: 'localhost_443_ssl_access.log'
+#
+#   apache::vhost {'localhost_80': }
+#   # the access log will be called: 'localhost_80_access.log'
+#
+#
+# === Todo:
+#
+# TODO: Finish documentation.
+# TODO: Test /out of scope/ config_style stuff.
 #
 class apache::params(
   $apache            = undef,
@@ -72,6 +121,7 @@ class apache::params(
   $apache_ssl        = undef,
   $service           = undef,
   $configroot        = undef,
+  $moduleroot        = undef,
   $vhostroot         = undef,
   $vhostroot_purge   = false,
   $logroot           = undef,
@@ -83,7 +133,12 @@ class apache::params(
   $config_style      = undef,
   $default_docroot   = 'htdocs',
   $diroptions        = ['FollowSymlinks','MultiViews'],
-  $default_logformat = 'combined'
+  $default_logformat = 'combined',
+  $default_accesslog = 'access.log',
+  $default_errorlog  = 'error.log',
+  $default_admin     = undef,
+  $placeholder_ssl   = '_ssl',
+  $notify_service    = true
 ) {
 
   ####################################
@@ -157,6 +212,7 @@ class apache::params(
   }
 
   ## Main configuration template to use.
+  ## TODO: DEPRECATED. Remove!
   $config_template = $::operatingsystem ? {
     /Archlinux/     => 'apache/config/archlinux-apache.conf.erb',
     /CentOS|RedHat/ => $::operatingsystemrelease ? {
@@ -190,19 +246,25 @@ class apache::params(
   }
 
   if defined('::concat') {
-    $config_style_undef = 'apache::vhost::config::concat'
+    $config_style_undef = 'apache::sys::config::concat'
   }
   else {
-    $config_style_undef = 'apache::vhost::config::split'
+    $config_style_undef = 'apache::sys::config::split'
   }
 
   ## config_base
   $config_base = $config_style ? {
     undef   => $config_style_undef,
     /::/    => $config_style,
-    default => "apache::vhost::config::${config_style}"
+    default => "apache::sys::config::${config_style}"
   }
 
+  $module_root = $moduleroot ? {
+    undef   => $::operatingsystem ? {
+      default => 'modules'
+    },
+    default => $moduleroot,
+  }
 
   ####################################
   ####    Apache Daemon Config    ####

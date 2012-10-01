@@ -1,9 +1,9 @@
-# = Definition: apache::listen
+# == Definition: apache::listen
 #
 # Instruct apache to listen to this port. Name and port are
 # from the defined title
 #
-# == Parameters:
+# === Parameters:
 #
 #  $comment:
 #     Additional content that gets added to the listen definition file.
@@ -11,7 +11,7 @@
 #  $name:
 #     Either a single port number or <ip>_<port>
 #
-# == Example:
+# === Example:
 #
 #   apache::listen { '10.0.0.1_80': }
 #   apache::listen { '80': }
@@ -62,8 +62,9 @@ define apache::listen (
     $fname = "listen_${listen_ip}_${listen_port}"
 
     apache::confd::file {$fname:
-      confd   => $apache::setup::listen::confd,
-      content => template('apache/confd/listen.erb'),
+      confd          => $::apache::setup::listen::confd,
+      content        => template('apache/confd/listen.erb'),
+      notify_service => $::apache::params::notify_service,
     }
   }
 

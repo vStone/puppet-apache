@@ -1,8 +1,8 @@
-# = Definition: apache::vhost
+# == Definition: apache::vhost
 #
 #  Define a apache vhost.
 #
-# == Parameters:
+# === Parameters:
 #
 # $name::         The name is used for the filenames of various config files.
 #                 It is a good idea to use <servername>_<port> so there is no
@@ -21,7 +21,8 @@
 #                 Defaults to '80'
 #
 # $admin::        Admin email address.
-#                 Defaults to admin@SERVERNAME
+#                 Defaults to apache::params::default_admin if defined,
+#                 otherwise to admin@<servername>
 #
 # $vhostroot::    Root where all other files for this vhost will be placed.
 #                 Defaults to the globally defined vhost root folder.
@@ -49,11 +50,16 @@
 #                 Defaults to 'warn'.
 #
 # $accesslog::    Filename of the access log. Set to '' to disable logging.
-#                 Defaults to 'access.log'
+#                 Defaults to whatever is configured in apache::params using
+#                 the default_accesslog parameter.
+#                 This can be a string with certain placeholders. See the
+#                 _Log Placeholders_ section in the apache::params docs.
 #
 # $errorlog::     Filename of the error log. Set to '' to disable logging.
-#                 Defaults to 'error.log'
-#
+#                 Defaults to whatever is configured in apache::params using
+#                 the default_errorlog parameter.
+#                 This can be a string with certain placeholders. See the
+#                 _Log Placeholders_ section in the apache::params docs.
 #
 # $vhost_config:: Custom virtualhost configuration.
 #                 This does not override the complete config but is included
@@ -61,8 +67,8 @@
 #                 root definition and before including any apache vhost mods.
 #
 # $linklogdir::   Boolean. If enabled, a symlink to the apache logs is created
-#     in the root of the virtual host folder. Set to false to disable.
-#     Defaults to true
+#                 in the root of the virtual host folder. Set false to disable.
+#                 Defaults to true
 #
 # $diroptions::   String. defaults to "FollowSymlinks MultiViews"
 #
@@ -71,7 +77,7 @@
 # $logformat::    Logformat to use for accesslog.
 #                 Defaults to 'combined'.
 #
-# == Usage / Best practice:
+# === Usage / Best practice:
 #
 # Try and to use something unique for the name of each vhost defintion.
 # You can use the same  port, ip and servername for different definitions,
@@ -98,22 +104,26 @@
 #     }
 #   }
 #
-# If a module does not contain a classpath, we will prefix with apache::vhost::mod::
-# You can create custom modules outside the apache module this way. See the dummy.pp
-# module on what parameters are required for a mod.
+# If a module does not contain a classpath, we will prefix with
+# +apache::vhost::mod::+. You can create custom modules outside the apache
+# module this way. See the +apache::vhost::mod::dummy+ module on what parameters
+# are required for a mod.
 #
+# === Todo:
+#
+# TODO: Add more examples.
 #
 define apache::vhost (
   $servername     = undef,
   $serveraliases  = undef,
   $ensure         = 'present',
   $ip             = undef,
-  $port           = '80',
+  $port           = undef,
   $admin          = undef,
   $vhostroot      = undef,
   $logdir         = undef,
-  $accesslog      = 'access.log',
-  $errorlog       = 'error.log',
+  $accesslog      = undef,
+  $errorlog       = undef,
   $errorlevel     = 'warn',
   $docroot        = undef,
   $docroot_purge  = false,
@@ -125,22 +135,27 @@ define apache::vhost (
   $diroptions     = undef,
   $owner          = undef,
   $group          = undef,
-  $logformat      = undef
+  $logformat      = undef,
+  $notify_service = undef
 ) {
-
-  ## This fixes undefined method function_always_array in the templates used.
-  $_fix_always_array = always_array('')
-
-  if $title == '' {
-    fail('Can not create a vhost with empty title/name')
-  }
 
   require apache::params
   require apache::setup::vhost
 
+  ## This fixes undefined method function_always_array in the templates used.
+  $_fix_always_array = always_array('')
+
+
   ####################################
   ####  Param checks & Defaults   ####
   ####################################
+
+  # What the error message says...
+  if $title == '' {
+    fail('Can not create a vhost with empty title/name')
+  }
+
+  # Sanitize the ensure value and translate into an enable parameter.
   case $ensure {
     /enable|present/, true:   { $enable = true }
     /disable|absent/, false:  { $enable = false }
@@ -150,63 +165,136 @@ define apache::vhost (
     }
   }
 
+  # Try to determine the servername and port from the name of the definition
+  # if no servername and/or port have been explicitly set.
+  case $name {
+    /^([a-z_]+[0-9a-z_\.]*)_([0-9]+)$/: {
+      $default_servername = $1
+      $default_port = $2
+    }
+    default: {
+      $default_servername = $name
+      $default_port = '80'
+    }
+  }
+
+  # Use provided port or the default value.
+  $vhost_port = $port ? {
+    undef   => $default_port,
+    default => $port,
+  }
+
+  # Use the provided servername or the default value.
   $server = $servername ? {
-    undef   => $name,
+    undef   => $default_servername,
     default => $servername,
   }
 
-  $serveradmin = $admin ? {
+  # Use the provided admin mail address or use the default value.
+  $default_admin = $::apache::params::default_admin ? {
     undef   => "admin@${server}",
+    default => $::apache::params::default_admin,
+  }
+
+  $serveradmin = $admin ? {
+    undef   => $default_admin,
     default => $admin,
   }
 
+  # Use the provided vhostroot or use the default value.
   $vhost_root = $vhostroot ? {
-    undef   => "${apache::params::vhost_root}/${server}",
+    undef   => "${::apache::params::vhost_root}/${server}",
     default =>  $vhostroot,
   }
+
+  # Use the provided logdir or use the default value.
   $log_dir = $logdir ? {
-    undef   => "${apache::params::vhost_log_dir}/${server}",
+    undef   => "${::apache::params::vhost_log_dir}/${server}",
     default => $logdir,
   }
 
+  # When linklogdir is true, this is the location of the link we are creating
+  # to the logdir.
   $log_link_target = "${vhost_root}/logs"
 
+  # Use the provided docroot or use the default value.
+  # This is used in the template in the DocumentRoot directive.
   $documentroot = $docroot ? {
-    undef   => "${vhost_root}/${apache::params::default_docroot}",
+    undef   => "${vhost_root}/${::apache::params::default_docroot}",
     default => $docroot,
   }
 
+  # Use the provided dirroot or use the default value.
+  # This is used in the template in the <Directory ...> directive.
   $directoryroot =  $dirroot ? {
     undef   => $documentroot,
     default => $dirroot,
   }
 
+  $notifyservice = $notify_service ? {
+    undef   => $::apache::params::notify_service,
+    default => $notify_service,
+  }
+
   ## Check for matching apache::namevhost
+  # $log_ip::    Used in the placeholders for log filenames.
+  # $ip_def::    Used in the template in the <Virtualhost ...> directive.
+  # $listen::    Used for checking if an apache::namevhost definition exists.
   case $ip {
     undef: {
+      $log_ip = 'all'
       $ip_def = '*'
-      $listen = $port
+      $listen = $vhost_port
     }
     default: {
+      $log_ip = $ip
       $ip_def = $ip
-      $listen = "${ip}_${port}"
+      $listen = "${ip}_${vhost_port}"
     }
   }
 
-  if ($ensure == 'present') and ( ! defined (Apache::Namevhost[$listen])) {
-    warning( template('apache/msg/vhost-notdef-namevhost-warning.erb') )
+  if ($ensure == 'present') and ( ! defined (Apache::Listen[$listen])) {
+    warning( template('apache/msg/vhost-notdef-listen-warning.erb') )
   }
 
+  # Use the provided diroptions, 'All' when diroptions is empty or the default.
   $dir_options = $diroptions ? {
     undef   => $::apache::params::diroptions,
     ''      => 'All',
     default => $diroptions,
   }
 
+  # Use the provided logformat or use the default. This is the logformat for
+  # the access log (combined, common, ...)
   $log_format = $logformat ? {
     undef   => $::apache::params::default_logformat,
     default => $logformat,
   }
+
+  # Use provided accesslog or use the default if none is provided.
+  $_access_log = $accesslog ? {
+    undef   => $::apache::params::default_accesslog,
+    default => $accesslog,
+  }
+  # Use provided errorlog or use the default if none is provided.
+  $_error_log = $errorlog ? {
+    undef   => $::apache::params::default_errorlog,
+    default => $errorlog,
+  }
+
+  # Log (access- and errorlog) filename placeholders.
+  $placeholders = {
+    'servername' => $server,
+    'name'       => $name,
+    'port'       => $vhost_port,
+    'listen'     => $listen,
+    'ip'         => $log_ip,
+    'ssl'        => '',           # Filter out %ssl placeholders.
+  }
+
+  # Replace placeholders in log filenames.
+  $access_log = format_logfile($_access_log, $placeholders)
+  $error_log = format_logfile($_error_log, $placeholders)
 
   ####################################
   ####   Create vhost structure   ####
@@ -259,33 +347,35 @@ define apache::vhost (
   ####################################
   ####   Generate vhost config    ####
   ####################################
-  # The location of the file is determined by the configurition type you selected.
-  # We call the main class to create that main file.
-  $style_def = "${apache::params::config_base}::main"
+  # The location of the file is determined by the configurition type you
+  # selected. We call the main class from that namespace to create the file.
+  $style_def = "${::apache::params::config_base}::main"
 
   ## Note: puppet-lint warns on "${name}". Won't work properly without quotes.
   $style_args = {
-    "${name}"    => {
-      'ensure'      => $enable,
-      'name'        => $name,
-      'content'     => template('apache/vhost/virtualhost.erb'),
-      'content_end' => template('apache/vhost/virtualhost_end.erb'),
-      'order'       => $order,
-      'ip'          => $ip_def,
-      'port'        => $port,
-      'require'     => File[$documentroot],
+    "${name}"          => {
+      'ensure'         => $enable,
+      'name'           => $name,
+      'content'        => template('apache/vhost/virtualhost.erb'),
+      'content_end'    => template('apache/vhost/virtualhost_end.erb'),
+      'order'          => $order,
+      'ip'             => $ip_def,
+      'port'           => $vhost_port,
+      'require'        => File[$documentroot],
+      'notify_service' => $notifyservice,
     }
   }
   create_resources($style_def, $style_args)
 
   ## Create all the defined mods for this vhost.
   $defaults = {
-    'ensure'        => $ensure,
-    'vhost'         => $name,
-    'ip'            => $ip_def,
-    'port'          => $port,
-    'docroot'       => $documentroot,
-    '_automated'    => true,
+    'ensure'         => $ensure,
+    'vhost'          => $name,
+    'ip'             => $ip_def,
+    'port'           => $vhost_port,
+    'docroot'        => $documentroot,
+    'notify_service' => $notifyservice,
+    '_automated'     => true,
   }
   if $mods != undef and $mods != '' {
     ## Wraps arround create_resources to create the proper resource

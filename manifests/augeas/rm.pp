@@ -1,6 +1,6 @@
-# == Definition: apache::augeas::set
+# == Definition: apache::augeas::rm
 #
-# Description of apache::augeas::set
+# Description of apache::augeas::rm
 #
 # === Parameters:
 #
@@ -20,8 +20,8 @@
 #
 # TODO: Update documentation
 #
-define apache::augeas::set (
-  $value,
+define apache::augeas::rm (
+  $value = undef,
   $config = undef
 ) {
 
@@ -38,17 +38,21 @@ define apache::augeas::set (
     context => "/files${config_file}",
   }
 
-  # Update if it exists
-  augeas {"apache-augeas-set-update-${name}":
-    changes => "set directive[ . = '${name}']/arg ${value}",
-    onlyif  => "match directive[ . = '${name}'] size > 0",
+  case $value {
+
+    undef: {
+      augeas {"apache-augeas-rm-${name}":
+        changes => "rm directive[ . = '${name}']",
+      }
+    }
+    default: {
+      augeas {"apache-augeas-rm-${name}-${value}":
+        changes => "rm directive[ . = '${name}' and arg = '${value}']",
+      }
+    }
+
   }
 
-  # Create if it does not exist.
-  augeas {"apache-augeas-set-insert-${name}":
-    changes => template('apache/augeas/set-insert.erb'),
-    onlyif  => "match directive[ . = '${name}'] size == 0",
-  }
 
 }
 

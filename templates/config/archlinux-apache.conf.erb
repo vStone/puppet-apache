@@ -115,7 +115,6 @@ LoadModule dir_module modules/mod_dir.so
 LoadModule imagemap_module modules/mod_imagemap.so
 LoadModule actions_module modules/mod_actions.so
 LoadModule speling_module modules/mod_speling.so
-LoadModule userdir_module modules/mod_userdir.so
 LoadModule alias_module modules/mod_alias.so
 LoadModule rewrite_module modules/mod_rewrite.so
 
@@ -444,9 +443,6 @@ Include conf/extra/httpd-autoindex.conf
 
 # Language settings
 Include conf/extra/httpd-languages.conf
-
-# User home directories
-Include conf/extra/httpd-userdir.conf
 
 # Real-time info on requests and configuration
 #Include conf/extra/httpd-info.conf

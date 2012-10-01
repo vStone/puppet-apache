@@ -28,6 +28,11 @@ LoadModule userdir_module modules/mod_userdir.so
     #
     UserDir public_html
 
+    #
+    # Do not allow access to root's homedir by default:
+    #
+    UserDir disabled root
+
 </IfModule>
 
 #

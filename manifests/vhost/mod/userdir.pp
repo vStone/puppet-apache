@@ -36,6 +36,7 @@ define apache::vhost::mod::userdir (
   $docroot       = undef,
   $order         = undef,
   $_automated    = false,
+  $_header       = true,
 ) {
 
   $definition = template('apache/vhost/mod/userdir.erb')

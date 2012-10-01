@@ -67,8 +67,8 @@
 #                 root definition and before including any apache vhost mods.
 #
 # $linklogdir::   Boolean. If enabled, a symlink to the apache logs is created
-#     in the root of the virtual host folder. Set to false to disable.
-#     Defaults to true
+#                 in the root of the virtual host folder. Set false to disable.
+#                 Defaults to true
 #
 # $diroptions::   String. defaults to "FollowSymlinks MultiViews"
 #

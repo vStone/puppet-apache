@@ -3,7 +3,7 @@ Puppet::Parser::Functions::newfunction(
   :type => :rvalue,
   :doc => '
   Render the log filename from the given template.
-
+  Replaces certain placeholders within the provided format.
 '
 ) do |args|
 
@@ -27,6 +27,6 @@ Puppet::Parser::Functions::newfunction(
     format = format.gsub(re, "\\1#{value}")
   end
 
-  format
+  format.gsub(/%%/, '%')
 
 end

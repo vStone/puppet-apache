@@ -30,13 +30,14 @@
 #
 define apache::vhost::mod::userdir (
   $vhost,
-  $ensure        = 'present',
-  $ip            = undef,
-  $port          = undef,
-  $docroot       = undef,
-  $order         = undef,
-  $_automated    = false,
-  $_header       = true,
+  $notify_service = undef,
+  $ensure         = 'present',
+  $ip             = undef,
+  $port           = undef,
+  $docroot        = undef,
+  $order          = undef,
+  $_automated     = false,
+  $_header        = true,
 ) {
 
   $definition = template('apache/vhost/mod/userdir.erb')

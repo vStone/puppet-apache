@@ -21,7 +21,8 @@
 # TODO: Update documentation
 #
 define apache::augeas::rm (
-  $value = undef,
+  $key    = $name,
+  $value  = undef,
   $config = undef
 ) {
 
@@ -42,12 +43,12 @@ define apache::augeas::rm (
 
     undef: {
       augeas {"apache-augeas-rm-${name}":
-        changes => "rm directive[ . = '${name}']",
+        changes => "rm directive[ . = '${key}']",
       }
     }
     default: {
       augeas {"apache-augeas-rm-${name}-${value}":
-        changes => "rm directive[ . = '${name}' and arg = '${value}']",
+        changes => "rm directive[ . = '${key}' and arg = '${value}']",
       }
     }
 

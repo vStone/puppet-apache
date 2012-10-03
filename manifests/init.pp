@@ -13,8 +13,15 @@
 # TODO: Update documentation
 #
 class apache (
-  $defaults = true
+  $defaults = undef
 ) {
+
+  require apache::params
+  $_defaults = $defaults ? {
+    undef   => $::apache::params::defaults,
+    default => $defaults,
+  }
+
 
   include apache::module
   include apache::packages
@@ -30,7 +37,7 @@ class apache (
     default: { }
   }
 
-  if $defaults {
+  if $_defaults {
     apache::listen {'80': }
     apache::namevhost {'80': }
   }

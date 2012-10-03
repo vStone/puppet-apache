@@ -138,7 +138,8 @@ class apache::params(
   $default_errorlog  = 'error.log',
   $default_admin     = undef,
   $placeholder_ssl   = '_ssl',
-  $notify_service    = true
+  $notify_service    = true,
+  $defaults          = true
 ) {
 
   ####################################

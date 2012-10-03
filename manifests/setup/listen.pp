@@ -6,19 +6,21 @@
 #
 class apache::setup::listen {
 
+  require apache::params
+
   $confd = 'listen.d'
   $order = '00'
   $includes = '*.conf'
   $purge  = true
 
-
   ## Remove listen directives in the main http configuration if we define them.
   # You can still add aditional listeners but if they overlap :)
-  augeas{'apache-setup-listen-config':
+  augeas {'apache-setup-listen-config':
     lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
     changes => 'rm directive[ . = "Listen" ]',
+    require => Package['apache'],
   }
 
   apache::confd {'listen':

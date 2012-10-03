@@ -37,6 +37,7 @@ define apache::augeas::rm (
     lens    => 'Httpd.lns',
     incl    => $config_file,
     context => "/files${config_file}",
+    require => Package['apache'],
   }
 
   case $value {

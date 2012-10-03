@@ -18,6 +18,7 @@ class apache::setup::namevhost {
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
     changes => 'rm directive[ . = "NameVirtualHost" ]',
+    require => Package['apache'],
   }
 
   apache::confd {'namevhost':

@@ -20,8 +20,8 @@ class apache::setup {
     lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
+    require => Package['apache'],
   }
-
 
   case $::apache::params::keepalive {
     true,'true',/(?i:on)/:    { $_keepalive = 'On' }
@@ -62,7 +62,6 @@ class apache::setup {
     group  => 'root',
     mode   => '0755',
   }
-
 
   include apache::setup::listen
   include apache::setup::namevhost

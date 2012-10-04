@@ -1,5 +1,5 @@
 name 'vstone-apache'
-version '0.11.0'
+version '0.12.0'
 
 author 'Jan Vansteenkiste <jan@vstone.eu>'
 license 'Apache'

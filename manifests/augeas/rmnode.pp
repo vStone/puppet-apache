@@ -1,6 +1,6 @@
-# == Definition: apache::augeas::rm
+# == Definition: apache::augeas::rmnode
 #
-# Description of apache::augeas::rm
+# Description of apache::augeas::rmnode
 #
 # === Parameters:
 #
@@ -20,8 +20,8 @@
 #
 # TODO: Update documentation
 #
-define apache::augeas::rm (
-  $key    = $name,
+define apache::augeas::rmnode (
+  $type = $name,
   $value  = undef,
   $config = undef
 ) {
@@ -43,13 +43,13 @@ define apache::augeas::rm (
   case $value {
 
     undef: {
-      augeas {"apache-augeas-rm-${name}":
-        changes => "rm directive[ . = '${key}']",
+      augeas {"apache-augeas-rmnode-${name}":
+        changes => "rm ${type}",
       }
     }
     default: {
       augeas {"apache-augeas-rm-${name}-${value}":
-        changes => "rm directive[ . = '${key}' and arg = '${value}']",
+        changes => "rm *[label() = '${type}' and arg = '${value}']",
       }
     }
 

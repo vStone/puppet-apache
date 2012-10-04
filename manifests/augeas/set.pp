@@ -36,6 +36,7 @@ define apache::augeas::set (
     lens    => 'Httpd.lns',
     incl    => $config_file,
     context => "/files${config_file}",
+    require => Package['apache'],
   }
 
   # Update if it exists

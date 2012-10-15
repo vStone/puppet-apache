@@ -209,7 +209,7 @@ define apache::vhost (
 
   # Use the provided logdir or use the default value.
   $log_dir = $logdir ? {
-    undef   => "${::apache::params::vhost_log_dir}/${server}",
+    undef   => "${::apache::params::vhost_log_dir}/${name}",
     default => $logdir,
   }
 

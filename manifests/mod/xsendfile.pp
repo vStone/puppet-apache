@@ -11,7 +11,7 @@
 # TODO: Allow configuration/overriding of packages to use.
 #
 class apache::mod::xsendfile (
-  $notify_service = undef,
+  $notify_service = undef
 ) {
 
   case $::operatingsystem {

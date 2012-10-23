@@ -21,6 +21,7 @@ class apache::setup {
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
     require => Package['apache'],
+    before  => Service['apache'],
   }
 
   case $::apache::params::keepalive {

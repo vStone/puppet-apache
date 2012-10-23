@@ -39,6 +39,8 @@ define apache::config::loadmodule (
     lens    => 'Httpd.lns',
     incl    => $config_file,
     context => "/files${config_file}",
+    require => Package['apache'],
+    before  => Service['apache'],
   }
 
   $modfile = $path ? {

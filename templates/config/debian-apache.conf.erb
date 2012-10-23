@@ -1,4 +1,6 @@
 #
+# Managed by puppet
+#
 # Based upon the NCSA server configuration files originally by Rob McCool.
 #
 # This is the main Apache server configuration file.  It contains the
@@ -207,7 +209,7 @@ Include mods-enabled/*.conf
 Include httpd.conf
 
 # Include ports listing
-Include ports.conf
+#Include ports.conf
 
 #
 # The following directives define some format nicknames for use with
@@ -224,7 +226,7 @@ LogFormat "%{User-agent}i" agent
 # see README.Debian for details.
 
 # Include generic snippets of statements
-Include conf.d/
+#Include conf.d/
 
 # Include the virtual host configurations:
 Include sites-enabled/

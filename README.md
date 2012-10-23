@@ -10,6 +10,11 @@
 
     }
 
+# Requirements
+
+* augeas &gt;= 0.9.0
+
+
 # Release Notes:
 
 ## Upgrade to 0.9

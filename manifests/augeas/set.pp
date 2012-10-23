@@ -37,6 +37,7 @@ define apache::augeas::set (
     incl    => $config_file,
     context => "/files${config_file}",
     require => Package['apache'],
+    before  => Service['apache'],
   }
 
   # Update if it exists

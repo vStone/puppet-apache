@@ -48,6 +48,8 @@ define apache::vhost::mod::rewrite (
   $rewrite_rule   = []
 ) {
 
+  require apache::mod::rewrite
+
   $definition = template('apache/vhost/mod/rewrite.erb')
 
   apache::sys::modfile {$title:

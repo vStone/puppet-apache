@@ -300,6 +300,15 @@ define apache::vhost (
   ####   Create vhost structure   ####
   ####################################
 
+
+  ## All files should be created before doing anything to the apache service
+  Apache::Confd::File_exists {
+    before  => Service['apache'],
+  }
+  File {
+    before => Service['apache'],
+  }
+
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
     ensure => 'directory',
     owner  => $owner,

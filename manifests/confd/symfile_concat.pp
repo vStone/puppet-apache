@@ -47,6 +47,7 @@
 define apache::confd::symfile_concat (
   $confd,
   $notify_service,
+  $confd_link       = $confd,
   $order            = '10',
   $ensure           = 'enable',
   $link_name        = "${title}.conf",
@@ -59,6 +60,8 @@ define apache::confd::symfile_concat (
 
   require concat::setup
 
+  ## Sanitize the ensure parameter.
+  ## @TODO: Add purge support.
   $enabled = $ensure ? {
     /enable|present/ => true,
     true             => true,
@@ -67,23 +70,33 @@ define apache::confd::symfile_concat (
     default          => true,
   }
 
+  ## Take care of ordering.
   if $order_linkonly {
     $filename = $file_name
   } else {
     $filename = "${order}_${file_name}"
   }
+
+  ## The link always has the order in it
   $linkname = "${order}_${link_name}"
 
+  ## The confd folder provided is directly in the apache
+  # configuration root (or not)
   if $use_config_root {
     $config_root = $::apache::params::config_dir
   } else {
     $config_root = $::apache::params::confd
   }
+
+  # Complete target for the vhost configuration file.
   $target = "${config_root}/${confd}/${filename}"
+  $link   = "${config_root}/${confd_link}/${linkname}"
 
   concat {$name:
     path   => $target,
   }
+
+  # Notify the service when changing the file.
   if $notify_service {
     Concat[$name] {
       notify => Service['apache'],
@@ -102,8 +115,8 @@ define apache::confd::symfile_concat (
   }
 
   file {"${title}-symlink":
-    path    => "${config_root}/${confd}/${linkname}",
-    target  => "${config_root}/${confd}/${filename}",
+    path    => $link,
+    target  => $target,
     require => Concat[$name],
   }
 

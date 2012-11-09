@@ -1,2 +1,2 @@
   ### File (fragment) managed with puppet ###
-  ## Template source:  '<%= template_source %>'
+  ## Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'

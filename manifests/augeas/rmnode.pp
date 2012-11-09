@@ -38,6 +38,7 @@ define apache::augeas::rmnode (
     incl    => $config_file,
     context => "/files${config_file}",
     require => Package['apache'],
+    before  => Service['apache'],
   }
 
   case $value {

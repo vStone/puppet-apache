@@ -86,7 +86,7 @@ define apache::vhost::ssl (
   ## Same logic as apache::vhost but we redo this since we need $server
   # and the default port is different.
   case $name {
-    /^([a-z_]+[0-9a-z_\.]*)_([0-9]+)$/: {
+    /^([a-z_]+[0-9a-z_\.-]*)_([0-9]+)$/: {
       $default_servername = $1
       $default_port = $2
     }

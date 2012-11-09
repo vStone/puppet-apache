@@ -168,7 +168,7 @@ define apache::vhost (
   # Try to determine the servername and port from the name of the definition
   # if no servername and/or port have been explicitly set.
   case $name {
-    /^([a-z_]+[0-9a-z_\.]*)_([0-9]+)$/: {
+    /^([a-z_]+[0-9a-z_\.-]*)_([0-9]+)$/: {
       $default_servername = $1
       $default_port = $2
     }

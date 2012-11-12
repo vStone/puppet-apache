@@ -92,6 +92,8 @@
 # ip::                  This is the IP this vhost is for or '+all+' if the
 #                       vhost is for all (ip is '*')
 # ssl::                 Is replaced with the +$placeholder_ssl+ for a ssl vhost.
+# harden::              Include apache::security class by default.
+#                       Defaults to false.
 #
 #
 # ==== Example:
@@ -139,7 +141,8 @@ class apache::params(
   $default_admin     = undef,
   $placeholder_ssl   = '_ssl',
   $notify_service    = true,
-  $defaults          = true
+  $defaults          = true,
+  $harden            = false
 ) {
 
   ####################################

@@ -13,7 +13,8 @@
 # TODO: Update documentation
 #
 class apache (
-  $defaults = undef
+  $defaults = undef,
+  $harden   = undef
 ) {
 
   require apache::params
@@ -22,8 +23,13 @@ class apache (
     default => $defaults,
   }
 
+  $_harden  = $harden ? {
+    undef   => $::apache::params::harden,
+    default => $harden,
+  }
 
   include apache::module
+
   include apache::packages
   include apache::setup
   include apache::service
@@ -40,6 +46,13 @@ class apache (
   if $_defaults {
     apache::listen {'80': }
     apache::namevhost {'80': }
+  }
+
+  if $_harden {
+    class {'apache::security':
+      require => Class['apache::setup'],
+      before  => Class['apache::service'],
+    }
   }
 
 }

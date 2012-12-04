@@ -32,22 +32,36 @@ define apache::config::loadmodule (
   case $::operatingsystem {
     /(?i:debian|ubuntu)/: {
       ## DEBIAN / UBUNTU specific module loading.
-
       file {"apache-config-loadmodule-debian-${name}":
-        path   => "${apache::params::config_dir}/mods-enabled/${name}.load",
-        target => "../mods-available/${name}.load",
+        path    => "${apache::params::config_dir}/mods-enabled/${name}.load",
+        target  => "../mods-available/${name}.load",
+        require => Package[$::apache::params::package],
+      }
+
+      Exec {
+        path    => ['/usr/bin','/bin'],
+        require => Package[$::apache::params::package],
       }
 
       case $ensure {
         default,'present',true: {
-          File["apache-config-loadmodule-debian-${name}"] {
-            ensure => 'link',
+          File["apache-config-loadmodule-debian-${name}"] { ensure => 'link', }
+          exec {"apache-config-loadmodule-debian-exec-${name}-conf":
+            creates => "${::apache::params::config_dir}/mods-enabled/${name}.conf",
+            command => "ln -sf ../mods-available/${name}.conf ${name}.conf",
+            onlyif  => "test -f ${::apache::params::config_dir}/mods-available/${name}.conf",
+            cwd     => "${::apache::params::config_dir}/mods-enabled/",
           }
+
         }
         'absent',false: {
-          File["apache-config-loadmodule-debian-${name}"] {
-            ensure => 'absent',
+          File["apache-config-loadmodule-debian-${name}"] { ensure => 'absent', }
+          exec {"apache-config-loadmodule-debian-exec-${name}-conf":
+            command => "rm -f ${name}.conf",
+            onlyif  => "test -f ${::apache::params::config_dir}/mods-enabled/${name}.conf",
+            cwd     => "${::apache::params::config_dir}/mods-enabled/",
           }
+
         }
       }
     }

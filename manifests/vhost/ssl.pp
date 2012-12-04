@@ -83,6 +83,8 @@ define apache::vhost::ssl (
   $diroptions        = 'FollowSymlinks MultiViews'
 ) {
 
+  require apache::mod::ssl
+
   ## Same logic as apache::vhost but we redo this since we need $server
   # and the default port is different.
   case $name {

@@ -12,6 +12,8 @@
 
 # Requirements
 
+* augeas &gt;= 0.9.0
+
 ## Debian
 
 * libaugeas0 &gt;= 0.9.0

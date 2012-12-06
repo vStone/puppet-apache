@@ -132,6 +132,7 @@ class apache::params(
   $devel             = false,
   $ssl               = true,
   $keepalive         = true,
+  $timeout           = 60,
   $config_style      = undef,
   $default_docroot   = 'htdocs',
   $diroptions        = ['FollowSymlinks','MultiViews'],

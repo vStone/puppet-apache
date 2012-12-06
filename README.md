@@ -14,6 +14,14 @@
 
 * augeas &gt;= 0.9.0
 
+## Debian
+
+* libaugeas0 &gt;= 0.9.0
+* augeas-lenses &gt;= 0.9.0
+* libaugeas-ruby &gt;= 0.3.0
+
+You can find up-to-date packages in squeeze-backports.
+
 
 # Release Notes:
 

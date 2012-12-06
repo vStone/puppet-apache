@@ -44,12 +44,12 @@ class apache::mod::passenger (
 
     case $::operatingsystem {
       /(?i:debian|ubuntu)/: {
-        Apache::Sys::Package['passenger'] {
+        Apache::Sys::Modpackage['passenger'] {
           provider  => 'apt',
         }
       }
       /(?i:centos|redhat)/: {
-        Apache::Sys::Package['passenger'] {
+        Apache::Sys::Modpackage['passenger'] {
           provider  => 'gem',
           require   +> Package['rubygems'],
         }

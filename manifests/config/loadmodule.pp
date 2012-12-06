@@ -4,7 +4,6 @@
 #
 # == Parameters:
 #
-# $param::   description of parameter. default value if any.
 #
 # == Actions:
 #
@@ -30,49 +29,87 @@ define apache::config::loadmodule (
 
   require apache::params
 
-  $config_file = $config ? {
-    undef   => $::apache::params::config_file,
-    default => $config,
-  }
-
-  Augeas {
-    lens    => 'Httpd.lns',
-    incl    => $config_file,
-    context => "/files${config_file}",
-    require => Package['apache'],
-    before  => Service['apache'],
-  }
-
-  $modfile = $path ? {
-    undef   => "${::apache::params::module_root}/${file}",
-    default => "${path}/${file}",
-  }
-
-  case $ensure {
-    default,'present',true: {
-
-      augeas {"apache-config-loadmodule-update-${name}":
-        changes => "set directive[ . = 'LoadModule' and arg[1] = '${module}']/arg[2] '${modfile}'",
-        onlyif  => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size > 0",
+  case $::operatingsystem {
+    /(?i:debian|ubuntu)/: {
+      ## DEBIAN / UBUNTU specific module loading.
+      file {"apache-config-loadmodule-debian-${name}":
+        path    => "${apache::params::config_dir}/mods-enabled/${name}.load",
+        target  => "../mods-available/${name}.load",
+        require => Package[$::apache::params::package],
       }
-      augeas {"apache-config-loadmodule-insert-${name}":
-        changes => [
-          'set directive[. = "LoadModule"][last() + 1] "LoadModule"',
-          "set directive[. = 'LoadModule' ][last()]/arg[1] ${module}",
-          "set directive[. = 'LoadModule' ][last()]/arg[2] ${modfile}",
-        ],
-        onlyif  => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size == 0",
+
+      Exec {
+        path    => ['/usr/bin','/bin'],
+        require => Package[$::apache::params::package],
+      }
+
+      case $ensure {
+        default,'present',true: {
+          File["apache-config-loadmodule-debian-${name}"] { ensure => 'link', }
+          exec {"apache-config-loadmodule-debian-exec-${name}-conf":
+            creates => "${::apache::params::config_dir}/mods-enabled/${name}.conf",
+            command => "ln -sf ../mods-available/${name}.conf ${name}.conf",
+            onlyif  => "test -f ${::apache::params::config_dir}/mods-available/${name}.conf",
+            cwd     => "${::apache::params::config_dir}/mods-enabled/",
+          }
+
+        }
+        'absent',false: {
+          File["apache-config-loadmodule-debian-${name}"] { ensure => 'absent', }
+          exec {"apache-config-loadmodule-debian-exec-${name}-conf":
+            command => "rm -f ${name}.conf",
+            onlyif  => "test -f ${::apache::params::config_dir}/mods-enabled/${name}.conf",
+            cwd     => "${::apache::params::config_dir}/mods-enabled/",
+          }
+
+        }
       }
     }
-    'absent': {
+    default: {
+      ## By default we alter the main configuration file by using augeas.
 
-      augeas {"apache-config-loadmodule-rm-${name}":
-        changes => "rm directive[. = 'LoadModule' and arg[1] = '${module}']",
+      $config_file = $config ? {
+        undef   => $::apache::params::config_file,
+        default => $config,
       }
 
-    }
+      Augeas {
+        lens    => 'Httpd.lns',
+        incl    => $config_file,
+        context => "/files${config_file}",
+        require => Package['apache'],
+        before  => Service['apache'],
+      }
 
-  }
+      $modfile = $path ? {
+        undef   => "${::apache::params::module_root}/${file}",
+        default => "${path}/${file}",
+      }
+
+      case $ensure {
+        default,'present',true: {
+
+          augeas {"apache-config-loadmodule-update-${name}":
+            changes => "set directive[ . = 'LoadModule' and arg[1] = '${module}']/arg[2] '${modfile}'",
+            onlyif  => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size > 0",
+          }
+          augeas {"apache-config-loadmodule-insert-${name}":
+            changes => [
+              'set directive[. = "LoadModule"][last() + 1] "LoadModule"',
+              "set directive[. = 'LoadModule' ][last()]/arg[1] ${module}",
+              "set directive[. = 'LoadModule' ][last()]/arg[2] ${modfile}",
+              ],
+              onlyif  => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size == 0",
+          }
+        }
+        'absent': {
+          augeas {"apache-config-loadmodule-rm-${name}":
+            changes => "rm directive[. = 'LoadModule' and arg[1] = '${module}']",
+          }
+        }
+      } ## end case ensure
+    }
+  } ## end case operatingsystem
 
 }
 

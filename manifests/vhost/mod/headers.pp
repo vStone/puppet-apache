@@ -1,6 +1,6 @@
-# == Definition: apache::vhost::mod::dummy
+# == Definition: apache::vhost::mod::headers
 #
-# This dummy is an example on how to add your own vhost mod.
+# Use Header and/or RequestHeader
 #
 # === Required Parameters:
 #
@@ -54,7 +54,7 @@
 #
 # TODO: Update documentation
 #
-define apache::vhost::mod::header (
+define apache::vhost::mod::headers (
   $vhost,
   $notify_service = undef,
   $ensure         = 'present',
@@ -70,9 +70,10 @@ define apache::vhost::mod::header (
   $requestheader  = []
 ) {
 
+  require apache::mod::headers
 
   ## Generate the content for your module file:
-  $definition = template('apache/vhost/mod/header.erb')
+  $definition = template('apache/vhost/mod/headers.erb')
 
   apache::sys::modfile {$title:
     ensure         => $ensure,

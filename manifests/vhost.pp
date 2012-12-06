@@ -146,6 +146,8 @@ define apache::vhost (
   ## This fixes undefined method function_always_array in the templates used.
   $_fix_always_array = always_array('')
 
+  ## Fixes http://projects.puppetlabs.com/issues/3773
+  $time_out = $timeout
 
   ####################################
   ####  Param checks & Defaults   ####

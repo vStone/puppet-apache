@@ -136,6 +136,7 @@ define apache::vhost (
   $owner          = undef,
   $group          = undef,
   $logformat      = undef,
+  $timeout        = undef,
   $notify_service = undef
 ) {
 

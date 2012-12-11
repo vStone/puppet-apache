@@ -5,7 +5,7 @@
 class apache::module {
 
   $id = 'inuits-puppet-apache'
-  $version = '0.12.8'
+  $version = '0.12.9'
 
 }
 

@@ -34,7 +34,7 @@ class apache::setup {
   apache::augeas::set {'KeepAlive':  value => $_keepalive, }
   apache::augeas::set {'User':       value => $::apache::params::daemon_user, }
   apache::augeas::set {'Group':      value => $::apache::params::daemon_group, }
-  apache::augeas::set {'TimeOut':    value => $::apache::params::timeout, }
+  apache::augeas::set {'Timeout':    value => $::apache::params::timeout, }
 
   augeas {'apache-setup-default-include':
     notify  => Service['apache'],

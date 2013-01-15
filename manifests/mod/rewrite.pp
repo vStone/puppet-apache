@@ -8,11 +8,13 @@
 # TODO: LoadModule support
 #
 class apache::mod::rewrite (
-  $notify_service = undef
+  $notify_service = undef,
+  $ensure         = 'present',
 ) {
 
-  require apache::params
-
-  apache::config::loadmodule {'rewrite': }
+  apache::config::loadmodule {'rewrite':
+    ensure         => $ensure,
+    notify_service => $notify_service,
+  }
 
 }

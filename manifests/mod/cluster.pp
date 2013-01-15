@@ -22,6 +22,7 @@
 #
 class apache::mod::cluster (
   $notify_service       = undef,
+  $ensure               = 'present',
 
   $manager_vhost        = true,
   $manager_port         = 80,
@@ -87,6 +88,7 @@ class apache::mod::cluster (
     }
 
     apache::sys::modpackage { 'cluster':
+      ensure         => $ensure,
       package        => $pkg_name,
       notify_service => $notify_service,
     }
@@ -100,11 +102,11 @@ class apache::mod::cluster (
   #                     |
 
   ## LoadModule statements that are required and/or should NOT be present.
-  apache::config::loadmodule {'slotmem': }
-  apache::config::loadmodule {'manager': }
-  apache::config::loadmodule {'proxy_cluster': }
-  apache::config::loadmodule {'advertise': }
-  apache::config::loadmodule {'proxy_balancer': ensure => 'absent', }
+  apache::config::loadmodule {'slotmem':        ensure => $ensure, notify_service => $notify_service, }
+  apache::config::loadmodule {'manager':        ensure => $ensure, notify_service => $notify_service, }
+  apache::config::loadmodule {'proxy_cluster':  ensure => $ensure, notify_service => $notify_service, }
+  apache::config::loadmodule {'advertise':      ensure => $ensure, notify_service => $notify_service, }
+  apache::config::loadmodule {'proxy_balancer': ensure => 'absent', notify_service => $notify_service, }
 
 
   case $create_balancers {
@@ -144,6 +146,7 @@ class apache::mod::cluster (
 
   ## Global configuration
   apache::confd::file {'mod_cluster':
+    ensure         => $ensure,
     confd          => $::apache::setup::mod::confd,
     content        => template('apache/mod/cluster.erb'),
     notify_service => $notify_service,
@@ -169,21 +172,25 @@ class apache::mod::cluster (
       default => $manager_vhost,
     }
 
-    if ! defined(Apache::Listen[$manager_listen]) {
-      apache::listen {$manager_listen: }
+    if ($ensure == 'present') or ($ensure == true) {
+      if ! defined(Apache::Listen[$manager_listen]) {
+        apache::listen {$manager_listen: }
+      }
     }
 
     if $manager_vhost and ( ! defined(Apache::Vhost[$manager_vhost_name])) {
       apache::vhost {$manager_vhost_name:
+        ensure         => $ensure,
         servername     => $manager_servername,
         ip             => $manager_ip,
-        notify_service => $notify_service,
         port           => $manager_port,
         require        => Apache::Listen[$manager_listen],
+        notify_service => $notify_service,
       }
     }
 
     apache::vhost::mod::manager {$manager_vhost_name:
+      ensure          => $ensure,
       vhost           => $manager_vhost_name,
       ip              => $manager_ip,
       port            => $manager_port,
@@ -202,8 +209,11 @@ class apache::mod::cluster (
       undef   => $advertise_port,
       default => "${advertise_ip}_${advertise_port}",
     }
-    if ! defined(Apache::Listen[$advertise_listen]) {
-      apache::listen {$advertise_listen: }
+
+    if ($ensure == 'present') or ($ensure == true) {
+      if ! defined(Apache::Listen[$advertise_listen]) {
+        apache::listen {$advertise_listen: }
+      }
     }
 
     $advertise_vhost_name = $advertise_vhost ? {
@@ -213,6 +223,7 @@ class apache::mod::cluster (
 
     if $advertise_vhost and (! defined(Apache::Vhost[$advertise_vhost_name])) {
       apache::vhost {$advertise_vhost_name:
+        ensure         => $ensure,
         servername     => $advertise_servername,
         ip             => $advertise_ip,
         port           => $advertise_port,
@@ -222,6 +233,7 @@ class apache::mod::cluster (
     }
 
     apache::vhost::mod::advertise {$advertise_vhost_name:
+      ensure         => $ensure,
       vhost          => $advertise_vhost_name,
       ip             => $advertise_ip,
       port           => $advertise_port,

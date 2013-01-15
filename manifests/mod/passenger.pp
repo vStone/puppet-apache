@@ -11,11 +11,12 @@
 # TODO: Support installing using gems or use system packages
 #
 class apache::mod::passenger (
-  $package       = undef,
-  $notify_service = undef
+  $package        = undef,
+  $notify_service = undef,
+  $ensure         = 'present',
 ) {
 
-  if defined('::passenger::module') {
+  if defined('::passenger::module') and (($ensure == 'present') or ($ensure == true)) {
     require passenger::module
     if ! defined(Class['passenger']) {
       include passenger
@@ -38,8 +39,9 @@ class apache::mod::passenger (
     }
 
     apache::sys::modpackage {'passenger':
-      package         => $pkg_name,
-      notify_service  => $notify_service,
+      ensure         => $ensure,
+      package        => $pkg_name,
+      notify_service => $notify_service,
     }
 
     case $::operatingsystem {

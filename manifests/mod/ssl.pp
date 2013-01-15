@@ -8,11 +8,13 @@
 # TODO: LoadModule support
 #
 class apache::mod::ssl (
-  $notify_service = undef
+  $notify_service = undef,
+  $ensure         = 'present',
 ) {
 
-  require apache::params
-
-  apache::config::loadmodule {'ssl': }
+  apache::config::loadmodule {'ssl':
+    ensure         => $ensure,
+    notify_service => $notify_service,
+  }
 
 }

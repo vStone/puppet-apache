@@ -6,7 +6,8 @@
 # TODO: Add or use LoadModule support
 #
 class apache::mod::prefork (
-  $notify_service = undef
+  $notify_service = undef,
+  $ensure         = 'present'
 ) {
 
   case $::operatingsystem {
@@ -22,8 +23,9 @@ class apache::mod::prefork (
   }
 
   apache::sys::modpackage {'prefork':
-    package         => $pkg_name,
-    notify_service  => $notify_service,
+    ensure         => $ensure,
+    package        => $pkg_name,
+    notify_service => $notify_service,
   }
 
 }

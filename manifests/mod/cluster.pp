@@ -55,11 +55,6 @@ class apache::mod::cluster (
   require apache::setup::mod
 
 
-  $_notify_service = $notify_service ? {
-    undef   => $::apache::params::notify_service,
-    default => $notify_service,
-  }
-
   #######################################
   #                |
   # ,---.,---.,---.|__/ ,---.,---.,---.
@@ -93,7 +88,7 @@ class apache::mod::cluster (
 
     apache::sys::modpackage { 'cluster':
       package        => $pkg_name,
-      notify_service => $_notify_service,
+      notify_service => $notify_service,
     }
   }
 
@@ -151,7 +146,7 @@ class apache::mod::cluster (
   apache::confd::file {'mod_cluster':
     confd          => $::apache::setup::mod::confd,
     content        => template('apache/mod/cluster.erb'),
-    notify_service => $_notify_service,
+    notify_service => $notify_service,
   }
 
 
@@ -182,9 +177,9 @@ class apache::mod::cluster (
       apache::vhost {$manager_vhost_name:
         servername     => $manager_servername,
         ip             => $manager_ip,
+        notify_service => $notify_service,
         port           => $manager_port,
         require        => Apache::Listen[$manager_listen],
-        notify_service => $_notify_service ,
       }
     }
 
@@ -197,7 +192,7 @@ class apache::mod::cluster (
       allow_order     => $manager_allow_order,
       allow_from      => $manager_allow_from,
       deny_from       => $manager_deny_from,
-      notify_service  => $_notify_service,
+      notify_service  => $notify_service,
     }
 
   }
@@ -222,7 +217,7 @@ class apache::mod::cluster (
         ip             => $advertise_ip,
         port           => $advertise_port,
         require        => Apache::Listen[$advertise_listen],
-        notify_service => $_notify_service,
+        notify_service => $notify_service,
       }
     }
 
@@ -231,7 +226,7 @@ class apache::mod::cluster (
       ip             => $advertise_ip,
       port           => $advertise_port,
       ## mod::advertise specific configuration
-      notify_service => $_notify_service,
+      notify_service => $notify_service,
     }
   }
 

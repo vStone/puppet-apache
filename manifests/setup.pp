@@ -5,6 +5,17 @@
 class apache::setup {
   require apache::params
 
+  case $::augeasversion {
+    /^.+$/: {
+      if versioncmp($::augeasversion,'0.9.0') < 0 {
+        notify {'shit_hit_the_fan': }
+        fail('The apache modules requires a newer augeas version installed  (> 0.9.0).')
+      }
+    }
+    default: {
+      fail('The apache module requires augeas installed.')
+    }
+  }
   ## Apache main configuration file
   #file { 'apache-config_file':
   #  ensure  => present,

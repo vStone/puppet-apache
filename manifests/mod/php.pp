@@ -7,7 +7,7 @@
 #
 class apache::mod::php (
   $notify_service = undef,
-  $ensure => 'present',
+  $ensure = 'present',
 ) {
 
   case $::operatingsystem {

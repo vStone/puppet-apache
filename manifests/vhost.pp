@@ -392,6 +392,8 @@ define apache::vhost (
   create_resources($style_def, $style_args)
 
   ## Create all the defined mods for this vhost.
+
+  #:include: vhost.README.md
   $defaults = {
     'ensure'         => $ensure,
     'vhost'          => $name,

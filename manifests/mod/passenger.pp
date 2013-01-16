@@ -18,8 +18,11 @@ class apache::mod::passenger (
 
   if defined('::passenger::module') and (($ensure == 'present') or ($ensure == true)) {
     require passenger::module
-    if ! defined(Class['passenger']) {
-      include passenger
+
+    if ! defined(Class['::passenger']) {
+      class {'::passenger':
+        before => Service['apache'],
+      }
     }
   } else {
 

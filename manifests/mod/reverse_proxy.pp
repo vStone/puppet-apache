@@ -9,7 +9,8 @@
 #
 class apache::mod::reverse_proxy (
   $default_proxy_pass_options = {},
-  $notify_service = undef
+  $notify_service             = undef,
+  $ensure                     = 'present',
 ) {
 
 }

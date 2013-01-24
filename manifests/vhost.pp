@@ -104,6 +104,18 @@
 #     }
 #   }
 #
+# If a certain module needs to be defined multiple times, use an array.
+#
+#   apache::vhost {'myvhost.example.com':
+#     mods => {
+#       'rewrite' => [
+#         { rewrite_cond => 'foo', rewrite_rule  => 'bar', },
+#         { rewrite_cond => 'fooo', rewrite_rule => 'baaar', },
+#       ],
+#     }
+#   }
+#
+#
 # If a module does not contain a classpath, we will prefix with
 # +apache::vhost::mod::+. You can create custom modules outside the apache
 # module this way. See the +apache::vhost::mod::dummy+ module on what parameters
@@ -380,6 +392,8 @@ define apache::vhost (
   create_resources($style_def, $style_args)
 
   ## Create all the defined mods for this vhost.
+
+  #:include: vhost.README.md
   $defaults = {
     'ensure'         => $ensure,
     'vhost'          => $name,

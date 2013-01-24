@@ -16,7 +16,7 @@ Rake::Task[:rspec].enhance do
 end
 
 # provide split out tasks for functions/classes/...
-SPEC_SUITES = (Dir.entries('spec') - ['.', '..','fixtures']).select {|e| File.directory? "spec/#{e}" }
+SPEC_SUITES = (Dir.entries('spec') - ['.', '..','fixtures','lib']).select {|e| File.directory? "spec/#{e}" }
 namespace :rspec do
   SPEC_SUITES.each do |suite|
     desc "Run #{suite} RSpec code examples"

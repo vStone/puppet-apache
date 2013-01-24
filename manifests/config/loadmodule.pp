@@ -20,14 +20,20 @@
 # TODO: Update documentation
 #
 define apache::config::loadmodule (
-  $module   = "${name}_module",
-  $ensure   = 'present',
-  $file     = "mod_${name}.so",
-  $path     = undef,
-  $config   = undef
+  $notify_service = undef,
+  $ensure         = 'present',
+  $module         = "${name}_module",
+  $file           = "mod_${name}.so",
+  $path           = undef,
+  $config         = undef
 ) {
 
   require apache::params
+
+  $_notify = $notify_service ? {
+    undef   => $apache::params::notify_service,
+    default => $notify_service,
+  }
 
   case $::operatingsystem {
     /(?i:debian|ubuntu)/: {
@@ -41,6 +47,11 @@ define apache::config::loadmodule (
       Exec {
         path    => ['/usr/bin','/bin'],
         require => Package[$::apache::params::package],
+      }
+      if $_notify {
+        File["apache-config-loadmodule-debian-${name}"] {
+          notify => Service['apache']
+        }
       }
 
       case $ensure {
@@ -61,7 +72,6 @@ define apache::config::loadmodule (
             onlyif  => "test -f ${::apache::params::config_dir}/mods-enabled/${name}.conf",
             cwd     => "${::apache::params::config_dir}/mods-enabled/",
           }
-
         }
       }
     }
@@ -92,22 +102,30 @@ define apache::config::loadmodule (
           augeas {"apache-config-loadmodule-update-${name}":
             changes => "set directive[ . = 'LoadModule' and arg[1] = '${module}']/arg[2] '${modfile}'",
             onlyif  => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size > 0",
+            tag     => "loadmodule-${name}",
           }
           augeas {"apache-config-loadmodule-insert-${name}":
             changes => [
               'set directive[. = "LoadModule"][last() + 1] "LoadModule"',
               "set directive[. = 'LoadModule' ][last()]/arg[1] ${module}",
               "set directive[. = 'LoadModule' ][last()]/arg[2] ${modfile}",
-              ],
-              onlyif  => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size == 0",
+            ],
+            onlyif  => "match directive[ . = 'LoadModule' and arg[1] = '${module}'] size == 0",
+            tag     => "loadmodule-${name}",
           }
         }
         'absent': {
           augeas {"apache-config-loadmodule-rm-${name}":
             changes => "rm directive[. = 'LoadModule' and arg[1] = '${module}']",
+            tag     => "loadmodule-${name}",
           }
         }
       } ## end case ensure
+      if $_notify {
+        Augeas<| tag == "loadmodule-${name}" |> {
+          notify => Service['apache'],
+        }
+      }
     }
   } ## end case operatingsystem
 

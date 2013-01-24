@@ -22,10 +22,15 @@
 #
 define apache::augeas::set (
   $value,
-  $config = undef
+  $config         = undef,
+  $notify_service = undef,
 ) {
 
   require apache::params
+  $_notify = $notify_service ? {
+    undef   => $apache::params::notify_service,
+    default => $notify_service,
+  }
 
   $config_file = $config ? {
     undef   => $::apache::params::config_file,
@@ -50,6 +55,11 @@ define apache::augeas::set (
   augeas {"apache-augeas-set-insert-${name}":
     changes => template('apache/augeas/set-insert.erb'),
     onlyif  => "match directive[ . = '${name}'] size == 0",
+  }
+
+  if $_notify {
+    Augeas["apache-augeas-set-update-${name}"] { notify => Service['apache'] }
+    Augeas["apache-augeas-set-insert-${name}"] { notify => Service['apache'] }
   }
 
 }

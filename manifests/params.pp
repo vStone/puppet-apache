@@ -143,7 +143,9 @@ class apache::params(
   $placeholder_ssl   = '_ssl',
   $notify_service    = true,
   $defaults          = true,
-  $harden            = false
+  $harden            = false,
+  $logrotate_d       = '/etc/logrotate.d/',
+  $reload_command    = undef
 ) {
 
   ####################################
@@ -183,6 +185,7 @@ class apache::params(
   $service_name = $service ? {
     undef   => $::operatingsystem ? {
       /Debian|Ubuntu/ => 'apache2',
+      /Gentoo/        => 'apache2',
       /CentOS|RedHat/ => 'httpd',
       /Archlinux/     => 'httpd',
       default         => 'httpd',
@@ -200,6 +203,16 @@ class apache::params(
 
   $service_hasstatus = $::operatingsystem ? {
     default         => true,
+  }
+
+  $service_reload_command = $reload_command ? {
+    default => $reload_command,
+    undef   => $::operatingsystem ? {
+      /Debian|Ubuntu/ => '/etc/init.d/apache2 reload > /dev/null',
+      /CentOS|RedHat/ => '/sbin/service httpd reload > /dev/null 2>/dev/null || true',
+      /Archlinux/     => '/bin/kill -HUP `cat /var/run/httpd/httpd.pid 2>/dev/null` 2> /dev/null || true',
+      default         => "/usr/bin/killall -HUP ${service_name}"
+    }
   }
 
 

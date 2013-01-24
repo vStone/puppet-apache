@@ -1,0 +1,24 @@
+<%
+  def empty?(value)
+    value == '' or value == :undef
+  end
+  def always_array(var)
+    scope.function_always_array([var])
+  end
+-%>
+### File managed with puppet ###
+## Served by:        '<%= scope.lookupvar('::servername') %>'
+## Module:           '<%= scope.to_hash['module_name'] %>'
+## Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
+
+<%= always_array(@_mask).join(' ') %> {
+
+<% always_array(@options).each do |opt| -%>
+  <%= opt %>
+<% end -%>
+
+  postrotate
+    <%= @reload_command %>
+  endscript
+
+}

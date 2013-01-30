@@ -26,7 +26,7 @@
 #
 define apache::confd::file (
   $confd,
-  $notify_service,
+  $notify_service   = undef,
   $file_name        = "${title}.conf",
   $order            = undef,
   $content          = '',
@@ -52,7 +52,12 @@ define apache::confd::file (
     content => $content,
   }
 
-  if $notify_service {
+  $_notify = $notify_service ? {
+    undef   => $::apache::params::notify_service,
+    default => $notify_service,
+  }
+
+  if $_notify {
     File[$title] {
       notify => Service['apache'],
     }

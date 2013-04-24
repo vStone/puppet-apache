@@ -12,3 +12,17 @@ RSpec.configure do |c|
   c.mock_with :mocha
 end
 
+
+def centos_facts
+  {
+    :operatingsystem => 'CentOS',
+    :osfamily        => 'RedHat',
+  }
+end
+
+def debian_facts
+  {
+    :operatingsystem => 'Debian',
+    :osfamily        => 'Debian',
+  }
+end

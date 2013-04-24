@@ -16,6 +16,9 @@
 # $service::            Name of the apache service.
 #                       Defaults to distro specific.
 #
+# $notify_service::     Notify the service by default after a config change.
+#                       Defaults to true.
+#
 # $configroot::         Root of all configuration files.
 #                       Defaults to distro specific. This should NOT include
 #                       a trailing '/' (forward-slash)

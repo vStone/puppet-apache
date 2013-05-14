@@ -44,3 +44,10 @@ You MUST define the apache::params class before importing apache if you want
 to use anything besides the default parameter settings. This is due to the
 parsing of the manifests. When you import apache, the apache::params module
 will be included because most things require apache::params.
+
+
+# Bugs
+
+If you run into bugs or would like to request a new feature (pull requests
+are also welcome... if you dare touch the code), please use the repository
+located here: https://github.com/vStone/puppet-apache/

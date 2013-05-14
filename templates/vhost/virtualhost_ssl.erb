@@ -48,7 +48,7 @@
   # server certificate. Alternatively the referenced file can be the same as
   # SSLCertificateFile when the CA certificates are directly appended to the
   # server certificate for convinience.
-<% if ! empty?(@ssl_chain) -%>
+<% if @ssl_chain -%>
   SSLCertificateChainFile <%= @ssl_chain %>
 <% else -%>
   # Not defined
@@ -61,10 +61,10 @@
   # Note: Inside SSLCACertificatePath you need hash symlinks to point to the
   # certificate files. Use the provided Makefile to update the hash symlinks
   # after changes.
-<% if ! empty?(@ssl_ca_path) -%>
+<% if @ssl_ca_path -%>
   SSLCACertificatePath <%= @ssl_ca_path %>
 <% end -%>
-<% if ! empty?(@ssl_ca_file) -%>
+<% if @ssl_ca_file -%>
   SSLCACertificateFile <%= @ssl_ca_file %>
 <% end -%>
   #SSLCACertificatePath /etc/ssl/apache2/ssl.crt
@@ -77,10 +77,10 @@
   # Note: Inside SSLCARevocationPath you need hash symlinks to point to the
   # certificate files. Use the provided Makefile to update the hash symlinks
   # after changes.
-<% if ! empty?(ssl_ca_crl_path) -%>
+<% if @ssl_ca_crl_path -%>
   SSLCARevocationPath <%= @ssl_ca_crl_path %>
 <% end -%>
-<% if ! empty?(ssl_ca_crl_file)-%>
+<% if @ssl_ca_crl_file -%>
   SSLCARevocationFile <%= @ssl_ca_crl_file %>
 <% end -%>
   #SSLCARevocationPath /etc/ssl/apache2/ssl.crl
@@ -92,10 +92,10 @@
   # require and optional_no_ca. Depth is a number which specifies how deeply
   # to verify the certificate issuer chain before deciding the certificate is
   # not valid.
-<% if ! empty?(@ssl_verify_client) -%>
+<% if @ssl_verify_client -%>
   SSLVerifyClient <%= @ssl_verify_client %>
 <% end -%>
-<% if ! empty?(ssl_verify_depth) -%>
+<% if @ssl_verify_depth -%>
   SSLVerifyDepth <%= @ssl_verify_depth %>
 <% end -%>
   #SSLVerifyClient require
@@ -142,7 +142,7 @@
   #    SSLOptions +StdEnvVars
   #</Directory>
 
-<% if ! empty?(@ssl_options) -%>
+<% if @ssl_options -%>
   SSLOptions <%= @ssl_options %>
 <% end -%>
 
@@ -181,12 +181,12 @@
   ## Per-Server Logging:
   # The home of a custom SSL log file. Use this when you want a compact
   # non-error SSL logfile on a virtual host basis.
-<% if ! empty?(@ssl_requestlog) -%>
+<% if @ssl_requestlog -%>
   CustomLog  <%= @log_dir %>/<% @ssl_requestlog -%> \
     <%= @ssl_requestlog_pattern %>
 <% end -%>
 
-<% if ! empty?(@vhost_config) -%>
+<% if @vhost_config -%>
   ## Custom content. This is NOT created by the Apache::Vhost but has been
   #  configured in the apache::vhost definition.
 <%

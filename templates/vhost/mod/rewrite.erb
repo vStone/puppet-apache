@@ -15,12 +15,12 @@
 
 <% end -%>
 <% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+  # <%= comment.gsub(/\n/, "\n  # ").gsub(/%\[([^\]]+)\]/,'%{\1}') %>
 <% end -%>
 <% conditions.each do |condition| -%>
-  RewriteCond <%= condition %>
+  RewriteCond <%= condition.gsub(/%\[([^\]]+)\]/,'%{\1}') %>
 <% end -%>
 <% rules.each do |rule| -%>
-  RewriteRule <%= rule %>
+  RewriteRule <%= rule.gsub(/%\[([^\]]+)\]/,'%{\1}') %>
 <% end -%>
 

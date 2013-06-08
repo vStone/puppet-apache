@@ -266,7 +266,7 @@ class apache::params(
     default => $logroot,
   }
 
-  if defined('::concat') {
+  if defined('::concat::setup') {
     $config_style_undef = 'apache::sys::config::concat'
   }
   else {

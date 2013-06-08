@@ -13,10 +13,10 @@
   end
 
   ## Sanitize variables
-  proxiez_pass_match = always_array(proxypassmatch)
-  proxiez_pass = always_array(proxypass)
-  proxiez_reverse = always_array(proxypassreverse)
-  proxiez_path  = always_array(proxypath)
+  proxiez_pass_match = always_array(@proxypassmatch)
+  proxiez_pass = always_array(@proxypass)
+  proxiez_reverse = always_array(@proxypassreverse)
+  proxiez_path  = always_array(@proxypath)
 
   if empty?(_proxypass_options) or _proxypass_options == [] or _proxypass_options == {}
     proxypass_options = ""
@@ -28,23 +28,28 @@
     proxypass_options = " " + _proxypass_options.join(" ") ## prefix with one space.
   end
 -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! empty?(@comment) -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 <% if _header -%>
-  ProxyRequests Off
+<%    if @proxyrequests -%>
+  ProxyRequests <%= @proxyrequests %>
+<%    end -%>
+<%    if @proxypreservehost -%>
+  ProxyPreserveHost <%= @proxypreservehost %>
+<%    end -%>
 <% end -%>
-<% if ! empty?(proxyvia) -%>
-  ProxyVia <%= proxyvia %>
+<% if @proxyvia -%>
+  ProxyVia <%= @proxyvia %>
 <% end -%>
-<% if ! empty?(proxyurl) %>
-  <Proxy <%= proxyurl %>>
-    Order <%= allow_order %>
-<%  if ! empty?(allow_from) -%>
-    Allow from <%= allow_from %>
+<% if @proxyurl %>
+  <Proxy <%= @proxyurl %>>
+    Order <%= @allow_order %>
+<%  if @allow_from -%>
+    Allow from <%= @allow_from %>
 <%  end -%>
-<%  if ! empty?(deny_from) -%>
-    Deny from <%= deny_from %>
+<%  if @deny_from -%>
+    Deny from <%= @deny_from %>
 <%  end -%>
   </Proxy>
 <% end -%>
@@ -61,9 +66,9 @@
   ProxyPass <%= p %><%= proxypass_options %>
   ProxyPassReverse <%= p %>
 <% end -%>
-<% if ! empty?(content) %>
+<% if ! empty?(@content) %>
   # Below you will find the extra content you have defined.
   # This is NOT part of the puppet template.
-  <%= content %>
+  <%= @content %>
 <% end -%>
 

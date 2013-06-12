@@ -7,15 +7,15 @@
     scope.function_always_array([var])
   end
 
-  conditions = always_array(rewrite_cond)
-  rules      = always_array(rewrite_rule)
+  conditions = always_array(@rewrite_cond)
+  rules      = always_array(@rewrite_rule)
 -%>
 <% if _header -%>
   RewriteEngine On
 
 <% end -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ").gsub(/%\[([^\]]+)\]/,'%{\1}') %>
+<% if @comment and ! empty?(@comment) -%>
+  # <%= @comment.gsub(/\n/, "\n  # ").gsub(/%\[([^\]]+)\]/,'%{\1}') %>
 <% end -%>
 <% conditions.each do |condition| -%>
   RewriteCond <%= condition.gsub(/%\[([^\]]+)\]/,'%{\1}') %>

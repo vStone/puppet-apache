@@ -1,11 +1,4 @@
-<% if comment != '' -%>
-# <%= comment %>
+<% if @comment and ! @comment.empty? -%>
+# <%= @comment %>
 <% end -%>
-<%
-  if listen_ip == ''
-    str_ip = ''
-  else
-    str_ip = "#{listen_ip}:"
-  end
--%>
-Listen <%= str_ip -%><%= listen_port %>
+Listen <%= ([ @listen_ip, @listen_port ] - ['']).compact.join(':') %>

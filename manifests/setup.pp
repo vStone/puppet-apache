@@ -59,10 +59,8 @@ class apache::setup {
   include apache::setup::mod
   include apache::setup::vhost
 
-  case $::operatingsystem {
-    /(?i:centos|redhat)/: { include apache::setup::os::centos }
-    /(?i:debian|ubuntu)/: { include apache::setup::os::debian }
-    default: {}
+  if $::apache::params::custom_os_setup {
+    include "apache::setup::os::${::apache::params::custom_os_setup}"
   }
 
 }

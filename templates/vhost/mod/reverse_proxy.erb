@@ -44,13 +44,7 @@
 <% end -%>
 <% if @proxyurl %>
   <Proxy <%= @proxyurl %>>
-    Order <%= @allow_order %>
-<%  if @allow_from -%>
-    Allow from <%= @allow_from %>
-<%  end -%>
-<%  if @deny_from -%>
-    Deny from <%= @deny_from %>
-<%  end -%>
+<%= scope.function_render_allow_deny([@allow_order, @allow_from, @deny_from]) %>
   </Proxy>
 <% end -%>
 <% proxiez_pass_match.each do |p| -%>

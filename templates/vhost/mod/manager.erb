@@ -26,13 +26,7 @@
 
   <Location <%= _location %>>
     SetHandler mod_cluster-manager
-    Order <%= allow_order %>
-<%  if ! empty?(allow_from) -%>
-    Allow from <%= allow_from %>
-<%  end -%>
-<%  if ! empty?(deny_from) -%>
-    Deny from <%= deny_from %>
-<%  end -%>
+<%= scope.function_render_allow_deny([@allow_order, @allow_from, @deny_from]) %>
   </Location>
 
 <% if ! empty?(max_mcmp_max_mess_size) -%>

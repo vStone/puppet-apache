@@ -188,7 +188,7 @@ class apache::params(
       $osdefault_daemon_user            = 'apache'
       $osdefault_daemon_group           = 'apache'
       # class beneath apache::setup::os with distro specific tweaks
-      $custom_os_setup                  = 'centos'
+      $custom_os_setup                  = 'redhat'
     }
     'Archlinux': {
       $osdefault_package                = 'apache'

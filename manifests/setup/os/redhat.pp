@@ -1,8 +1,8 @@
-# == Class: apache::setup::os::centos
+# == Class: apache::setup::os::redhat
 #
-# Specific setup instructions for CentOS
+# Specific setup instructions for CentOS/RedHat
 #
-class apache::setup::os::centos {
+class apache::setup::os::redhat {
 
   include apache::params
 

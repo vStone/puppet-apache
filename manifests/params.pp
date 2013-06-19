@@ -232,19 +232,6 @@ class apache::params(
     default => $configroot,
   }
 
-  ## Main configuration template to use.
-  ## TODO: DEPRECATED. Remove!
-  $config_template = $::operatingsystem ? {
-    /Archlinux/     => 'apache/config/archlinux-apache.conf.erb',
-    /CentOS|RedHat/ => $::operatingsystemrelease ? {
-      /^6/    => 'apache/config/centos6-apache.conf.erb',
-      /^5/    => 'apache/config/centos5-apache.conf.erb',
-      default => 'apache/config/centos6-apache.conf.erb',
-    },
-    /Debian|Ubuntu/ => 'apache/config/debian-apache.conf.erb',
-    default         => 'apache/config/debian-apache.conf.erb',
-  }
-
   ## Location of the (main) configuration file.
   $config_file = $::operatingsystem ? {
     /Debian|Ubuntu/ => "${config_dir}/apache2.conf",

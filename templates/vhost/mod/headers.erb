@@ -12,8 +12,8 @@
   headers    = always_array(header)
   reqheaders = always_array(requestheader)
 -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 <% if _header -%><% end -%>
 <% reqheaders.each do |h| -%>

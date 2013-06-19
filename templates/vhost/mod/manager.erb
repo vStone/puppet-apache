@@ -20,8 +20,8 @@
 <%  # You can add a header here -%>
 
 <% end -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 
   <Location <%= _location %>>

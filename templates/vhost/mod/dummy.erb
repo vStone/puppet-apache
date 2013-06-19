@@ -8,8 +8,8 @@
 <%  # You can add a header here -%>
 
 <% end -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 <% if ! empty?(content) -%>
   # Below you will find the extra content you have defined.

@@ -9,8 +9,8 @@
     return 'off' if var == false
   end
 -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 <% if ! empty?(app_root) -%>
   PassengerAppRoot <%= app_root %>

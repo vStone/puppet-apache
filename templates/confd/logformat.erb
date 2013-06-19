@@ -5,7 +5,7 @@
 <%
   log_format = _format.gsub(/([^\\])\"/, '\1\"')
 %>
-<% if comment != '' -%>
-# <%= comment %>
+<% if @comment and ! @comment.empty? -%>
+# <%= @comment %>
 <% end -%>
 LogFormat "<%= log_format -%>" <%= name %>

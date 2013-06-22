@@ -9,6 +9,9 @@
 # For these kind of files, we do not notify the service my default since
 # the resource that called this will probably do so on itself.
 #
+#
+# If the file is a directory, and purge is not true, it will not replace symlinks.
+#
 define apache::confd::file_exists (
   $ensure,
   $path,
@@ -42,6 +45,12 @@ define apache::confd::file_exists (
       purge  => $purge,
       target => $target,
     }
+    if $ensure == 'directory' and $purge == false {
+      File[$path] {
+        replace => false,
+      }
+    }
+
     if $notify_service {
       File[$path] {
         notify => Service['apache'],

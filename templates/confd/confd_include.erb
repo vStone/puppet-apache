@@ -1,6 +1,6 @@
 ### File managed with puppet ###
-<% if @servername -%>
-# Served by:        '<%= @servername %>'
+<% if scope.lookupvar('::servername') -%>
+# Served by:        '<%= scope.lookupvar('::servername') %>'
 <% end -%>
 # Module:           '<%= @module_name %>'
 # Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
@@ -10,10 +10,11 @@
 # purge:            '<%= @purge %>'
 # use_config_root:  '<%= @use_config_root %>'
 ###
-<% if @load_content and ! @load_content.empty? %>
+<% if @load_content and ! @load_content.empty? -%>
+
 # Load content:
 <%= @load_content %>
-<% end %>
+<% end -%>
 
 # Includes:
 <%

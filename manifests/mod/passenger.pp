@@ -41,12 +41,12 @@ class apache::mod::passenger (
 
       case $package {
         undef: {
-          case $::operatingsystem {
-            /(?i:debian|ubuntu)/: {
+          case $::osfamily {
+            'Debian': {
               $pkg_name = 'libapache2-mod-passenger'
               $pkg_provider = 'apt'
             }
-            /(?i:centos|redhat)/: {
+            'RedHat': {
               $pkg_name = 'passenger'
               $pkg_provider = 'gem'
             }
@@ -68,8 +68,8 @@ class apache::mod::passenger (
         provider       => $pkg_provider,
       }
 
-      case $::operatingsystem {
-        /(?i:centos|redhat)/: {
+      case $::osfamily {
+        'RedHat': {
           if $pkg_provider == 'gem' {
             Apache::Sys::Modpackage['passenger'] {
               require   +> Package['rubygems'],

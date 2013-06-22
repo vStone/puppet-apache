@@ -1,29 +1,23 @@
 ### File managed with puppet ###
-<% if ! (defined?(servername)).nil? -%>
-# Served by:        '<%= servername %>'
+<% if @servername -%>
+# Served by:        '<%= @servername %>'
 <% end -%>
-# Module:           '<%= scope.to_hash['module_name'] %>'
-# Template source:  '<%= template_source %>'
+# Module:           '<%= @module_name %>'
+# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
 ### Parameters:
-# confd:            '<%= confd %>'
-# order:            '<%= order %>'
-# purge:            '<%= purge %>'
-# use_config_root:  '<%= use_config_root %>'
+# confd:            '<%= @confd %>'
+# order:            '<%= @order %>'
+# purge:            '<%= @purge %>'
+# use_config_root:  '<%= @use_config_root %>'
 ###
-<% if ! load_content == '' %>
+<% if @load_content and ! @load_content.empty? %>
 # Load content:
-<%= load_content %>
+<%= @load_content %>
 <% end %>
 
 # Includes:
 <%
-  if includes.is_a?(Array)
-    incs = includes
-  else
-    incs = [ includes ]
-  end
-  incs.each do |included|
+  scope.function_always_array([@includes]).each do |included|
 -%>
-Include <%= include_root -%>/<%= included %>
+Include <%= @include_root -%>/<%= included %>
 <% end -%>
-

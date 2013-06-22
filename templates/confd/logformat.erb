@@ -1,11 +1,10 @@
 ### File managed with puppet ###
-### Served by:        '<%= scope.lookupvar('::servername') %>'
-### Module:           '<%= scope.to_hash['module_name'] %>'
-### Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
-<%
-  log_format = _format.gsub(/([^\\])\"/, '\1\"')
-%>
+<% if @servername -%>
+# Served by:        '<%= @servername %>'
+<% end -%>
+# Module:           '<%= @module_name %>'
+# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
 <% if @comment and ! @comment.empty? -%>
 # <%= @comment %>
 <% end -%>
-LogFormat "<%= log_format -%>" <%= name %>
+LogFormat "<%= @_format.gsub(/([^\\])\"/, '\1\"') -%>" <%= @name %>

@@ -1,11 +1,4 @@
 <% if @comment and ! @comment.empty? -%>
 # <%= @comment %>
 <% end -%>
-<%
-  if ip == ''
-    str_ip = '*'
-  else
-    str_ip = ip
-  end
--%>
-NameVirtualHost <%= str_ip -%>:<%= port %>
+NameVirtualHost <%= (@ip == '') ? '*' : @ip -%>:<%= @port %>

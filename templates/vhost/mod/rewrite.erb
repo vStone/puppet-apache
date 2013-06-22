@@ -15,12 +15,12 @@
 
 <% end -%>
 <% if @comment and ! empty?(@comment) -%>
-  # <%= @comment.gsub(/\n/, "\n  # ").gsub(/%\[([^\]]+)\]/,'%{\1}') %>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 <% conditions.each do |condition| -%>
-  RewriteCond <%= condition.gsub(/%\[([^\]]+)\]/,'%{\1}') %>
+  RewriteCond <%= scope.function_fix_apache_vars([condition]) %>
 <% end -%>
 <% rules.each do |rule| -%>
-  RewriteRule <%= rule.gsub(/%\[([^\]]+)\]/,'%{\1}') %>
+  RewriteRule <%= scope.function_fix_apache_vars([rule]) %>
 <% end -%>
 

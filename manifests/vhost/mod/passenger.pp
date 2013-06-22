@@ -70,7 +70,7 @@ define apache::vhost::mod::passenger (
   require apache::mod::passenger
 
   ## Generate the content for your module file:
-  $definition = template('apache/vhost/mod/passenger.erb')
+  $definition = template('apache/vhost/mod/passenger-3.erb')
 
   apache::sys::modfile {$title:
     ensure         => $ensure,

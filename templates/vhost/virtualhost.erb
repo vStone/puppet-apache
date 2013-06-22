@@ -1,11 +1,3 @@
-<%
-  def empty?(value)
-    value == '' or value == :undef
-  end
-  def always_array(var)
-    scope.function_always_array([var])
-  end
--%>
 ### File managed with puppet ###
 <% if scope.lookupvar('::servername') -%>
 # Served by:        '<%= scope.lookupvar('::servername') %>'
@@ -13,43 +5,38 @@
 # Module:           '<%= @module_name %>'
 # Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
 
-<VirtualHost <%= ip_def -%>:<%= vhost_port -%>>
+<VirtualHost <%= @ip_def -%>:<%= @vhost_port -%>>
 
-  ServerName  <%= server %>
+  ServerName  <%= @server %>
 <%
-  if ! empty?(serveraliases)
-    server_aliases = always_array(serveraliases)
-    server_aliases.each do |srvalias|
+  if @serveraliases
+    scope.function_always_array([@serveraliases]).each do |srvalias|
 -%>
   ServerAlias <%= srvalias %>
 <%
     end
   end
 -%>
-  ServerAdmin <%= serveradmin %>
+  ServerAdmin <%= @serveradmin %>
 
-<% if ! empty?(time_out) %>
-  TimeOut <%= time_out %>
+<% if @time_out %>
+  TimeOut <%= @time_out %>
 <% end -%>
 
-  DocumentRoot <%= documentroot %>
-  <Directory <%= directoryroot %>>
-<%
-  diropts = always_array(dir_options)
-%>
-    Options <%= diropts.join(' ')  %>
+  DocumentRoot <%= @documentroot %>
+  <Directory <%= @directoryroot %>>
+    Options <%= scope.function_always_array([@dir_options]).join(' ')  %>
     AllowOverride All
     Order allow,deny
     Allow from All
   </Directory>
 
-<% if ! empty?(vhost_config) -%>
+<% if @vhost_config and ! @vhost_config.empty? -%>
   ## Custom content. This is NOT created by the Apache::Vhost but has been
   #  configured in the apache::vhost definition.
 <%
-    vhost_config_arr = always_array(vhost_config)
     count = 0
-    vhost_config_arr.each do |cfg|
+    scope.function_always_array([@vhost_config]).each do |cfg|
       count += 1
 -%>
   # Start custom config block <%= count %>
@@ -59,12 +46,12 @@
 <% end -%>
 
   ## Logging ####
-<% if ! empty?(access_log) -%>
-  CustomLog <%= log_dir %>/<%= access_log %> <%= log_format %>
+<% if @access_log and ! @access_log.empty? -%>
+  CustomLog <%= @log_dir %>/<%= @access_log %> <%= @log_format %>
 <% end -%>
-<% if ! empty?(error_log) -%>
-  LogLevel <%= errorlevel %>
-  ErrorLog <%= log_dir %>/<%= error_log %>
+<% if @error_log and ! @error_log.empty? -%>
+  LogLevel <%= @errorlevel %>
+  ErrorLog <%= @log_dir %>/<%= @error_log %>
 <% end -%>
 
 <% # -- No end here. More files get added -%>

@@ -3,7 +3,7 @@
   # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 
-  <Location <%= location%>>
+  <Location <%= @location%>>
     SetHandler server-status
 <%= scope.function_render_allow_deny([@allow_order, @allow_from, @deny_from]) %>
   </Location>

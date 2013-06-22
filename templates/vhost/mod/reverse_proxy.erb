@@ -1,22 +1,14 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 <%
-  def empty?(value)
-    value == '' or value == :undef
-  end
-
-  def always_array(var)
-    scope.function_always_array([var])
-  end
-
   def hash_to_keypair(hash)
     hash.collect { |key,value| "#{key}=#{value}" }.join(" ")
   end
 
   ## Sanitize variables
-  proxiez_pass_match = always_array(@proxypassmatch)
-  proxiez_pass = always_array(@proxypass)
-  proxiez_reverse = always_array(@proxypassreverse)
-  proxiez_path  = always_array(@proxypath)
+  proxiez_pass_match  = scope.function_always_array(@proxypassmatch)
+  proxiez_pass        = scope.function_always_array(@proxypass)
+  proxiez_reverse     = scope.function_always_array(@proxypassreverse)
+  proxiez_path        = scope.function_always_array(@proxypath)
 
   if empty?(_proxypass_options) or _proxypass_options == [] or _proxypass_options == {}
     proxypass_options = ""
@@ -28,7 +20,7 @@
     proxypass_options = " " + _proxypass_options.join(" ") ## prefix with one space.
   end
 -%>
-<% if @comment and ! empty?(@comment) -%>
+<% if ! @comment.to_s.empty? -%>
   # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 <% if _header -%>
@@ -60,7 +52,7 @@
   ProxyPass <%= p %><%= proxypass_options %>
   ProxyPassReverse <%= p %>
 <% end -%>
-<% if @content %>
+<% if ! @content.to_s.empty? %>
   # Below you will find the extra content you have defined.
   # This is NOT part of the puppet template.
   <%= @content %>

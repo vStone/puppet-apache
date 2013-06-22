@@ -2,10 +2,10 @@
 <% if @comment and ! @comment.empty? -%>
   # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-  <Location <%= location %>>
+  <Location <%= @location %>>
     Dav On
-<% if allow != '' and allow != :undef -%>
-    Require <%= allow %>
+<% if ! @allow.to_s.empty? -%>
+    Require <%= @allow %>
 <% end -%>
   </Location>
 

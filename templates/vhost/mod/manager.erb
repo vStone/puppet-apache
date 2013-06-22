@@ -9,16 +9,15 @@
     return 'off' if var == false
   end
 
-  if location !~ /^\//
-    _location = "/#{location}"
+  if @location !~ /^\//
+    _location = "/#{@location}"
   else
-    _location = location
+    _location = @location
   end
 
 -%>
-<% if _header -%>
+<% if @_header -%>
 <%  # You can add a header here -%>
-
 <% end -%>
 <% if @comment and ! @comment.empty? -%>
   # <%= @comment.gsub(/\n/, "\n  # ") %>
@@ -29,11 +28,11 @@
 <%= scope.function_render_allow_deny([@allow_order, @allow_from, @deny_from]) %>
   </Location>
 
-<% if ! empty?(max_mcmp_max_mess_size) -%>
-  MaxMCMPMaxMessSize <%= max_mcmp_max_mess_size %>
+<% if ! @max_mcmp_max_mess_size.to_s.empty? -%>
+  MaxMCMPMaxMessSize <%= @max_mcmp_max_mess_size %>
 <% end -%>
-<% if ! empty?(manager_balancer_name) -%>
-  ManagerBalancerName <%= manager_balancer_name %>
+<% if ! @manager_balancer_name.to_s.empty? -%>
+  ManagerBalancerName <%= @manager_balancer_name %>
 <% end -%>
 <% if ! empty?(check_nonce) -%>
   CheckNonce <%= onoff(check_nonce) %>

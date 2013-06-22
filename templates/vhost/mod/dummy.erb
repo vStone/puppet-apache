@@ -1,19 +1,14 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
-<%
-  def empty?(value)
-    value == '' or value == :undef
-  end
--%>
-<% if _header -%>
+<% if @_header -%>
 <%  # You can add a header here -%>
 
 <% end -%>
 <% if @comment and ! @comment.empty? -%>
   # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-<% if ! empty?(content) -%>
+<% if @content and ! @content.empty? -%>
   # Below you will find the extra content you have defined.
   # This is NOT part of the puppet template.
-  <%= content %>
+  <%= @content %>
 <% end -%>
 

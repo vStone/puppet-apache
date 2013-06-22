@@ -7,7 +7,7 @@
 <% if @comment and ! @comment.empty? -%>
   # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-<% if _header -%><% end -%>
+<% if @_header -%><% end -%>
 <% reqheaders.each do |h| -%>
   RequestHeader <%= scope.function_fix_apache_vars([h]) %>
 <% end -%>

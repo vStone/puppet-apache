@@ -64,7 +64,11 @@ define apache::vhost::mod::passenger (
   $pre_start            = undef,
   $high_performance     = undef,
   $rails_autodetect     = undef,
-  $rack_autodetect      = undef
+  $rails_baseuri        = undef,
+  $rails_env            = undef,
+  $rack_autodetect      = undef,
+  $rack_baseuri         = undef,
+  $rack_env             = undef
 ) {
 
   require apache::mod::passenger

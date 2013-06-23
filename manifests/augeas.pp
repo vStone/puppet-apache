@@ -6,7 +6,7 @@ define apache::augeas (
 ) {
 
   case $ensure {
-    true, 'present', 'default': {
+    true, 'present', default: {
       apache::augeas::set {$name:
         value          => $value,
         config         => $config,

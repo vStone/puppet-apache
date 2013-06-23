@@ -5,10 +5,10 @@
   end
 
   ## Sanitize variables
-  proxiez_pass_match  = scope.function_always_array(@proxypassmatch)
-  proxiez_pass        = scope.function_always_array(@proxypass)
-  proxiez_reverse     = scope.function_always_array(@proxypassreverse)
-  proxiez_path        = scope.function_always_array(@proxypath)
+  proxiez_pass_match  = scope.function_always_array([@proxypassmatch])
+  proxiez_pass        = scope.function_always_array([@proxypass])
+  proxiez_reverse     = scope.function_always_array([@proxypassreverse])
+  proxiez_path        = scope.function_always_array([@proxypath])
 
   if empty?(_proxypass_options) or _proxypass_options == [] or _proxypass_options == {}
     proxypass_options = ""

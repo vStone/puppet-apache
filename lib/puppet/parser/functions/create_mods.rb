@@ -46,7 +46,7 @@ Puppet::Parser::Functions::newfunction(:create_mods, :doc => '
     if mod.is_a?(Array)
       ### We will need to do some magic on the naming here, appending an index or sth.
       index = 0
-      mod.sort.each do |xmod|
+      mod.each do |xmod|
         params = defmerge.merge(xmod)
         params['order'] = order_index unless params['order']
         params['_header'] = (index == 0)

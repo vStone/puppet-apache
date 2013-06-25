@@ -23,7 +23,7 @@
 <% if ! @comment.to_s.empty? -%>
   # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-<% if _header -%>
+<% if @_header -%>
 <%    if @proxyrequests -%>
   ProxyRequests <%= @proxyrequests %>
 <%    end -%>

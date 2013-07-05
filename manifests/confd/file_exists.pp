@@ -34,11 +34,13 @@ define apache::confd::file_exists (
     default => $group,
   }
 
-  if defined(File[$path]) {
-    info("The folder ${path} is already defined. Skipping creation.")
+  $_path = regsubst($file, '/$', '')
+
+  if defined(File[$_path]) {
+    info("The folder ${_path} is already defined. Skipping creation.")
   }
   else {
-    file {$path:
+    file {$_path:
       ensure => $ensure,
       owner  => $fowner,
       group  => $fgroup,
@@ -46,13 +48,13 @@ define apache::confd::file_exists (
       target => $target,
     }
     if $ensure == 'directory' and $purge == false {
-      File[$path] {
+      File[$_path] {
         replace => false,
       }
     }
 
     if $notify_service {
-      File[$path] {
+      File[$_path] {
         notify => Service['apache'],
       }
     }

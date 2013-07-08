@@ -34,7 +34,7 @@ define apache::confd::file_exists (
     default => $group,
   }
 
-  $_path = regsubst($file, '/$', '')
+  $_path = regsubst($path, '/$', '')
 
   if defined(File[$_path]) {
     info("The folder ${_path} is already defined. Skipping creation.")

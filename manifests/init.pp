@@ -4,9 +4,10 @@
 #
 # === Parameters:
 #
-# $defaults::   With defaults, we will define a default namevhost on port 80.
-#               This includes apache::listen {'80': }
-#               and apache::namevhost {'80': }
+# [*defaults*]
+#   With defaults, we will define a default namevhost on port 80.
+#   This includes apache::listen {'80': }
+#   and apache::namevhost {'80': }
 #
 # === Todo:
 #

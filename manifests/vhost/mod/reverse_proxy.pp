@@ -87,6 +87,7 @@ define apache::vhost::mod::reverse_proxy (
 
   $comment          = undef,
   $content          = undef,
+  $proxypreservehost = undef,
   $proxy_url        = undef,
   $proxy_via        = undef,
   $allow_order      = 'Deny,Allow',
@@ -99,10 +100,12 @@ define apache::vhost::mod::reverse_proxy (
   $default_proxy_pass_options = undef
 ) {
 
+  require apache::mod::reverse_proxy
+
+  $proxyrequests    = 'Off'
 
   case $default_proxy_pass_options {
     undef: {
-      require apache::mod::reverse_proxy
       $_proxypass_options =           # 80char limit :)
         $::apache::mod::reverse_proxy::default_proxy_pass_options
     }

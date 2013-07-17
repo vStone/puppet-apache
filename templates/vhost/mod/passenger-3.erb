@@ -1,0 +1,90 @@
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
+<%
+  def onoff (var)
+    return var if var.is_a?(String)
+    return 'on' if [true, 'true'].include?(var)
+    return 'off' if [false, 'false'].include?(var)
+  end
+-%>
+<% if ! @comment.to_s.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
+<% end -%>
+<% if ! @app_root.to_s.empty? -%>
+  PassengerAppRoot <%= @app_root %>
+<% end -%>
+<% if ! @spawn_method.to_s.empty? -%>
+  PassengerSpawnMethod <%= @spawn_method %>
+<% end -%>
+<% if ! @global_queue.to_s.empty? -%>
+  PassengerUseGlobalQueue <%= onoff(@global_queue) -%>
+<% end -%>
+<% if ! @passenger_enabled.to_s.empty? -%>
+  PassengerEnabled <%= onoff(@passenger_enabled) %>
+<% end -%>
+<% if ! @upload_buffer_dir.to_s.empty? -%>
+  PassengerUploadBufferDir <%= @upload_buffer_dir -%>
+<% end -%>
+<% if ! @restart_dir.to_s.empty? -%>
+  PassengerRestartDir <%= @restart_dir %>
+<% end -%>
+<% if ! @friendly_error_pages.to_s.empty? -%>
+  PassengerFriendlyErrorPages <%= onoff(@friendly_error_pages) %>
+<% end -%>
+<% if ! @buffer_response.to_s.empty? -%>
+  PassengerBufferResponse <%= onoff(@buffer_response) %>
+<% end -%>
+<% if ! @user.to_s.empty? -%>
+  PassengerUser <%= @user %>
+<% end -%>
+<% if ! @group.to_s.empty? -%>
+  PassengerGroup <%= @group %>
+<% end -%>
+<% if ! @min_instances.to_s.empty? -%>
+  PassengerMinInstances <%= @min_instances %>
+<% end -%>
+<% if ! @max_requests.to_s.empty? -%>
+  PassengerMaxRequests <%= @max_requests %>
+<% end -%>
+<% if ! @stat_throttle_rate.to_s.empty? -%>
+  PassengerStatThrottleRate <%= @stat_throttle_rate %>
+<% end -%>
+<% if ! @pre_start.to_s.empty? -%>
+  PassengerPreStart <%= @pre_start %>
+<% end -%>
+<% if ! @high_performance.to_s.empty? -%>
+  PassengerHighPerformance <%= onoff(@high_performance) %>
+<% end -%>
+<% if ! @rails_autodetect.to_s.empty? -%>
+  RailsAutoDetect <%= onoff(@rails_autodetect) %>
+<% end -%>
+<%
+  if @rails_baseuri and ! @rails_baseuri.empty?
+    [@rails_baseuri].flatten.each do |uri|
+      raise Puppet::ParseError, 'rails_baseuri entries must start with a slash' if uri[0] != '/'
+  -%>
+  RailsBaseUri <%= uri %>
+<%  end -%>
+<% end -%>
+<% if @rails_env and ! @rails_env.to_s.empty? -%>
+  RailsEnv <%= env %>
+<% end -%>
+<% if ! @rack_autodetect.to_s.empty? -%>
+  RackAutoDetect <%= onoff(@rack_autodetect) %>
+<% end -%>
+<% if @rack_baseuri and ! @rack_baseuri.empty?
+    [ @rack_baseuri ].flatten.each do |uri|
+      raise Puppet::ParseError, 'rack_baseuri entries must start with a slash' if uri[0] != '/'
+-%>
+  RackBaseUri <%= uri %>
+<%  end -%>
+<% end -%>
+<% if ! @rack_env.to_s.empty? -%>
+  RackEnv <%= @rack_env %>
+<% end -%>
+<% if ! @content.to_s.empty? %>
+
+  # Below you will find the extra content you have defined.
+  # This is NOT part of the puppet template.
+  <%= @content %>
+<% end -%>
+

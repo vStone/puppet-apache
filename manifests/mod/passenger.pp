@@ -41,14 +41,12 @@ class apache::mod::passenger (
 
       case $package {
         undef: {
-          case $::operatingsystem {
-            /(?i:debian|ubuntu)/: {
+          case $::osfamily {
+            'Debian': {
               $pkg_name = 'libapache2-mod-passenger'
-              $pkg_provider = 'apt'
             }
-            /(?i:centos|redhat)/: {
-              $pkg_name = 'passenger'
-              $pkg_provider = 'gem'
+            'RedHat': {
+              $pkg_name = 'mod_passenger'
             }
             default: {
               fail('Your operatingsystem is not supported by apache::mod:passenger and no package provided')
@@ -57,7 +55,6 @@ class apache::mod::passenger (
         }
         default: {
           $pkg_name = $package
-          $pkg_provider = $provider
         }
       }
 
@@ -65,18 +62,6 @@ class apache::mod::passenger (
         ensure         => $ensure,
         package        => $pkg_name,
         notify_service => $notify_service,
-        provider       => $pkg_provider,
-      }
-
-      case $::operatingsystem {
-        /(?i:centos|redhat)/: {
-          if $pkg_provider == 'gem' {
-            Apache::Sys::Modpackage['passenger'] {
-              require   +> Package['rubygems'],
-            }
-          }
-        }
-        default: {}
       }
     }
   }

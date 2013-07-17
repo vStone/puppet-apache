@@ -151,33 +151,96 @@ class apache::params(
   $reload_command    = undef
 ) {
 
+  case $::osfamily {
+    'Debian': {
+      $osdefault_package                = 'apache2'
+      $osdefault_package_devel          = 'apache2-threaded-dev'
+      $osdefault_package_ssl            = []
+      $osdefault_service_name           = 'apache2'
+      $osdefault_service_path           = '/etc/init.d/'
+      $osdefault_service_hasrestart     = true
+      $osdefault_service_hasstatus      = true
+      $osdefault_service_reload_command =
+        '/etc/init.d/apache2 reload > /dev/null'
+      $osdefault_config_dir             = '/etc/apache2'
+      $osdefault_config_file_rel        = 'apache2.conf'
+      $osdefault_log_dir                = '/var/log/apache2'
+      $osdefault_module_root            = 'modules'
+      $osdefault_daemon_user            = 'www-data'
+      $osdefault_daemon_group           = 'www-data'
+      # class beneath apache::setup::os with distro specific tweaks
+      $custom_os_setup                  = 'debian'
+    }
+    'RedHat': {
+      $osdefault_package                = 'httpd'
+      $osdefault_package_devel          = 'httpd-devel'
+      $osdefault_package_ssl            = 'mod_ssl'
+      $osdefault_service_name           = 'httpd'
+      $osdefault_service_path           = '/etc/init.d/'
+      $osdefault_service_hasrestart     = true
+      $osdefault_service_hasstatus      = true
+      $osdefault_service_reload_command =
+        '/sbin/service httpd reload > /dev/null 2>/dev/null || true'
+      $osdefault_config_dir             = '/etc/httpd'
+      $osdefault_config_file_rel        = 'conf/httpd.conf'
+      $osdefault_log_dir                = '/var/log/httpd'
+      $osdefault_module_root            = 'modules'
+      $osdefault_daemon_user            = 'apache'
+      $osdefault_daemon_group           = 'apache'
+      # class beneath apache::setup::os with distro specific tweaks
+      $custom_os_setup                  = 'redhat'
+    }
+    'Archlinux': {
+      $osdefault_package                = 'apache'
+      $osdefault_package_devel          = []
+      $osdefault_package_ssl            = []
+      $osdefault_service_name           = 'httpd'
+      $osdefault_service_path           = '/etc/rd.d/'
+      $osdefault_service_hasrestart     = true
+      $osdefault_service_hasstatus      = true
+      $osdefault_service_reload_command =
+        '/bin/kill -HUP `cat /var/run/httpd/httpd.pid 2>/dev/null` 2> /dev/null || true'
+      $osdefault_config_dir             = '/etc/httpd'
+      $osdefault_config_file_rel        = 'conf/httpd.conf'
+      $osdefault_log_dir                = '/var/log/httpd'
+      $osdefault_module_root            = 'modules'
+      $osdefault_daemon_user            = 'http'
+      $osdefault_daemon_group           = 'http'
+    }
+    default: {
+      fail("osfamily ${::osfamily} not supported by the apache-module. add support in the params class and send a pull request ;)")
+      $osdefault_package                = 'httpd'
+      $osdefault_package_devel          = []
+      $osdefault_package_ssl            = []
+      $osdefault_service_name           = 'httpd'
+      $osdefault_service_path           = '/etc/init.d/'
+      $osdefault_service_hasrestart     = true
+      $osdefault_service_hasstatus      = true
+      $osdefault_service_reload_command =
+        "/usr/bin/killall -HUP ${service_name}"
+      $osdefault_config_dir             = '/etc/httpd'
+      $osdefault_config_file_rel        = 'conf/httpd.conf'
+      $osdefault_log_dir                = '/var/log/httpd'
+      $osdefault_module_root            = 'modules'
+      $osdefault_daemon_user            = 'apache'
+      $osdefault_daemon_group           = 'apache'
+    }
+  }
+
+
   ####################################
   ####         Package(s)         ####
   ####################################
   $package = $apache ? {
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => 'apache2',
-      /CentOS|RedHat/ => 'httpd',
-      /Archlinux/     => 'apache',
-      default         => 'httpd',
-    },
+    undef   => $osdefault_package,
     default => $apache,
   }
   $package_devel = $apache_dev ? {
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => 'apache2-threaded-dev',
-      /CentOS|RedHat/ => 'httpd-devel',
-      /Archlinux/     => [],
-      default         => [],
-    },
+    undef   => $osdefault_package_devel,
     default => $apache_dev,
   }
   $package_ssl = $apache_ssl ? {
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => [],
-      /CentOS|RedHat/ => 'mod_ssl',
-      default         => [],
-    },
+    undef   => $osdefault_package_ssl,
     default => $apache_ssl,
   }
 
@@ -186,37 +249,19 @@ class apache::params(
   ####      Apache Service        ####
   ####################################
   $service_name = $service ? {
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => 'apache2',
-      /Gentoo/        => 'apache2',
-      /CentOS|RedHat/ => 'httpd',
-      /Archlinux/     => 'httpd',
-      default         => 'httpd',
-    },
+    undef   => $osdefault_service_name,
     default => $service,
-  }
-  $service_path = $::operatingsystem ? {
-    /Archlinux/     => '/etc/rc.d/',
-    default         => '/etc/init.d/',
-  }
-
-  $service_hasrestart = $::operatingsystem ? {
-    default         => true,
-  }
-
-  $service_hasstatus = $::operatingsystem ? {
-    default         => true,
   }
 
   $service_reload_command = $reload_command ? {
+    undef   => $osdefault_service_reload_command,
     default => $reload_command,
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => '/etc/init.d/apache2 reload > /dev/null',
-      /CentOS|RedHat/ => '/sbin/service httpd reload > /dev/null 2>/dev/null || true',
-      /Archlinux/     => '/bin/kill -HUP `cat /var/run/httpd/httpd.pid 2>/dev/null` 2> /dev/null || true',
-      default         => "/usr/bin/killall -HUP ${service_name}"
-    }
   }
+
+  # these only have fixed os defaults (for now)
+  $service_path       = $osdefault_service_path
+  $service_hasrestart = $osdefault_service_hasrestart
+  $service_hasstatus  = $osdefault_service_hasstatus
 
 
   ####################################
@@ -224,66 +269,44 @@ class apache::params(
   ####################################
   ## Configuration directories. Based on defined $configroot ##
   $config_dir = $configroot ? {
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => '/etc/apache2',
-      /CentOS|RedHat/ => '/etc/httpd',
-      default         => '/etc/httpd',
-    },
+    undef   => $osdefault_config_dir,
     default => $configroot,
   }
 
-  ## Main configuration template to use.
-  ## TODO: DEPRECATED. Remove!
-  $config_template = $::operatingsystem ? {
-    /Archlinux/     => 'apache/config/archlinux-apache.conf.erb',
-    /CentOS|RedHat/ => $::operatingsystemrelease ? {
-      /^6/    => 'apache/config/centos6-apache.conf.erb',
-      /^5/    => 'apache/config/centos5-apache.conf.erb',
-      default => 'apache/config/centos6-apache.conf.erb',
-    },
-    /Debian|Ubuntu/ => 'apache/config/debian-apache.conf.erb',
-    default         => 'apache/config/debian-apache.conf.erb',
-  }
-
   ## Location of the (main) configuration file.
-  $config_file = $::operatingsystem ? {
-    /Debian|Ubuntu/ => "${config_dir}/apache2.conf",
-    /CentOS|RedHat/ => "${config_dir}/conf/httpd.conf",
-    default         => "${config_dir}/conf/httpd.conf",
-  }
+  $config_file = "${config_dir}/${osdefault_config_file_rel}"
 
   ## conf.d folder.
-  $confd        = "${config_dir}/conf.d"
+  $confd       = "${config_dir}/conf.d"
 
   ## Log directory.
   $log_dir = $logroot ? {
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => '/var/log/apache2',
-      /CentOS|RedHat/ => '/var/log/httpd',
-      /Archlinux/     => '/var/log/httpd',
-      default         => '/var/log/httpd',
-    },
+    undef   => $osdefault_log_dir,
     default => $logroot,
   }
 
-  if defined('::concat') {
-    $config_style_undef = 'apache::sys::config::concat'
-  }
-  else {
-    $config_style_undef = 'apache::sys::config::split'
+  case $config_style {
+    undef: {
+      if defined('::concat::setup') {
+        $config_base = 'apache::sys::config::concat'
+      } else {
+        $config_base = 'apache::sys::config::split'
+      }
+    }
+    /::/: {
+      $config_base = $config_style
+    }
+    default: {
+      $config_base = "apache::sys::config::${config_style}"
+    }
   }
 
-  ## config_base
-  $config_base = $config_style ? {
-    undef   => $config_style_undef,
-    /::/    => $config_style,
-    default => "apache::sys::config::${config_style}"
-  }
-
+  ## Path used in the httpd config file to load modules.
+  # This path is not used on all operating systems. Debian-ish systems
+  # have their files in mods-available and symlink in mods-enabled.
+  # See apache::config::loadmodule for more information.
   $module_root = $moduleroot ? {
-    undef   => $::operatingsystem ? {
-      default => 'modules'
-    },
+    undef   => $osdefault_module_root,
     default => $moduleroot,
   }
 
@@ -291,21 +314,11 @@ class apache::params(
   ####    Apache Daemon Config    ####
   ####################################
   $daemon_user = $user ? {
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => 'www-data',
-      /CentOS|RedHat/ => 'apache',
-      /Archlinux/     => 'http',
-      default         => 'apache',
-    },
+    undef   => $osdefault_daemon_user,
     default => $user,
   }
   $daemon_group = $group ? {
-    undef   => $::operatingsystem ? {
-      /Debian|Ubuntu/ => 'www-data',
-      /CentOS|RedHat/ => 'apache',
-      /Archlinux/     => 'http',
-      default         => 'apache',
-    },
+    undef   => $osdefault_daemon_group,
     default => $group,
   }
 

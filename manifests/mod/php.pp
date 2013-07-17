@@ -23,9 +23,9 @@ class apache::mod::php (
   }
 
   apache::sys::modpackage {'php':
+    ensure         => $ensure,
     package        => $pkg_name,
     notify_service => $notify_service,
-    ensure         => $ensure,
   }
 
 }

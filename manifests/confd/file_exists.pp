@@ -9,6 +9,9 @@
 # For these kind of files, we do not notify the service my default since
 # the resource that called this will probably do so on itself.
 #
+#
+# If the file is a directory, and purge is not true, it will not replace symlinks.
+#
 define apache::confd::file_exists (
   $ensure,
   $path,
@@ -31,19 +34,27 @@ define apache::confd::file_exists (
     default => $group,
   }
 
-  if defined(File[$path]) {
-    info("The folder ${path} is already defined. Skipping creation.")
+  $_path = regsubst($path, '/$', '')
+
+  if defined(File[$_path]) {
+    info("The folder ${_path} is already defined. Skipping creation.")
   }
   else {
-    file {$path:
+    file {$_path:
       ensure => $ensure,
       owner  => $fowner,
       group  => $fgroup,
       purge  => $purge,
       target => $target,
     }
+    if $ensure == 'directory' and $purge == false {
+      File[$_path] {
+        replace => false,
+      }
+    }
+
     if $notify_service {
-      File[$path] {
+      File[$_path] {
         notify => Service['apache'],
       }
     }

@@ -13,4 +13,9 @@ class apache::mod::reverse_proxy (
   $ensure                     = 'present',
 ) {
 
+  apache::config::loadmodule{'proxy':
+    ensure         => $ensure,
+    notify_service => $notify_service,
+  }
+
 }

@@ -1,4 +1,4 @@
-# == Definition: apache::vhost::mod::passenger
+# == Definition: apache::vhost::mod::passenger4
 #
 # Enable a passenger configuration in this vhost.
 #
@@ -34,7 +34,7 @@
 # TODO: Implement remaining parameters
 # TODO: Update documentation
 #
-define apache::vhost::mod::passenger (
+define apache::vhost::mod::passenger4 (
   $vhost,
   $notify_service       = undef,
   $ensure               = 'present',
@@ -48,6 +48,7 @@ define apache::vhost::mod::passenger (
   $comment              = undef,
   $content              = undef,
 
+  $ruby                 = undef,
   $app_root             = undef,
   $spawn_method         = undef,
   $global_queue         = undef,
@@ -63,10 +64,8 @@ define apache::vhost::mod::passenger (
   $stat_throttle_rate   = undef,
   $pre_start            = undef,
   $high_performance     = undef,
-  $rails_autodetect     = undef,
   $rails_baseuri        = undef,
   $rails_env            = undef,
-  $rack_autodetect      = undef,
   $rack_baseuri         = undef,
   $rack_env             = undef
 ) {
@@ -74,7 +73,7 @@ define apache::vhost::mod::passenger (
   require apache::mod::passenger
 
   ## Generate the content for your module file:
-  $definition = template('apache/vhost/mod/passenger-3.erb')
+  $definition = template('apache/vhost/mod/passenger-4.erb')
 
   apache::sys::modfile {$title:
     ensure         => $ensure,

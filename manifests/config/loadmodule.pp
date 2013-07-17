@@ -35,8 +35,8 @@ define apache::config::loadmodule (
     default => $notify_service,
   }
 
-  case $::operatingsystem {
-    /(?i:debian|ubuntu)/: {
+  case $::osfamily {
+    'Debian': {
       ## DEBIAN / UBUNTU specific module loading.
       file {"apache-config-loadmodule-debian-${name}":
         path    => "${apache::params::config_dir}/mods-enabled/${name}.load",

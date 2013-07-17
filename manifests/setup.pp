@@ -5,17 +5,6 @@
 class apache::setup {
   require apache::params
 
-  ## Apache main configuration file
-  #file { 'apache-config_file':
-  #  ensure  => present,
-  #  owner   => 'root',
-  #  group   => 'root',
-  #  mode    => '0644',
-  #  path    => $::apache::params::config_file,
-  #  content => template($::apache::params::config_template),
-  #  notify  => Service['apache'],
-  #}
-
   Augeas {
     lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
@@ -70,10 +59,8 @@ class apache::setup {
   include apache::setup::mod
   include apache::setup::vhost
 
-  case $::operatingsystem {
-    /(?i:centos|redhat)/: { include apache::setup::os::centos }
-    /(?i:debian|ubuntu)/: { include apache::setup::os::debian }
-    default: {}
+  if $::apache::params::custom_os_setup {
+    include "apache::setup::os::${::apache::params::custom_os_setup}"
   }
 
 }

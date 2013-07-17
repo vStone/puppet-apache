@@ -28,6 +28,13 @@
 #                 the apache::vhost instance you have setup.
 #                 Defaults to the vhost default.
 #
+# === Hiera Support
+#
+# Since %{VARIABLE_NAME} are pretty common in rewrite rules and hiera
+# does not deal with them well (yeah, the normal escape sequence is does not
+# work as expected either), you can use %[VARNAME] which will be replaced with
+# %{VARNAME} while writing the vhost definition.
+#
 # === Todo:
 #
 # TODO: Update documentation

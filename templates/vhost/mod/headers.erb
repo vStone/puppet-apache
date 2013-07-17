@@ -1,25 +1,17 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 <%
-  def empty?(value)
-    value == '' or value == :undef
-  end
-
-  def always_array(var)
-    scope.function_always_array([var])
-  end
-
   ## Sanitize variables
-  headers    = always_array(header)
-  reqheaders = always_array(requestheader)
+  headers    = scope.function_always_array([header])
+  reqheaders = scope.function_always_array([requestheader])
 -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-<% if _header -%><% end -%>
+<% if @_header -%><% end -%>
 <% reqheaders.each do |h| -%>
-  RequestHeader <%= h %>
+  RequestHeader <%= scope.function_fix_apache_vars([h]) %>
 <% end -%>
 <% headers.each do |h| -%>
-  Header <%= h %>
+  Header <%= scope.function_fix_apache_vars([h]) %>
 <% end -%>
 

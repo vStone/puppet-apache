@@ -1,11 +1,11 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-  <Location <%= location %>>
+  <Location <%= @location %>>
     Dav On
-<% if allow != '' and allow != :undef -%>
-    Require <%= allow %>
+<% if ! @allow.to_s.empty? -%>
+    Require <%= @allow %>
 <% end -%>
   </Location>
 

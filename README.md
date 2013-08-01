@@ -1,5 +1,9 @@
 # Usage
 
+See the module documentation on top of apache::params and apache::vhost for
+more information on how to use this module. Each class should be pretty well
+documented.
+
     class {'apache::params':
     }
     import apache

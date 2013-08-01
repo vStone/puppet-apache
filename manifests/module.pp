@@ -4,8 +4,8 @@
 #
 class apache::module {
 
-  $id = 'inuits-puppet-apache'
-  $version = '0.12.11'
+  $id = 'vstone-puppet-apache'
+  $version = '0.13.0'
 
 }
 

@@ -1,8 +1,8 @@
 name 'vstone-apache'
-version '0.12.0'
+version '0.13.0'
 
 author 'Jan Vansteenkiste <jan@vstone.eu>'
-license 'Apache'
+license 'Apache License Version 2.0'
 project_page 'https://github.com/vStone/puppet-apache'
 source 'git://github.com/vStone/puppet-apache.git'
 summary 'Manage apache and vhosts with puppet.'

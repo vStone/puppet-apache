@@ -51,3 +51,7 @@ will be included because most things require apache::params.
 If you run into bugs or would like to request a new feature (pull requests
 are also welcome... if you dare touch the code), please use the repository
 located here: https://github.com/vStone/puppet-apache/
+
+# Todo
+
+* Proper debian style configuration. For now, I have not have enought time to test this.

@@ -5,6 +5,11 @@
 # Optionally, depending on the configuration in apache::params,
 # also installs the devel package and/or ssl support.
 #
+# === Parmaeters:
+#
+# [*notify_service*]
+#   Should we restart the apache service after an upgrade.
+#
 class apache::packages (
   $notify_service = undef
 ) {

@@ -1,11 +1,16 @@
 # == Definition: apache::namevhost
 #
-#   Configure the apache service to enable name based vhosts on
-#   a certain (ip/)port
+# Configure the apache service to enable name based vhosts on
+# a certain (ip/)port
 #
 # === Parameters
 #
-#   $comment:     Add a comment in the configuration file.
+# [*name*]
+#   The name is used to determine on which ip and port to listen on.
+#   See the usage for the allowed formats.
+#
+# [*comment*]
+#   Add a comment in the configuration file.
 #
 # === Usage:
 #

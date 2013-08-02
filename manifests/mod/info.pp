@@ -5,7 +5,6 @@
 # === Todo:
 #
 # TODO: Update documentation
-# TODO: LoadModule support
 #
 class apache::mod::info (
   $notify_service = undef,

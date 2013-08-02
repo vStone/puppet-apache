@@ -1,8 +1,11 @@
 # == Class: apache::setup::vhost
 #
+# Creates the vhost_root directory, log dir and conf.d style
+# directory for vhost configuration files.
+#
 # === Todo:
 #
-# TODO: Update documentation
+# TODO: Move the conf.d stuff to configstyle subclass.
 #
 class apache::setup::vhost {
 

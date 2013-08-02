@@ -4,18 +4,25 @@
 #
 # === Parameters:
 #
-# $format::   The format you want to use. You do NOT need to escape double
-#             double quotes. We will do that for you. If you have escaped
-#             double quotes, we will not escape them again.
+# [*name*]
+#   The name of the logformat, you can use this in your vhosts.
 #
-# $comment::  Additional content that gets added to the logformat definition.
+# [*format*]
+#   The format you want to use. You do NOT need to escape double
+#   double quotes. We will do that for you. If you have escaped
+#   double quotes, we will not escape them again.
 #
-# $name::     The name of the logformat, you can use this in your vhosts.
+# [*comment*]
+#   Additional content that gets added to the logformat definition.
 #
 # === Example:
 #
-#   apache::listen { '10.0.0.1_80': }
-#   apache::listen { '80': }
+#   apache::logformat { 'custom':
+#     format => '%v %h %l %u %t "%r" %>'s %b
+#   }
+#
+# See the apache documentation for more information on the placeholders
+# you can use: http://httpd.apache.org/docs/current/mod/mod_log_config.html
 #
 define apache::logformat (
   $format,

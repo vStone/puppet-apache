@@ -4,60 +4,26 @@
 #
 # === Required Parameters:
 #
-# Your definition should always take the following parameters. When
-# using the mods parameter from vhost, these get set automaticly.
+# Some basic parameters that are always present in a module are not
+# documented. See the apache::vhost::mod::dummy for an explanation on them.
 #
-# $ensure::       Disable or enable this mod. This will/should remove the config
-#                 file. Required for apache::sys::modfile.
+# [*location*]
+#   Location to serve the server info on.
+#   Defaults to /server-info
 #
-# $vhost::        Defined what vhost this module is for.
-#                 Required for apache::sys::modfile
+# [*allow_order*]
+#   Should be either deny,allow or allow,deny.
+#   See: http://httpd.apache.org/docs/2.2/howto/access.html
 #
-# $ip::           Required for apache::sys::modfile.
+# [*allow_from*]
+#   Hosts, ips, ... where access should be allowed from.
+#   Defaults to 'All'
+#   See: http://httpd.apache.org/docs/2.2/howto/access.html
 #
-# $port::         Required for apache::sys::modfile.
-#
-# $docroot::      Document root.
-#                 Is automaticly filled in if pushed through apache::vhost.
-#
-# $_automated::   This is a variable that is used under the hood.
-#                 If a mod is enabled directly through apache::vhost (no
-#                 specific apache::vhost::mod::* is defined) this is set
-#                 to true. Required for apache::sys::modfile.
-#
-# $_header::      For some modules, a header is required which should
-#                 be included only once for all mods of the same type.
-#                 When using the mods parameter of a vhost, this will
-#                 be done automaticly for an included mod type or only for
-#                 the first if an array of a certain mod type is given.
-#
-# $comment::      Custom comment to add before the statements.
-#
-# $location::     Location to serve the server info on.
-#                 Defaults to /server-info
-#
-# $allow_order::  Should be either deny,allow or allow,deny.
-#                 See: http://httpd.apache.org/docs/2.2/howto/access.html
-#
-# $allow_from::   Hosts, ips, ... where access should be allowed from.
-#                 Defaults to 'All'
-#                 See: http://httpd.apache.org/docs/2.2/howto/access.html
-#
-# $deny_from::    Hosts,ips, ... where access should be disallowed from.
-#                 Defaults to '' (empty).
-#                 See: http://httpd.apache.org/docs/2.2/howto/access.html.
-#
-#
-# === Optional Parameters:
-#
-# Any other parameters you wish to use for your module. If you add other
-# parameters, make sure to add the required parameters without default
-# values before those with default parameters. There is no shame in
-# changing the order of the Required Parameters.
-#
-# === Actions:
-#
-# Creates a apache::sys::modfile for the vhost that has been selected.
+# [*deny_from*]
+#   Hosts,ips, ... where access should be disallowed from.
+#   Defaults to '' (empty).
+#   See: http://httpd.apache.org/docs/2.2/howto/access.html.
 #
 # === Sample Usage:
 #

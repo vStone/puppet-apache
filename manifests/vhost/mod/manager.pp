@@ -4,30 +4,29 @@
 #
 # === Required Parameters:
 #
-# Your definition should always take the following parameters. When
-# using the mods parameter from vhost, these get set automaticly.
 #
-# $ensure::     Disable or enable this mod. This will/should remove the config
-#               file. Required for apache::sys::modfile.
+# Some basic parameters that are always present in a module are not
+# documented. See the apache::vhost::mod::dummy for an explanation on them.
 #
-# $vhost::      Defined what vhost this module is for.
-#               Required for apache::sys::modfile
+# [*location*]
 #
-# $ip::         Required for apache::sys::modfile.
+# [*allow_order*]
 #
-# $port::       Required for apache::sys::modfile.
+# [*allow_from*]
 #
-# $docroot::    Document root.
-#               Is automaticly filled in if pushed through apache::vhost.
+# [*deny_from*]
 #
-# === Optional Parameters:
+# [*max_mcmp_max_mess_size*]
 #
+# [*manager_balancer_name*]
 #
-# === Actions:
+# [*check_nonce*]
 #
-# Creates a apache::sys::modfile for the vhost that has been selected.
+# [*allow_display*]
 #
-# === Sample Usage:
+# [*allow_cmd*]
+#
+# [*reduce_display*]
 #
 # === Todo:
 #

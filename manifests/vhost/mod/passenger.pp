@@ -4,28 +4,50 @@
 #
 # === Required Parameters:
 #
-# Your definition should always take the following parameters. When
-# using the mods parameter from vhost, these get set automaticly.
+# Some basic parameters that are always present in a module are not
+# documented. See the apache::vhost::mod::dummy for an explanation on them.
 #
-# $ensure::     Disable or enable this mod. This will/should remove the config
-#               file. Required for apache::sys::modfile.
+# [*app_root*]
 #
-# $vhost::      Defined what vhost this module is for.
-#               Required for apache::sys::modfile
+# [*spawn_method*]
 #
-# $ip::         Required for apache::sys::modfile.
+# [*global_queue*]
 #
-# $port::       Required for apache::sys::modfile.
+# [*passenger_enabled*]
 #
-# $docroot::    Document root.
-#               Is automaticly filled in if pushed through apache::vhost.
+# [*upload_buffer_dir*]
 #
-# === Optional Parameters:
+# [*restart_dir*]
 #
+# [*friendly_error_pages*]
 #
-# === Actions:
+# [*buffer_response*]
 #
-# Creates a apache::sys::modfile for the vhost that has been selected.
+# [*user*]
+#
+# [*group*]
+#
+# [*min_instances*]
+#
+# [*max_requests*]
+#
+# [*stat_throttle_rate*]
+#
+# [*pre_start*]
+#
+# [*high_performance*]
+#
+# [*rails_autodetect*]
+#
+# [*rails_baseuri*]
+#
+# [*rails_env*]
+#
+# [*rack_autodetect*]
+#
+# [*rack_baseuri*]
+#
+# [*rack_env*]
 #
 # === Sample Usage:
 #
@@ -44,7 +66,6 @@ define apache::vhost::mod::passenger (
   $order                = undef,
   $_automated           = false,
   $_header              = false,
-
   $comment              = undef,
   $content              = undef,
 

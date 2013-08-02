@@ -1,21 +1,31 @@
-# = Definition: apache::config::loadmodule
+# == Definition: apache::config::loadmodule
 #
-# Description of apache::config::loadmodule
+# Helper definition to load a certain apache module.
+# This contains logic to deal with debian-style mods-enabled and
+# mods-available forlders.
 #
-# == Parameters:
+# === Parameters:
 #
+# [*ensure*]
+#   Present or absent.
 #
-# == Actions:
+# [*notify_service*]
+#   Restart the apache service after adjusting the configuration.
 #
-# Describe what this class does. What gets configured and how.
+# [*module*]
+#   Name of the module to load (or remove). This defaults to
+#   <name>_module.
 #
-# == Requires:
+# [*file*]
+#   File name of the module. Defaults to mod_<name>.so
 #
-# Requirements. This could be packages that should be made available.
+# [*path*]
+#   Path where module files are located. Defaults to distro specific.
 #
-# == Sample Usage:
+# [*config*]
+#   Configuration file to operate on. Defaults to distro specific.
 #
-# == Todo:
+# === Todo:
 #
 # TODO: Update documentation
 #

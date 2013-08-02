@@ -1,4 +1,4 @@
-# == Class: apache::vhost::ssl
+# == Definition: apache::vhost::ssl
 #
 # Description of apache::vhost::ssl
 #
@@ -7,38 +7,33 @@
 # Most parameters are inherited from apache::vhost and will not be
 # documented here.
 #
-# $ssl_cert::
+# [*ssl_cert*]
 #
-# $ssl_key::
+# [*ssl_key*]
 #
-# $ssl_ciphersuite::
+# [*ssl_ciphersuite*]
 #
-# $ssl_chain::
+# [*ssl_chain*]
 #
-# $ssl_ca_path::
+# [*ssl_ca_path*]
 #
-# $ssl_ca_file::
+# [*ssl_ca_file*]
 #
-# $ssl_ca_crl_path::
+# [*ssl_ca_crl_path*]
 #
-# $ssl_ca_crl_file::
+# [*ssl_ca_crl_file*]
 #
-# $ssl_requestlog::   Logs non-error ssl requests to this file.
-#                     This log includes the ssl protocol and cipher used.
-#                     Filename is relative to the log_dir (apache::vhost).
-#                     Defaults to '' (empty) which is disabled.
+# [*ssl_requestlog*]
+#   Logs non-error ssl requests to this file.
+#   This log includes the ssl protocol and cipher used.
+#   Filename is relative to the log_dir (apache::vhost).
+#   Defaults to '' (empty) which is disabled.
 #
-# $ssl_options::
+# [*ssl_options*]
 #
-# $ssl_verify_client::
+# [*ssl_verify_client*]
 #
-# $ssl_verify_depth::
-#
-# === Actions:
-#
-# === Requires:
-#
-# === Sample Usage:
+# [*ssl_verify_depth*]
 #
 # === Todo:
 #

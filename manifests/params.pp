@@ -4,82 +4,104 @@
 #
 # === Parameters:
 #
-# $apache::             Configure the apache package name.
-#                       Defaults do distro specific.
+# [*notify_service*]
+#   Notify the service by default after a config change.
+#   Defaults to true.
 #
-# $apache_dev::         Package(s) to install when $devel = true.
-#                       Defaults to distro specific.
+# [*vhostroot*]
+#   Directory where vhosts are located.
+#   Defaults to /var/vhosts.
 #
-# $apache_ssl::         Packages to install when $ssl = true.
-#                       Defaults to distro specific.
+# [*vhostroot_purge*]
+#   Purge the vhost configuration of all configuration
+#   files that are not managed by puppet.
+#   Defaults to false.
 #
-# $service::            Name of the apache service.
-#                       Defaults to distro specific.
+# [*devel*]
+#   Include development packages. Sometimes required for
+#   building custom apache modules.
 #
-# $notify_service::     Notify the service by default after a config change.
-#                       Defaults to true.
+# [*ssl*]
+#   Use ssl or not. On some distro's, we need to install
+#   some additional packages for this to work properly.
+#   Defaults to true.
 #
-# $configroot::         Root of all configuration files.
-#                       Defaults to distro specific. This should NOT include
-#                       a trailing '/' (forward-slash)
+# [*keepalive*]
+#   Enable keepalive in the main configuration file.
+#   Defaults to true.
 #
-# $vhostroot::          Root where all vhost configuration is done. The
-#                       structure beneath this folder is determined by the
-#                       used $config_style.
-#                       Defaults to distro specific.
+# [*diroptions*]
+#   Default directory Options to use for a vhost.
+#   Defaults to 'FollowSymlinks MultiViews'
 #
-# $vhostroot_purge::    Purge the vhost configuration root of all configuration
-#                       files that are not managed by puppet.
-#                       Defaults to false.
+# === Advanced parameters:
 #
-# $logroot::            Root where all log files are stored.
-#                       Defaults to distro specific.
+# These parameters are only required if your OS is not supported by
+# default and you don't feel like sending out a pull request...
 #
-# $user::               User to run the apache daemon as.
-#                       Defaults to distro specific.
+# [*apache*]
+#   Configure the apache package name.
+#   Defaults do distro specific.
 #
-# $group::              Group to run apache daemon as.
-#                       Defaults to distro specific.
+# [*apache_dev*]
+#   Package(s) to install when $devel = true.
+#   Defaults to distro specific.
 #
-# $devel::              Include development packages. Sometimes required for
-#                       building custom apache modules.
+# [*apache_ssl*]
+#   Packages to install when $ssl = true.
+#   Defaults to distro specific.
 #
-# $ssl::                Use ssl or not. On some distro's, we need to install
-#                       some additional packages for this to work properly.
-#                       Defaults to true.
+# [*service*]
+#   Name of the apache service.
+#   Defaults to distro specific.
 #
-# $keepalive::          Enable keepalive in the main configuration file.
-#                       Defaults to true.
+# [*configroot*]
+#   Root of all configuration files.
+#   Defaults to distro specific. This should NOT include
+#   a trailing '/' (forward-slash)
 #
-# $config_style::       Allows to pick the configuration style you want to
-#                       generate. If this is a simple string, the used class
-#                       will be:
-#                         apache::sys::config::${config_style}:: *
-#                       When the string contains '::', we will use that
-#                       exact definition.
-#                       Defaults to 'concat'.
+# [*logroot*]
+#   Root where all log files are stored.
+#   Defaults to distro specific.
 #
-# $default_docroot::    The default document root to use beneath each
-#                       vhost documentroot folder. Defaults to 'htdocs'.
+# [*user*]
+#   User to run the apache daemon as.
+#   Defaults to distro specific.
 #
-# $diroptions::         Default directory Options to use for a vhost.
-#                       Defaults to 'FollowSymlinks MultiViews'
+# [*group*]
+#   Group to run apache daemon as.
+#   Defaults to distro specific.
 #
-# $default_logformat::  Set the default logformat to use for vhosts.
-#                       Defaults to 'combined'.
+# [*config_style*]
+#   Allows to pick the configuration style you want to
+#   generate. If this is a simple string, the used class will be:
+#   apache::sys::config::${config_style}:: *
+#   When the string contains '::', we will use that exact definition.
+#   Defaults to 'concat' if the concat module is available.
 #
-# $default_accesslog::  Default accesslog format. Defaults to 'access.log'.
-#                       You can use some placeholders in the format. See
-#                       _Log Placeholders_ for more information.
+# [*default_docroot*]
+#   The default document root to use beneath each
+#   vhost documentroot folder. Defaults to 'htdocs'.
 #
-# $default_errorlog::   Default errorlog format. Defaults to 'error.log'.
-#                       You can use some placeholders in the format. See
-#                       _Log Placeholders_ for more information.
+# [*default_logformat*]
+#   Set the default logformat to use for vhosts.
+#   Defaults to 'combined'.
 #
-# $placeholder_ssl::    The string to use as the is_ssl placeholder if the
-#                       vhost is ssl enabled. If the vhost does not use ssl,
-#                       it will be empty. Defaults to '_ssl' (including! the
-#                       underscore).
+# [*default_accesslog*]
+#   Default accesslog format. Defaults to 'access.log'.
+#   You can use some placeholders in the format. See
+#   _Log Placeholders_ for more information.
+#
+# [*default_errorlog*]
+#   Default errorlog format. Defaults to 'error.log'.
+#   You can use some placeholders in the format. See
+#   _Log Placeholders_ for more information.
+#
+# [*placeholder_ssl*]
+#   The string to use as the is_ssl placeholder if the
+#   vhost is ssl enabled. If the vhost does not use ssl,
+#   it will be empty. Defaults to '_ssl' (including! the
+#   underscore).
 #
 # === Log Placeholders:
 #

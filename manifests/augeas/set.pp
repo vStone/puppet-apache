@@ -1,24 +1,24 @@
 # == Definition: apache::augeas::set
 #
-# Description of apache::augeas::set
+# Set a key/value pair in the apache config using augeas.
 #
 # === Parameters:
 #
-# $param::   description of parameter. default value if any.
+# [*name*]
+#   Key to set or adjust.
 #
-# === Actions:
+# [*value*]
+#   Value to set.
 #
-# Describe what this class does. What gets configured and how.
+# [*config*]
+#   The configuration file to operate on.
 #
-# === Requires:
-#
-# Requirements. This could be packages that should be made available.
+# [*notify_service*]
+#   Notify the apache service after adjusting a file.
 #
 # === Sample Usage:
 #
-# === Todo:
-#
-# TODO: Update documentation
+#   apache::augeas::set {'KeepAlive':  value => 'On', }
 #
 define apache::augeas::set (
   $value,

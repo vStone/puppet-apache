@@ -4,15 +4,17 @@
 #
 # === Parameters:
 #
-# $package::      Override the name of the package to install.
-#                 Or set to false to manage the package outside the apache
-#                 or passenger module.
+# [*package*]
+#   Override the name of the package to install.
+#   Or set to false to manage the package outside the apache
+#   or passenger module.
 #
-# $provider::     Override the (package) provider to use while installing.
-#                 Defaults to 'apt' for debian based distros and to
-#                 'gem' for redhat based distros. If a package name has
-#                 been given explicitly, the default provider will not be
-#                 changed from whatever is default the package type.
+# [*provider*]
+#   Override the (package) provider to use while installing.
+#   Defaults to 'apt' for debian based distros and to
+#   'gem' for redhat based distros. If a package name has
+#   been given explicitly, the default provider will not be
+#   changed from whatever is default the package type.
 #
 # === Todo:
 #

@@ -4,13 +4,12 @@
 #
 # == Parameters:
 #
-#
-# $create_balancers::   Possible values are: (use the number or keyword)
-#                         0 / All   Create in all VirtualHosts defined in httpd.
-#                         1 / No    Don't create balancers (requires at least
-#                                   one ProxyPass/ProxyPassMatch to define the
-#                                   balancer names)
-#                         2 / Main  Create only the main server.
+# [*create_balancers*]
+#   Possible values are: (use the number or keyword)
+#     0 / All   Create in all VirtualHosts defined in httpd.
+#     1 / No    Don't create balancers (requires at least
+#               one ProxyPass/ProxyPassMatch to define the balancer names)
+#     2 / Main  Create only the main server.
 #
 # === Todo:
 #

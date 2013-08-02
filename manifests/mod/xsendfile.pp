@@ -7,7 +7,6 @@
 # === Todo:
 #
 # TODO: Update documentation
-# TODO: Add or use LoadModule support
 # TODO: Allow configuration/overriding of packages to use.
 #
 class apache::mod::xsendfile (

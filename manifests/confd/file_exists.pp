@@ -9,8 +9,13 @@
 # For these kind of files, we do not notify the service my default since
 # the resource that called this will probably do so on itself.
 #
-#
 # If the file is a directory, and purge is not true, it will not replace symlinks.
+#
+# === Parameters:
+#
+# === Todo:
+#
+# * TODO: Update documentation.
 #
 define apache::confd::file_exists (
   $ensure,

@@ -4,70 +4,67 @@
 #
 # === Parameters:
 #
-# $vhost::            The name of the vhost to work on. This should be
-#                     identical to the apache::vhost{NAME:} you have setup.
+# Some basic parameters that are always present in a module are not
+# documented. See the apache::vhost::mod::dummy for an explanation on them.
 #
-# $ip::               Ip of the vhost to work on. Should be identical to the
-#                     apache::vhost instance you have setup. Defaults to '*'
+# [*proxy_url*]
+#   The proxy url is used in <Proxy></Proxy> directives to
+#   limit access. Defaults to '*' if the _header parameter
+#   is true. Otherwise, defaults to undef. We do this
+#   to make sure we do not define this default proxy_url twice.
+#   See: http://tinyurl.com/apache-mod-proxy#proxy
 #
-# $port::             Port of the vhost to work on. Should be identical to
-#                     the apache::vhost instance you have setup.
-#                     Defaults to '80'
+# [*proxy_via*]
+#   This directive controls the use of the Via: HTTP header
+#   by the proxy. Its intended use is to control the flow of
+#   proxy requests along a chain of proxy servers.
+#   Defaults to off if the _header parameter is true. If not,
+#   defaults to undefined.
 #
-# $ensure::           If ensure is absent, the configuration file will be
-#                     removed. Defaults to 'present'.
+# [*allow_order*]
+#   Should be either deny,allow or allow,deny.
+#   See: http://httpd.apache.org/docs/2.2/howto/access.html
 #
-# $content::          Extra content to add to the configuration file.
+# [*allow_from*]
+#   Hosts, ips, ... where access should be allowed from.
+#   Defaults to 'All'
+#   See: http://httpd.apache.org/docs/2.2/howto/access.html
 #
-# $proxy_url::        The proxy url is used in <Proxy></Proxy> directives to
-#                     limit access. Defaults to '*' if the _header parameter
-#                     is true. Otherwise, defaults to undef. We do this
-#                     to make sure we do not define this default proxy_url
-#                     twice.
-#                     See: http://tinyurl.com/apache-mod-proxy#proxy
+# [*deny_from*]
+#   Hosts,ips, ... where access should be disallowed from.
+#   Defaults to '' (empty).
+#   See: http://httpd.apache.org/docs/2.2/howto/access.html.
 #
-# $proxy_via::         This directive controls the use of the Via: HTTP header
-#                     by the proxy. Its intended use is to control the flow of
-#                     proxy requests along a chain of proxy servers.
-#                     Defaults to off if the _header parameter is true. If not,
-#                     defaults to undefined.
+# [*proxypassmatch*]
+#   This can be a single string, an array or a hash.
+#   For each entry, a ProxyPassMatch directive will be
+#   written to the configuration file.
+#   See: http://tinyurl.com/apache-mod-proxy#proxypassmatch
 #
-# $allow_order::      Should be either deny,allow or allow,deny.
-#                     See: http://httpd.apache.org/docs/2.2/howto/access.html
+# [*proxypass*]
+#   This can either be a single string, an array or a hash.
+#   For each entry, a ProxyPass directive will be written to
+#   the configuration file.
+#   See: http://tinyurl.com/apache-mod-proxy#proxypass
 #
-# $allow_from::       Hosts, ips, ... where access should be allowed from.
-#                     Defaults to 'All'
-#                     See: http://httpd.apache.org/docs/2.2/howto/access.html
+# [*proxypassreverse*]
+#   This can either be a single string, an array or a hash.
+#   For each entry, a ProxyPassReverse directive will be
+#   written to the configuration file.
+#   See: http://tinyurl.com/apache-mod-proxy#proxypassreverse
 #
-# $deny_from::        Hosts,ips, ... where access should be disallowed from.
-#                     Defaults to '' (empty).
-#                     See: http://httpd.apache.org/docs/2.2/howto/access.html.
+# [*proxypath*]
+#   This can either be a single string, an array or a hash.
+#   For each entry, a ProxyPass AND ProxyPassReverse
+#   directive will be written to the configuration file.
 #
-# $proxypassmatch::   This can be a single string, an array or a hash.
-#                     For each entry, a ProxyPassMatch directive will be
-#                     written to the configuration file.
-#                     See: http://tinyurl.com/apache-mod-proxy#proxypassmatch
-#
-# $proxypass::        This can either be a single string, an array or a hash.
-#                     For each entry, a ProxyPass directive will be written to
-#                     the configuration file.
-#                     See: http://tinyurl.com/apache-mod-proxy#proxypass
-#
-# $proxypassreverse:: This can either be a single string, an array or a hash.
-#                     For each entry, a ProxyPassReverse directive will be
-#                     written to the configuration file.
-#                     See: http://tinyurl.com/apache-mod-proxy#proxypassreverse
-#
-# $proxypath::        This can either be a single string, an array or a hash.
-#                     For each entry, a ProxyPass AND ProxyPassReverse
-#                     directive will be written to the configuration file.
-#
-# $default_proxy_pass_options:: A hash containing additional options to add to
-#                     the proxypass directive. If specified, we will append
-#                     these options to each proxypass line we define.
-#                     If this is undefined, we will use the options
-#                     provided in apache::mod::reverse_proxy. To disable using
-#                     those just pass an empty hash. Defaults to undefined.
+# [*default_proxy_pass_options*]
+#   A hash containing additional options to add to
+#   the proxypass directive. If specified, we will append
+#   these options to each proxypass line we define.
+#   If this is undefined, we will use the options
+#   provided in apache::mod::reverse_proxy. To disable using
+#   those just pass an empty hash. Defaults to undefined.
 #
 #
 # === Todo:

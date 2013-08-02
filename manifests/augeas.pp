@@ -1,3 +1,28 @@
+# == Definition apache::augeas
+#
+# Helper definition.
+# Delegates to apache::augeas::set and apache::augeas::rm
+#
+# === Parameters
+#
+# [*ensure*]
+#   Set to present or absent (true / false).
+#
+# [*value*]
+#   Value to set with ensure => present.
+#
+# [*notify_service*]
+#   Should we notify the apache service after the change.
+#
+# [*config*]
+#   Config file to work on.
+#
+# === Usage:
+#
+# === Todo:
+#
+# * TODO: Add usage example.
+#
 define apache::augeas (
   $value          = undef,
   $ensure         = 'present',

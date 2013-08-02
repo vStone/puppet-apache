@@ -1,15 +1,15 @@
 # == Definition: apache::listen
 #
 # Instruct apache to listen to this port. Name and port are
-# from the defined title
+# determined from the defined title.
 #
 # === Parameters:
 #
-#  $comment:
-#     Additional content that gets added to the listen definition file.
+# [*name*]
+#   Either a single port number or <ip>_<port>
 #
-#  $name:
-#     Either a single port number or <ip>_<port>
+# [*comment*]
+#   Additional content that gets added to the listen definition file.
 #
 # === Example:
 #

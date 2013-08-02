@@ -1,24 +1,24 @@
 # == Definition: apache::augeas::rm
 #
-# Description of apache::augeas::rm
+# Remove a configuration key from the apache configuration.
 #
 # === Parameters:
 #
-# $param::   description of parameter. default value if any.
+# [*key*]
+#   Key to remove.
 #
-# === Actions:
+# [*value*]
+#   If defined, only remove the key with this value.
 #
-# Describe what this class does. What gets configured and how.
-#
-# === Requires:
-#
-# Requirements. This could be packages that should be made available.
+# [*config*]
+#   The configuration file to operate on.
 #
 # === Sample Usage:
 #
-# === Todo:
-#
-# TODO: Update documentation
+#   apache::augeas::rm {'remove_include_file':
+#     key   => 'Include',
+#     value => 'somefile.conf',
+#   }
 #
 define apache::augeas::rm (
   $key    = $name,

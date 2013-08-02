@@ -5,7 +5,6 @@
 # === Todo:
 #
 # TODO: Update documentation
-# TODO: Add or use LoadModule support
 #
 class apache::mod::reverse_proxy (
   $default_proxy_pass_options = {},

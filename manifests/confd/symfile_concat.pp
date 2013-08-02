@@ -8,37 +8,38 @@
 # to that file.
 #
 # === Parameters:
-#  $confd:
-#     Subfolder in conf.d directory. If use_config_root is enabled,
-#     subfolder in apache configuration folder.
 #
-#  $enabled:
-#     If enabled, the symlink to the configuration file will be created.
+# [*confd*]
+#   Subfolder in conf.d directory. If use_config_root is enabled,
+#   subfolder in apache configuration folder.
 #
-#  $link_name:
-#     Path of the link.
-#     Defaults to the title with .conf appended.
+# [*enabled*]
+#   If enabled, the symlink to the configuration file will be created.
 #
-#  $file_name:
-#     File name to put in folder (we add order in front if defined).
-#     Defaults to the title with _configuration appended.
+# [*link_name*]
+#   Path of the link.
+#   Defaults to the title with .conf appended.
 #
-#  $order:
-#     Order is prepended to the file to determine the load order.
+# [*file_name*]
+#   File name to put in folder (we add order in front if defined).
+#   Defaults to the title with _configuration appended.
 #
-#  $content:
-#     Content to put into the file.
+# [*order*]
+#   Order is prepended to the file to determine the load order.
 #
-#  $content_end:
-#     Optional second part of the configuration file.
+# [*content*]
+#   Content to put into the file.
 #
-#  $use_config_root:
-#     If enabled, the $confd folder is not placed below the conf.d folder but
-#     directly in the apache root.
+# [*content_end*]
+#   Optional second part of the configuration file.
 #
-#  $order_linkonly:
-#     If enabled, only put the order in the symlink filename. Otherwise,
-#     we will also prepend the order to the regular configuration file.
+# [*use_config_root*]
+#   If enabled, the $confd folder is not placed below the conf.d folder but
+#   directly in the apache root.
+#
+# [*order_linkonly*]
+#   If enabled, only put the order in the symlink filename. Otherwise,
+#   we will also prepend the order to the regular configuration file.
 #
 # === Created resources:
 #

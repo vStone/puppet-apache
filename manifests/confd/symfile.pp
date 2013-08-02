@@ -3,43 +3,42 @@
 # Helper definition for confd style folders
 #
 # == Parameters:
-#  $confd:
-#     Subfolder in conf.d directory. If use_config_root is enabled,
-#     subfolder in apache configuration folder.
+# [*confd*]
+#   Subfolder in conf.d directory. If use_config_root is enabled,
+#   subfolder in apache configuration folder.
 #
-#  $enabled:
-#     If enabled, the symlink to the configuration file will be created.
+# [*enabled*]
+#   If enabled, the symlink to the configuration file will be created.
 #
-#  $link_name:
-#     Path of the link.
-#     Defaults to the title with .conf appended.
+# [*link_name*]
+#   Path of the link.
+#   Defaults to the title with .conf appended.
 #
-#  $file_name:
-#     File name to put in folder (we add order in front if defined).
-#     Defaults to the title with _configuration appended.
+# [*file_name*]
+#   File name to put in folder (we add order in front if defined).
+#   Defaults to the title with _configuration appended.
 #
-#  $order:
-#     Order is prepended to the file to determine the load order.
+# [*order*]
+#   Order is prepended to the file to determine the load order.
 #
-#  $content:
-#     Content to put into the file.
+# [*content*]
+#   Content to put into the file.
 #
-#  $use_config_root:
-#     If enabled, the $confd folder is not placed below the conf.d folder but
-#     directly in the apache root.
+# [*use_config_root*]
+#   If enabled, the $confd folder is not placed below the conf.d folder but
+#   directly in the apache root.
 #
-#  $order_linkonly:
-#     If enabled, only put the order in the symlink filename. Otherwise,
-#     we will also prepend the order to the regular configuration file.
+# [*order_linkonly*]
+#   If enabled, only put the order in the symlink filename. Otherwise,
+#   we will also prepend the order to the regular configuration file.
 #
 # == Created resources:
 #
-# file {$title: }
+#   file {$title: }
 #
-# file {"${title}-symlink":
-#   requires => File[$title],
-# }
-#
+#   file {"${title}-symlink":
+#     requires => File[$title],
+#   }
 #
 define apache::confd::symfile (
   $confd,

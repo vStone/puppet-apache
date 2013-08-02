@@ -6,7 +6,7 @@
 class apache::module {
 
   $id = 'vstone-puppet-apache'
-  $version = '0.13.0'
+  $version = '0.13.1'
 
 }
 

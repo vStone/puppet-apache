@@ -10,6 +10,7 @@
 #   or passenger module.
 #
 # [*provider*]
+#   DEPRECATED, not used
 #   Override the (package) provider to use while installing.
 #   Defaults to 'apt' for debian based distros and to
 #   'gem' for redhat based distros. If a package name has

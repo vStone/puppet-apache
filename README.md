@@ -4,15 +4,40 @@ See the module documentation on top of apache::params and apache::vhost for
 more information on how to use this module. Each class should be pretty well
 documented.
 
-    class {'apache::params':
+You can find online (generated) documentation here:
+[http://jenkins.vstone.eu/job/puppet-apache/Puppet_Docs/](http://jenkins.vstone.eu/job/puppet-apache/Puppet_Docs/)
+
+## Example:
+
+```puppet
+
+  # We do not want puppet to restart the service.
+  class {'apache::params':
+    notify_service => false,
+  }
+
+  # Basic apache setup.
+  class {'apache': }
+
+  # So we will be using php.
+  class {'apache::mod::php': }
+
+  # We will have some ssl vhosts.
+  apache::listen {'443':}
+  apache::namevhost {'443': }
+
+  # Vhost example with the 2 rewrite rules.
+  apache::vhost {'myvhost.example.com':
+    mods => {
+      'rewrite' => [
+        { rewrite_cond => 'foo', rewrite_rule  => 'bar', },
+        { rewrite_cond => 'fooo', rewrite_rule => 'baaar', },
+      ],
     }
-    import apache
-    # The order is important here!
+  }
 
 
-    apache::vhost {'my_virtual_host':
-
-    }
+```
 
 # Requirements
 
@@ -59,3 +84,4 @@ located here: https://github.com/vStone/puppet-apache/
 # Todo
 
 * Proper debian style configuration. For now, I have not have enought time to test this.
+* Tests...

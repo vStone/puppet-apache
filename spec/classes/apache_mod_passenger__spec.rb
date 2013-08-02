@@ -30,27 +30,20 @@ describe 'apache::mod::passenger', :type => :class do
     end
 
     describe 'with package => custom' do
-      describe 'with provider => undef' do
-        let (:params) { { :package => 'custom' } }
-        it { should contain_apache__sys__modpackage('passenger').with_package('custom').with_provider(nil) }
-      end
-      describe 'with provider => custom' do
-        let (:facts) { centos_facts }
-        let (:params) { { :package => 'custom', :provider => 'custom' } }
-        it { should contain_apache__sys__modpackage('passenger').with_package('custom').with_provider('custom') }
-      end
+      let (:facts) { centos_facts }
+      let (:params) { { :package => 'custom' } }
+      it { should contain_apache__sys__modpackage('passenger').with_package('custom') }
     end
 
     describe 'with package => undef' do
       describe 'with provider => undef' do
         describe 'on centos' do
           let (:facts) { centos_facts }
-
-          it { should contain_apache__sys__modpackage('passenger').with_package('passenger').with_provider('gem') }
+          it { should contain_apache__sys__modpackage('passenger').with_package('mod_passenger') }
         end
         describe 'on debian' do
           let (:facts) { debian_facts }
-          it { should contain_apache__sys__modpackage('passenger').with_package('libapache2-mod-passenger').with_provider('apt') }
+          it { should contain_apache__sys__modpackage('passenger').with_package('libapache2-mod-passenger') }
         end
         describe 'on other oses' do
           it do

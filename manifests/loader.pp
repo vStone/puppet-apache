@@ -19,9 +19,10 @@
 #
 define apache::loader(
   $type = 'apache::vhost',
+  $key  = $title,
 ) {
 
-  $tree = hiera_hash($title, {})
+  $tree = hiera_hash($key, {})
   create_resources($type, $tree)
 
 }

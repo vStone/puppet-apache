@@ -9,5 +9,8 @@ group :rake do
   puppetversion = ENV.key?('PUPPET_VERSION') ? "~> #{ENV['PUPPET_VERSION']}" : ['>= 2.7']
   gem 'puppet', puppetversion
   gem 'puppetlabs_spec_helper'
+
+  nokogiriversion = (RUBY_VERSION =~ /^1.8/ ? '~> 1.5.0' : nil)
+  gem 'nokogiri', nokogiriversion
   gem 'puppet-blacksmith'
 end

@@ -1,10 +1,7 @@
 require 'spec_helper'
 
 describe 'apache', :type => :class do
-  let (:facts) { {
-    :operatingsystem => 'CentOS',
-    :osfamily        => 'RedHat',
-  } }
+  let (:facts) { centos_facts }
 
   describe 'without parameters' do
 

@@ -15,7 +15,7 @@
 <% if @comment and ! @comment.empty? -%>
   # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-<% if @enable_mcpm_receive and ['true', true].includes?(@enable_mcpm_receive) -%>
+<% if @enable_mcpm_receive and ['true', true].include?(@enable_mcpm_receive) -%>
   EnableMCPMReceive
 <% end -%>
 <% if @server_advertise and ! @server_advertise.to_s.empty? -%>

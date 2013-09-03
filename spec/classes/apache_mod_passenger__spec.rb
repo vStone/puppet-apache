@@ -31,29 +31,26 @@ describe 'apache::mod::passenger', :type => :class do
 
     describe 'with package => custom' do
       let (:facts) { centos_facts }
-      let (:params) { { :package => 'custom' } }
+      let (:params) { { :package => 'custom', } }
       it { should contain_apache__sys__modpackage('passenger').with_package('custom') }
     end
 
     describe 'with package => undef' do
-      describe 'with provider => undef' do
-        describe 'on centos' do
-          let (:facts) { centos_facts }
-          it { should contain_apache__sys__modpackage('passenger').with_package('mod_passenger') }
-        end
-        describe 'on debian' do
-          let (:facts) { debian_facts }
-          it { should contain_apache__sys__modpackage('passenger').with_package('libapache2-mod-passenger') }
-        end
-        describe 'on other oses' do
-          it do
-            expect {
-              should contain_apache__sys__modpackage('passenger')
-            }.to raise_error(Puppet::Error, /Your operatingsystem is not supported by apache::mod:passenger/)
-          end
+      describe 'on centos' do
+        let (:facts) { centos_facts }
+        it { should contain_apache__sys__modpackage('passenger').with_package('mod_passenger') }
+      end
+      describe 'on debian' do
+        let (:facts) { debian_facts }
+        it { should contain_apache__sys__modpackage('passenger').with_package('libapache2-mod-passenger') }
+      end
+      describe 'on other oses' do
+        it do
+          expect {
+            should contain_apache__sys__modpackage('passenger')
+          }.to raise_error(Puppet::Error, /Your operatingsystem is not supported by apache::mod:passenger/)
         end
       end
-
     end
 
   end

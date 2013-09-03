@@ -9,14 +9,6 @@
 #   Or set to false to manage the package outside the apache
 #   or passenger module.
 #
-# [*provider*]
-#   DEPRECATED, not used
-#   Override the (package) provider to use while installing.
-#   Defaults to 'apt' for debian based distros and to
-#   'gem' for redhat based distros. If a package name has
-#   been given explicitly, the default provider will not be
-#   changed from whatever is default the package type.
-#
 # === Todo:
 #
 # TODO: Update documentation
@@ -26,7 +18,6 @@
 #
 class apache::mod::passenger (
   $package        = undef,
-  $provider       = undef,
   $notify_service = undef,
   $ensure         = 'present',
 ) {

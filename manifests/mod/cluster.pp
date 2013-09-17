@@ -68,7 +68,7 @@ class apache::mod::cluster (
     case $::mod_cluster::module::id {
       default, undef: {
         $mod_id = $::mod_cluster::module::id
-        fail ("The selected module (${mod_id}) is not supported by this module.")
+        fail("The selected module (${mod_id}) is not supported by this module.")
       }
       'unifiedpost-puppet-module': {
         include mod_cluster
@@ -101,11 +101,26 @@ class apache::mod::cluster (
   #                     |
 
   ## LoadModule statements that are required and/or should NOT be present.
-  apache::config::loadmodule {'slotmem':        ensure => $ensure, notify_service => $notify_service, }
-  apache::config::loadmodule {'manager':        ensure => $ensure, notify_service => $notify_service, }
-  apache::config::loadmodule {'proxy_cluster':  ensure => $ensure, notify_service => $notify_service, }
-  apache::config::loadmodule {'advertise':      ensure => $ensure, notify_service => $notify_service, }
-  apache::config::loadmodule {'proxy_balancer': ensure => 'absent', notify_service => $notify_service, }
+  apache::config::loadmodule {'slotmem':
+    ensure         => $ensure,
+    notify_service => $notify_service,
+  }
+  apache::config::loadmodule {'manager'
+    ensure         => $ensure,
+    notify_service => $notify_service,
+  }
+  apache::config::loadmodule {'proxy_cluster':
+    ensure         => $ensure,
+    notify_service => $notify_service,
+  }
+  apache::config::loadmodule {'advertise':
+    ensure         => $ensure,
+    notify_service => $notify_service,
+  }
+  apache::config::loadmodule {'proxy_balancer':
+    ensure         => 'absent',
+    notify_service => $notify_service,
+  }
 
 
   case $create_balancers {

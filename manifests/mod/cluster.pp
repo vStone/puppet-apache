@@ -105,7 +105,7 @@ class apache::mod::cluster (
     ensure         => $ensure,
     notify_service => $notify_service,
   }
-  apache::config::loadmodule {'manager'
+  apache::config::loadmodule {'manager':
     ensure         => $ensure,
     notify_service => $notify_service,
   }

@@ -23,7 +23,7 @@
 #
 # === Usage:
 #
-#   include apche::logrotate
+#   include apache::logrotate
 #
 #
 class apache::logrotate (

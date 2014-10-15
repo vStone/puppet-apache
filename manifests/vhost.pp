@@ -301,13 +301,13 @@ define apache::vhost (
   ####################################
 
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
-    ensure => 'directory',
+    ensure => 'present',
     owner  => $owner,
     group  => $group,
     path   => $vhost_root,
   }
   apache::confd::file_exists {"apache-vhost-vhost-docroot-${name}":
-    ensure  => 'directory',
+    ensure  => 'present',
     owner   => $owner,
     group   => $group,
     path    => $documentroot,

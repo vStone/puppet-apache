@@ -24,10 +24,10 @@ class apache::mod::status (
     ensure         => $ensure,
     notify_service => $notify_service,
   }
-  apache::augeas {'ExtendedStatus':
-    ensure         => $ensure,
+
+  apache::augeas::set {'ExtendedStatus':
     notify_service => $notify_service,
-    value          => $_extendedstatus
+    value          => $_extendedstatus,
   }
 
 }

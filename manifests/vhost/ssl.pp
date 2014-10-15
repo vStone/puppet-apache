@@ -47,7 +47,7 @@
 define apache::vhost::ssl (
   $ssl_cert,
   $ssl_key,
-  $ssl_protocol      = 'all -SSLv2',
+  $ssl_protocol      = 'all -SSLv2 -SSLv3',
   $ssl_ciphersuite   = 'ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW',
   $ssl_chain         = undef,
   $ssl_ca_path       = undef,

@@ -76,7 +76,8 @@ define apache::vhost::ssl (
   $owner             = undef,
   $group             = undef,
   $logformat         = undef,
-  $diroptions        = 'FollowSymlinks MultiViews'
+  $diroptions        = 'FollowSymlinks MultiViews',
+  $authoptions       = undef,
 ) {
 
   require apache::mod::ssl
@@ -153,6 +154,7 @@ define apache::vhost::ssl (
     logformat     => $logformat,
     vhost_config  => $ssl_content, # This is the only thing that is different.
     diroptions    => $diroptions,
+    authoptions   => $authoptions,
   }
 }
 

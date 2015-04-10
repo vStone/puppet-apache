@@ -4,8 +4,9 @@
 #
 # TODO: Update documentation
 #
-class apache::setup::mod {
-
+class apache::setup::mod (
+  $noop = false,
+) {
   $confd = 'mod.d'
   $order = '05'
   $includes = '*.conf'
@@ -18,6 +19,7 @@ class apache::setup::mod {
     warn_content => '',
     includes     => $::apache::setup::mod::includes,
     purge        => $::apache::setup::mod::purge,
+    noop         => $noop
   }
 
 }

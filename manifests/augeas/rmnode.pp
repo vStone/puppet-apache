@@ -1,27 +1,27 @@
 # == Definition: apache::augeas::rmnode
 #
-# Description of apache::augeas::rmnode
+# Remove a node from the apache configuration using augeas.
 #
 # === Parameters:
 #
-# $param::   description of parameter. default value if any.
+# [*type*]
+#   The apache type to remove.
 #
-# === Actions:
+# [*value*]
+#   Optionally, the specific value of a certain type to remove.
 #
-# Describe what this class does. What gets configured and how.
-#
-# === Requires:
-#
-# Requirements. This could be packages that should be made available.
+# [*config*]
+#   The configuration file to operate on.
 #
 # === Sample Usage:
 #
-# === Todo:
-#
-# TODO: Update documentation
+#   apache::augeas::rmnode {'remove_ifmodule_block'
+#     type  => 'IfModule',
+#     value => 'mod_something.c',
+#   }
 #
 define apache::augeas::rmnode (
-  $type = $name,
+  $type   = $name,
   $value  = undef,
   $config = undef
 ) {
@@ -38,6 +38,7 @@ define apache::augeas::rmnode (
     incl    => $config_file,
     context => "/files${config_file}",
     require => Package['apache'],
+    before  => Service['apache'],
   }
 
   case $value {

@@ -22,7 +22,7 @@
 #
 define apache::sys::modpackage (
   $package,
-  $ensure        = 'installed',
+  $ensure        = 'present',
   $provider      = undef,
   $package_alias = "apache_mod_${name}",
   $notify_service = undef

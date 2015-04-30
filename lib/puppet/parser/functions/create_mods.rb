@@ -33,7 +33,8 @@ Puppet::Parser::Functions::newfunction(:create_mods, :doc => '
   raise ArgumentError, ("create_mods(): the third argument should be a hash (#{defaults.class} must be Hash)") unless defaults.is_a?(Hash)
 
   order_index = 1000
-  mods.each do |type, mod|
+  mods.keys.sort.each do |type|
+    mod = mods[type]
     order_index += 1
 
     defmerge = defaults.dup

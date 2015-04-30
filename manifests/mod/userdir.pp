@@ -5,11 +5,13 @@
 # === Todo:
 #
 # TODO: Update documentation
-# TODO: LoadModule support
 #
 class apache::mod::userdir (
-  $notify_service = undef
+  $notify_service = undef,
+  $ensure         = 'present',
 ) {
+
+  ## Cleanup default definitions.
 
   apache::augeas::rm {'archlinux-include-httpd-userdir.conf':
     key   => 'Include',
@@ -21,5 +23,9 @@ class apache::mod::userdir (
     value => 'mod_userdir.c',
   }
 
+  apache::config::loadmodule {'userdir':
+    ensure         => $ensure,
+    notify_service => $notify_service,
+  }
 
 }

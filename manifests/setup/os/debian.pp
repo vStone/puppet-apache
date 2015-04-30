@@ -19,5 +19,19 @@ class apache::setup::os::debian {
     require => Package[$::apache::params::package],
   }
 
+  apache::augeas::rm {'debian-include-ports.conf':
+    key   => 'Include',
+    value => 'ports.conf',
+  }
+  apache::augeas::rm {'debian-include-confd.conf':
+    key   => 'Include',
+    value => 'conf.d/',
+  }
+
+  file {'/etc/apache2/conf.d/security.conf':
+    ensure => 'symlink',
+    target => '/etc/apache2/conf.d/security',
+  }
+
 }
 

@@ -1,44 +1,41 @@
 ### File managed with puppet ###
-## Served by:        '<%= scope.lookupvar('::servername') %>'
-## Module:           '<%= scope.to_hash['module_name'] %>'
-## Template source:  '<%= template_source %>'
-<%
-  def empty?(value)
-    value == '' or value == :undef
-  end
-%>
+<% if scope.lookupvar('::servername') -%>
+# Served by:        '<%= scope.lookupvar('::servername') %>'
+<% end -%>
+# Module:           '<%= @module_name %>'
+# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
 
 # mod_proxy_cluster
-<% if ! empty?(createbalancers) -%>
-CreateBalancers <%= createbalancers %>
+<% if @createbalancers and ! @createbalancers.empty? -%>
+CreateBalancers <%= @createbalancers %>
 <% end -%>
-<% if ! empty?(usealias) -%>
-UseAlias <%= usealias %>
+<% if @usealias and ! @usealias.empty? -%>
+UseAlias <%= @usealias %>
 <% end -%>
-<% if ! empty?(lbstatus_recal_time) -%>
-LBstatusRecalTime  <%= lbstatus_recal_time %>
+<% if @lbstatus_recal_time and ! @lbstatus_recal_time.empty?  -%>
+LBstatusRecalTime  <%= @lbstatus_recal_time %>
 <% end -%>
-<% if ! empty?(wait_for_remove) -%>
-WaitForRemove  <%= wait_for_remove %>
+<% if @wait_for_remove and ! @wait_for_remove.empty? -%>
+WaitForRemove  <%= @wait_for_remove %>
 <% end -%>
 
 # mod_manager
-<% if ! empty?(mem_manager_file) -%>
-MemManagerFile <%= mem_manager_file %>
+<% if @mem_manager_file and ! @mem_manager_file.empty? -%>
+MemManagerFile <%= @mem_manager_file %>
 <% end -%>
-<% if ! empty?(max_context) -%>
-Maxcontext <%= max_context %>
+<% if @max_context and ! @max_context.empty? -%>
+Maxcontext <%= @max_context %>
 <% end -%>
-<% if ! empty?(max_node) -%>
-Maxnode <%= max_node %>
+<% if @max_node and ! @max_node.empty?  -%>
+Maxnode <%= @max_node %>
 <% end -%>
-<% if ! empty?(max_host) -%>
-Maxhost <%= max_host %>
+<% if @max_host and ! @max_host.empty? -%>
+Maxhost <%= @max_host %>
 <% end -%>
-<% if ! empty?(max_sessionid) -%>
-Maxsessionid <%= max_sessionid %>
+<% if @max_sessionid and ! @max_sessionid.empty? -%>
+Maxsessionid <%= @max_sessionid %>
 <% end -%>
-<% if ! empty?(persist_slots) -%>
-PersistSlots <%= persist_slots%>
+<% if @persist_slots and ! @persist_slots.empty? -%>
+PersistSlots <%= @persist_slots%>
 <% end -%>
 

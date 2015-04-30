@@ -4,29 +4,22 @@
 #
 # === Parameters:
 #
-# $rewrite_cond:: The rewrite condition to use. Standard apache syntax.
+# Some basic parameters that are always present in a module are not
+# documented. See the apache::vhost::mod::dummy for an explanation on them.
+#
+#
+# [*rewrite_cond*] The rewrite condition to use. Standard apache syntax.
 #                 For now only one string is supported, array support
 #                 may be added at a later time.
 #
-# $rewrite_rule:: The rewrite rule to use when the rewrite_cond matches.
+# [*rewrite_rule*] The rewrite rule to use when the rewrite_cond matches.
 #                 For now only one string is supported, array support
 #                 may be added at a later time.
 #
-# $vhost::        The name of the vhost to work on. This should be
-#                 identical to the apache::vhost{NAME:} you have setup.
 #
-# $docroot::      Document root.
-#                 Is automaticly filled in if pushed through apache::vhost.
+# === Todo:
 #
-# $ensure::       If ensure is absent, the configuration file will be
-#                 removed. Defaults to 'present'.
-#
-# $ip::           Ip of the vhost to work on. Should be identical to the
-#                 apache::vhost instance you have setup. Defaults to '*'
-#
-# $port::         Port of the vhost to work on. Should be identical to
-#                 the apache::vhost instance you have setup.
-#                 Defaults to the vhost default.
+# * TODO: Update documentation
 #
 define apache::vhost::mod::userdir (
   $vhost,

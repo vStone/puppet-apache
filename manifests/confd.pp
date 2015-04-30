@@ -1,35 +1,39 @@
 # == Definition: apache::confd
 #
-# Helper class for conf.d style directories
+# Helper class for conf.d style directories.
 #
 # === Parameters:
 #
-#  $name:
-#     Name of the confd style folder
+# [*name*]
+#   Name of the confd style folder
 #
-#  $confd:
-#     Subpath to use below the $::apache::params::confd folder.
+# [*confd*]
+#   Subpath to use below the $::apache::params::confd folder.
 #
-#  $order:
-#     Order in the conf.d folder.
+# [*order*]
+#   Order in the conf.d folder.
 #
-#  $load_content:
-#     Extra content is added before the include statement.
-#     The load file includes config files in the $confd.
+# [*load_content*]
+#   Extra content is added before the include statement.
+#   The load file includes config files in the $confd.
 #
-#  $warn_content:
-#     Extra ctontent to add to the warn file.
-#     The warnfile is a README file in the $confd when $purge is enabled.
-#     Make sure the content is commented out so mistakes with $includes do
-#     not break the configuration.
+# [*warn_content*]
+#   Extra ctontent to add to the warn file.
+#   The warnfile is a README file in the $confd when $purge is enabled.
+#   Make sure the content is commented out so mistakes with $includes do
+#   not break the configuration.
 #
-#  $includes:
-#     Pattern(s) to use when including files from the $confd.
+# [*includes*]
+#   Pattern(s) to use when including files from the $confd.
 #
-#  $purge:
-#     Purge all puppet 'foreign' files in the $confd.
+# [*purge*]
+#   Purge all puppet 'foreign' files in the $confd.
 #
-# === Requires:
+# [*use_config_root*]
+#   If set to true, the conf.d style directory will be created
+#   relative to apache's configuration root directory. By default
+#   this is false which results in a new directory being created
+#   beneath the conf.d folder.
 #
 # === Sample Usage:
 #

@@ -2,52 +2,28 @@
 #
 # This advertise is an example on how to add your own vhost mod.
 #
-# === Required Parameters:
+# === Parameters:
 #
-# Your definition should always take the following parameters. When
-# using the mods parameter from vhost, these get set automaticly.
+# Some basic parameters that are always present in a module are not
+# documented. See the apache::vhost::mod::dummy for an explanation on them.
 #
-# $ensure::     Disable or enable this mod. This will/should remove the config
-#               file. Required for apache::sys::modfile.
+# [*enable_mcpm_receive*]
+#   Defaults to 'true'
 #
-# $vhost::      Defined what vhost this module is for.
-#               Required for apache::sys::modfile
+# [*server_advertise*]
+#   Defaults to undefined.
 #
-# $ip::         Required for apache::sys::modfile.
+# [*group*]
+#   Defaults to undefined.
 #
-# $port::       Required for apache::sys::modfile.
+# [*frequency*]
+#   Defaults to undefined.
 #
-# $docroot::    Document root.
-#               Is automaticly filled in if pushed through apache::vhost.
+# [*bind_address*]
+#   Defaults to undefined.
 #
-# $_automated:: This is a variable that is used under the hood.
-#               If a mod is enabled directly through apache::vhost (no
-#               specific apache::vhost::mod::* is defined) this is set
-#               to true. Required for apache::sys::modfile.
-#
-# $_header::    For some modules, a header is required which should
-#               be included only once for all mods of the same type.
-#               When using the mods parameter of a vhost, this will
-#               be done automaticly for an included mod type or only for
-#               the first if an array of a certain mod type is given.
-#
-# $content::    Custom content to put in the template.
-#
-# $comment::    There is no need to comment out text using '#', this is done
-#               in the template itself.
-#
-# === Optional Parameters:
-#
-# Any other parameters you wish to use for your module. If you add other
-# parameters, make sure to add the required parameters without default
-# values before those with default parameters. There is no shame in
-# changing the order of the Required Parameters.
-#
-# === Actions:
-#
-# Creates a apache::sys::modfile for the vhost that has been selected.
-#
-# === Sample Usage:
+# [*security_key*]
+#   Defaults to undefined.
 #
 # === Todo:
 #

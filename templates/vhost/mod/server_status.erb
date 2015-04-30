@@ -1,20 +1,10 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
-<%
-  def empty?(value)
-    value == '' or value == :undef
-    end
--%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 
-  <Location <%= location%>>
+  <Location <%= @location%>>
     SetHandler server-status
-    Order <%= allow_order %>
-<%  if ! empty?(allow_from) -%>
-    Allow from <%= allow_from %>
-<%  end -%>
-<%  if ! empty?(deny_from) -%>
-    Deny from <%= deny_from %>
-<%  end -%>
+<%= scope.function_render_allow_deny([@allow_order, @allow_from, @deny_from]) %>
   </Location>
+

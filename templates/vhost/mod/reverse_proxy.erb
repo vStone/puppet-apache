@@ -1,51 +1,42 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 <%
-  def empty?(value)
-    value == '' or value == :undef
-  end
-
-  def always_array(var)
-    scope.function_always_array([var])
-  end
-
   def hash_to_keypair(hash)
     hash.collect { |key,value| "#{key}=#{value}" }.join(" ")
   end
 
   ## Sanitize variables
-  proxiez_pass_match = always_array(proxypassmatch)
-  proxiez_pass = always_array(proxypass)
-  proxiez_reverse = always_array(proxypassreverse)
-  proxiez_path  = always_array(proxypath)
+  proxiez_pass_match  = scope.function_always_array([@proxypassmatch])
+  proxiez_pass        = scope.function_always_array([@proxypass])
+  proxiez_reverse     = scope.function_always_array([@proxypassreverse])
+  proxiez_path        = scope.function_always_array([@proxypath])
 
-  if empty?(_proxypass_options) or _proxypass_options == [] or _proxypass_options == {}
+  if @_proxypass_options.nil? or @_proxypass_options.empty?
     proxypass_options = ""
-  elsif _proxypass_options.is_a?(String)
-    proxypass_options = " " + _proxypass_options
-  elsif _proxypass_options.is_a?(Hash)
-    proxypass_options = " " + hash_to_keypair(_proxypass_options) ## prefix with one space.
-  elsif _proxypass_options.is_a?(Array)
-    proxypass_options = " " + _proxypass_options.join(" ") ## prefix with one space.
+  elsif @_proxypass_options.is_a?(String)
+    proxypass_options = " " + @_proxypass_options
+  elsif @_proxypass_options.is_a?(Hash)
+    proxypass_options = " " + hash_to_keypair(@_proxypass_options) ## prefix with one space.
+  elsif @_proxypass_options.is_a?(Array)
+    proxypass_options = " " + @_proxypass_options.join(" ") ## prefix with one space.
   end
 -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if ! @comment.to_s.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-<% if _header -%>
-  ProxyRequests Off
+<% if @_header -%>
+<%    if @proxyrequests -%>
+  ProxyRequests <%= @proxyrequests %>
+<%    end -%>
+<%    if @proxypreservehost -%>
+  ProxyPreserveHost <%= @proxypreservehost %>
+<%    end -%>
 <% end -%>
-<% if ! empty?(proxyvia) -%>
-  ProxyVia <%= proxyvia %>
+<% if @proxyvia -%>
+  ProxyVia <%= @proxyvia %>
 <% end -%>
-<% if ! empty?(proxyurl) %>
-  <Proxy <%= proxyurl %>>
-    Order <%= allow_order %>
-<%  if ! empty?(allow_from) -%>
-    Allow from <%= allow_from %>
-<%  end -%>
-<%  if ! empty?(deny_from) -%>
-    Deny from <%= deny_from %>
-<%  end -%>
+<% if @proxyurl %>
+  <Proxy <%= @proxyurl %>>
+<%= scope.function_render_allow_deny([@allow_order, @allow_from, @deny_from]) %>
   </Proxy>
 <% end -%>
 <% proxiez_pass_match.each do |p| -%>
@@ -61,9 +52,9 @@
   ProxyPass <%= p %><%= proxypass_options %>
   ProxyPassReverse <%= p %>
 <% end -%>
-<% if ! empty?(content) %>
+<% if ! @content.to_s.empty? %>
   # Below you will find the extra content you have defined.
   # This is NOT part of the puppet template.
-  <%= content %>
+  <%= @content %>
 <% end -%>
 

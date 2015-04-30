@@ -1,4 +1,4 @@
-# == Class: apache::vhost::ssl
+# == Definition: apache::vhost::ssl
 #
 # Description of apache::vhost::ssl
 #
@@ -7,38 +7,33 @@
 # Most parameters are inherited from apache::vhost and will not be
 # documented here.
 #
-# $ssl_cert::
+# [*ssl_cert*]
 #
-# $ssl_key::
+# [*ssl_key*]
 #
-# $ssl_ciphersuite::
+# [*ssl_ciphersuite*]
 #
-# $ssl_chain::
+# [*ssl_chain*]
 #
-# $ssl_ca_path::
+# [*ssl_ca_path*]
 #
-# $ssl_ca_file::
+# [*ssl_ca_file*]
 #
-# $ssl_ca_crl_path::
+# [*ssl_ca_crl_path*]
 #
-# $ssl_ca_crl_file::
+# [*ssl_ca_crl_file*]
 #
-# $ssl_requestlog::   Logs non-error ssl requests to this file.
-#                     This log includes the ssl protocol and cipher used.
-#                     Filename is relative to the log_dir (apache::vhost).
-#                     Defaults to '' (empty) which is disabled.
+# [*ssl_requestlog*]
+#   Logs non-error ssl requests to this file.
+#   This log includes the ssl protocol and cipher used.
+#   Filename is relative to the log_dir (apache::vhost).
+#   Defaults to '' (empty) which is disabled.
 #
-# $ssl_options::
+# [*ssl_options*]
 #
-# $ssl_verify_client::
+# [*ssl_verify_client*]
 #
-# $ssl_verify_depth::
-#
-# === Actions:
-#
-# === Requires:
-#
-# === Sample Usage:
+# [*ssl_verify_depth*]
 #
 # === Todo:
 #
@@ -48,6 +43,7 @@ define apache::vhost::ssl (
   $ssl_cert,
   $ssl_key,
   $ssl_protocol      = 'all -SSLv2 -SSLv3',
+  $ssl_honorcipherorder = 'On',
   $ssl_ciphersuite   = 'ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW',
   $ssl_chain         = undef,
   $ssl_ca_path       = undef,
@@ -83,10 +79,12 @@ define apache::vhost::ssl (
   $diroptions        = 'FollowSymlinks MultiViews'
 ) {
 
+  require apache::mod::ssl
+
   ## Same logic as apache::vhost but we redo this since we need $server
   # and the default port is different.
   case $name {
-    /^([a-z_]+[0-9a-z_\.]*)_([0-9]+)$/: {
+    /^([a-z_]+[0-9a-z_\.-]*)_([0-9]+)$/: {
       $default_servername = $1
       $default_port = $2
     }

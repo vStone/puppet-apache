@@ -5,22 +5,12 @@
 class apache::setup {
   require apache::params
 
-  ## Apache main configuration file
-  #file { 'apache-config_file':
-  #  ensure  => present,
-  #  owner   => 'root',
-  #  group   => 'root',
-  #  mode    => '0644',
-  #  path    => $::apache::params::config_file,
-  #  content => template($::apache::params::config_template),
-  #  notify  => Service['apache'],
-  #}
-
   Augeas {
     lens    => 'Httpd.lns',
     incl    => $::apache::params::config_file,
     context => "/files${::apache::params::config_file}",
     require => Package['apache'],
+    before  => Service['apache'],
   }
 
   case $::apache::params::keepalive {
@@ -33,6 +23,7 @@ class apache::setup {
   apache::augeas::set {'KeepAlive':  value => $_keepalive, }
   apache::augeas::set {'User':       value => $::apache::params::daemon_user, }
   apache::augeas::set {'Group':      value => $::apache::params::daemon_group, }
+  apache::augeas::set {'Timeout':    value => $::apache::params::timeout, }
 
   augeas {'apache-setup-default-include':
     notify  => Service['apache'],
@@ -68,10 +59,8 @@ class apache::setup {
   include apache::setup::mod
   include apache::setup::vhost
 
-  case $::operatingsystem {
-    /(?i:centos|redhat)/: { include apache::setup::os::centos }
-    /(?i:debian|ubuntu)/: { include apache::setup::os::debian }
-    default: {}
+  if $::apache::params::custom_os_setup {
+    include "apache::setup::os::${::apache::params::custom_os_setup}"
   }
 
 }

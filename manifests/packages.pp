@@ -5,6 +5,11 @@
 # Optionally, depending on the configuration in apache::params,
 # also installs the devel package and/or ssl support.
 #
+# === Parmaeters:
+#
+# [*notify_service*]
+#   Should we restart the apache service after an upgrade.
+#
 class apache::packages (
   $notify_service = undef
 ) {
@@ -22,31 +27,25 @@ class apache::packages (
     }
   }
 
-  @package {$::apache::params::package:
+  package {$::apache::params::package:
     ensure  => installed,
     alias   => 'apache',
   }
 
-  @package {$::apache::params::package_devel:
-    ensure  => installed,
-    alias   => 'apache-devel',
-    require => Package['apache'],
-  }
-
-  @package {$::apache::params::package_ssl:
-    ensure  => installed,
-    alias   => 'apache-ssl',
-    require => Package['apache'],
-  }
-
-  realize(Package[$::apache::params::package])
-
   if $::apache::params::devel == true {
-    realize(Package[$::apache::params::package_devel])
+    package {$::apache::params::package_devel:
+      ensure  => installed,
+      alias   => 'apache-devel',
+      require => Package['apache'],
+    }
   }
 
   if $::apache::params::ssl == true {
-    realize(Package[$::apache::params::package_ssl])
+    package {$::apache::params::package_ssl:
+      ensure  => installed,
+      alias   => 'apache-ssl',
+      require => Package['apache'],
+    }
   }
 
 }

@@ -1,9 +1,9 @@
 ### File managed with puppet ###
-<% if ! (defined?(servername)).nil? -%>
-# Served by:        '<%= servername %>'
-# <% end -%>
-# Module:           '<%= scope.to_hash['module_name'] %>'
-# Template source:  '<%= template_source %>'
+<% if scope.lookupvar('::servername') -%>
+# Served by:        '<%= scope.lookupvar('::servername') %>'
+<% end -%>
+# Module:           '<%= @module_name %>'
+# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
 #
 
 #
@@ -18,6 +18,6 @@
 
 #  Purge has been enabled for this configuration folder.
 #  All files that are not managed by puppet will be PURGED!
-<% if ! warn_content == '' %>
-<%= warn_content %>
+<% if @warn_content and ! @warn_content.empty? %>
+<%= @warn_content %>
 <% end %>

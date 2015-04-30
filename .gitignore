@@ -1,3 +1,7 @@
 .vagrant
 *.swp
 *.swo
+
+Gemfile.lock
+/pkg/
+/spec/fixtures/

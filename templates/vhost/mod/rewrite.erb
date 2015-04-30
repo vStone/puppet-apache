@@ -1,26 +1,19 @@
 <%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
 <%
-  def empty?(value)
-    value == '' or value == :undef
-  end
-  def always_array(var)
-    scope.function_always_array([var])
-  end
-
-  conditions = always_array(rewrite_cond)
-  rules      = always_array(rewrite_rule)
+  conditions = scope.function_always_array([@rewrite_cond])
+  rules      = scope.function_always_array([@rewrite_rule])
 -%>
-<% if _header -%>
+<% if @_header -%>
   RewriteEngine On
 
 <% end -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if ! @comment.to_s.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
 <% conditions.each do |condition| -%>
-  RewriteCond <%= condition %>
+  RewriteCond <%= scope.function_fix_apache_vars([condition]) %>
 <% end -%>
 <% rules.each do |rule| -%>
-  RewriteRule <%= rule %>
+  RewriteRule <%= scope.function_fix_apache_vars([rule]) %>
 <% end -%>
 

@@ -1,11 +1,10 @@
-<% if comment != '' -%>
-# <%= comment %>
+### File managed with puppet ###
+<% if scope.lookupvar('::servername') -%>
+# Served by:        '<%= scope.lookupvar('::servername') %>'
 <% end -%>
-<%
-  if ip == ''
-    str_ip = '*'
-  else
-    str_ip = ip
-  end
--%>
-NameVirtualHost <%= str_ip -%>:<%= port %>
+# Module:           '<%= @module_name %>'
+# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
+<% if @comment and ! @comment.empty? -%>
+# <%= @comment %>
+<% end -%>
+NameVirtualHost <%= (@ip == '') ? '*' : @ip -%>:<%= @port %>

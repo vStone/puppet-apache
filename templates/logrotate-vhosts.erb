@@ -10,8 +10,10 @@
   <%= opt %>
 <% end -%>
 
+<% if @reload_command -%>
   postrotate
     <%= @reload_command %>
-  endscript
+    endscript
+<% end -%>
 
 }

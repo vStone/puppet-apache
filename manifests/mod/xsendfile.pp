@@ -7,11 +7,11 @@
 # === Todo:
 #
 # TODO: Update documentation
-# TODO: Add or use LoadModule support
 # TODO: Allow configuration/overriding of packages to use.
 #
 class apache::mod::xsendfile (
-  $notify_service = undef
+  $notify_service = undef,
+  $ensure = 'present',
 ) {
 
   case $::operatingsystem {
@@ -23,8 +23,14 @@ class apache::mod::xsendfile (
   }
 
   apache::sys::modpackage {'xsendfile':
-    package         => $pkg_name,
-    notify_service  => $notify_service,
+    ensure         => $ensure,
+    package        => $pkg_name,
+    notify_service => $notify_service,
+  }
+
+  apache::config::loadmodule {'xsendfile':
+    ensure         => $ensure,
+    notify_service => $notify_service,
   }
 
 }

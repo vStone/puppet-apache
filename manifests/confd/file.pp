@@ -1,32 +1,32 @@
-# = Definition: apache::confd::file
+# == Definition: apache::confd::file
 #
 #   Helper definition for confd style folders
 #
-# == Parameters
+# === Parameters
 #
-#  $confd:
-#     Subfolder in conf.d directory.
+# [*confd*]
+#   Subfolder in conf.d directory.
 #
-#  $file_name:
-#     File name to put in folder (we add order in front if defined).
-#     Defaults to the title with .conf appended.
+# [*file_name*]
+#   File name to put in folder (we add order in front if defined).
+#   Defaults to the title with .conf appended.
 #
-#  $order:
-#     Order is prepended to the file to determine the load order.
-#     If undefined, no order number will be added to the filename. This is
-#     also the default behaviour.
+# [*order*]
+#   Order is prepended to the file to determine the load order.
+#   If undefined, no order number will be added to the filename. This is
+#   also the default behaviour.
 #
-#  $content:
-#     Content to put into the file.
+# [*content*]
+#   Content to put into the file.
 #
-#  $use_config_root:
-#     When true, we will create the file in the defined $confd folder
-#     in the apache configuration root. Otherwise, its created inside
-#     the configured $::apache::params::confd.
+# [*use_config_root*]
+#   When true, we will create the file in the defined $confd folder
+#   in the apache configuration root. Otherwise, its created inside
+#   the configured $::apache::params::confd.
 #
 define apache::confd::file (
   $confd,
-  $notify_service,
+  $notify_service   = undef,
   $file_name        = "${title}.conf",
   $order            = undef,
   $content          = '',
@@ -52,7 +52,12 @@ define apache::confd::file (
     content => $content,
   }
 
-  if $notify_service {
+  $_notify = $notify_service ? {
+    undef   => $::apache::params::notify_service,
+    default => $notify_service,
+  }
+
+  if $_notify {
     File[$title] {
       notify => Service['apache'],
     }

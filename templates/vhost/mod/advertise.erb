@@ -9,33 +9,33 @@
     return 'off' if var == false
   end
 -%>
-<% if _header -%>
+<% if @_header -%>
 <%  # You can add a header here -%>
 <% end -%>
-<% if defined?(comment) and ! empty?(comment) -%>
-  # <%= comment.gsub(/\n/, "\n  # ") %>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
 <% end -%>
-<% if ! empty?(enable_mcpm_receive) and enable_mcpm_receive == true -%>
+<% if @enable_mcpm_receive and ['true', true].include?(@enable_mcpm_receive) -%>
   EnableMCPMReceive
 <% end -%>
-<% if ! empty?(server_advertise) -%>
-  ServerAdvertise <%= onoff(server_advertise) %>
+<% if @server_advertise and ! @server_advertise.to_s.empty? -%>
+  ServerAdvertise <%= onoff(@server_advertise) %>
 <% end -%>
-<% if ! empty?(group) -%>
-  AdvertiseGroup <%= group %>
+<% if @group -%>
+  AdvertiseGroup <%= @group %>
 <% end -%>
-<% if ! empty?(frequency) -%>
-  AdvertiseFrequency <%= frequency %>
+<% if @frequency -%>
+  AdvertiseFrequency <%= @frequency %>
 <% end -%>
-<% if ! empty?(security_key) -%>
-  AdvertiseSecurityKey <%= security_key %>
+<% if @security_key -%>
+  AdvertiseSecurityKey <%= @security_key %>
 <% end -%>
-<% if ! empty?(bind_address) -%>
-  AdvertiseBindAddress <%= bind_address %>
+<% if @bind_address -%>
+  AdvertiseBindAddress <%= @bind_address %>
 <% end -%>
-<% if ! empty?(content) -%>
+<% if @content and ! @content.empty? -%>
   # Below you will find the extra content you have defined.
   # This is NOT part of the puppet template.
-  <%= content %>
+  <%= @content %>
 <% end -%>
 

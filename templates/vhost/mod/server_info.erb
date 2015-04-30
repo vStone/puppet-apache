@@ -1,0 +1,10 @@
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
+<% if @comment and ! @comment.empty? -%>
+  # <%= @comment.gsub(/\n/, "\n  # ") %>
+<% end -%>
+
+  <Location <%= @location%>>
+    SetHandler server-info
+<%= scope.function_render_allow_deny([@allow_order, @allow_from, @deny_from]) %>
+  </Location>
+

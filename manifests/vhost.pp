@@ -203,13 +203,13 @@ define apache::vhost (
   }
 
   apache::confd::file_exists {"apache-vhost-vhost-root-${name}":
-    ensure => 'present',
+    ensure => 'directory',
     owner  => $owner,
     group  => $group,
     path   => $vhost_root,
   }
   apache::confd::file_exists {"apache-vhost-vhost-docroot-${name}":
-    ensure  => 'present',
+    ensure  => 'directory',
     owner   => $owner,
     group   => $group,
     path    => $documentroot,

@@ -43,8 +43,6 @@ define apache::confd::file_concat (
   $ensure           = 'present'
 ) {
 
-  require concat::setup
-
   $fname = $order ? {
     undef   => $file_name,
     default => "${order}_${file_name}"

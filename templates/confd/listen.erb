@@ -3,7 +3,7 @@
 # Served by:        '<%= scope.lookupvar('::servername') %>'
 <% end -%>
 # Module:           '<%= @module_name %>'
-# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
+# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet.lookup(:current_environment)[:modulepath].gsub(':','|')}"),"") %>'
 <% if @comment and ! @comment.empty? -%>
 # <%= @comment %>
 <% end -%>

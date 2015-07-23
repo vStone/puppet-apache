@@ -69,7 +69,7 @@ define apache::vhost::mod::advertise (
     /^[0-9]+(\.[0-9]+)$/: {}
     undef: {}
     default: {
-      fail('frequency: allowed value must be <seconds> or <seconds>.<miliseconds>.')
+      fail('frequency: allowed value must be <seconds>(.<miliseconds>).')
     }
   }
   case $bind_address {

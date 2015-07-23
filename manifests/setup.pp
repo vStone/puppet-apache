@@ -32,7 +32,7 @@ class apache::setup {
       'set directive[last()] "Include"',
       'set directive[last()]/arg "conf.d/*.conf"',
     ],
-    onlyif  => 'match directive[.="Include" and arg="conf.d/*.conf"] size == 0',
+    onlyif  => 'match directive[.=~regexp("Include(Optional)?") and arg="conf.d/*.conf"] size == 0',
   }
 
   ## conf.d directory

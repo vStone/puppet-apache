@@ -42,9 +42,9 @@
 define apache::vhost::ssl (
   $ssl_cert,
   $ssl_key,
-  $ssl_protocol      = 'all -SSLv2',
+  $ssl_protocol      = 'all -SSLv2 -SSLv3',
   $ssl_honorcipherorder = 'On',
-  $ssl_ciphersuite   = 'ECDHE-RSA-AES128-SHA256:AES128-GCM-SHA256:RC4:HIGH:!MD5:!aNULL:!EDH',
+  $ssl_ciphersuite   = 'ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW',
   $ssl_chain         = undef,
   $ssl_ca_path       = undef,
   $ssl_ca_file       = undef,
@@ -76,7 +76,8 @@ define apache::vhost::ssl (
   $owner             = undef,
   $group             = undef,
   $logformat         = undef,
-  $diroptions        = 'FollowSymlinks MultiViews'
+  $diroptions        = 'FollowSymlinks MultiViews',
+  $authoptions       = undef,
 ) {
 
   require apache::mod::ssl
@@ -153,6 +154,7 @@ define apache::vhost::ssl (
     logformat     => $logformat,
     vhost_config  => $ssl_content, # This is the only thing that is different.
     diroptions    => $diroptions,
+    authoptions   => $authoptions,
   }
 }
 

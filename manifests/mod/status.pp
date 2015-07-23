@@ -21,12 +21,10 @@ class apache::mod::status (
 
   apache::config::loadmodule {'status':
     ensure         => $ensure,
-    notify_service => $notify_service,
   }
-  apache::augeas {'ExtendedStatus':
-    ensure         => $ensure,
-    notify_service => $notify_service,
-    value          => $_extendedstatus
+
+  apache::augeas::set {'ExtendedStatus':
+    value          => $_extendedstatus,
   }
 
 }

@@ -3,7 +3,7 @@
 # Served by:        '<%= scope.lookupvar('::servername') %>'
 <% end -%>
 # Module:           '<%= @module_name %>'
-# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet::Node::Environment.current[:modulepath].gsub(':','|')}"),"") %>'
+# Template source:  'MODULES<%= template_source.gsub(Regexp.new("^#{Puppet.lookup(:current_environment)[:modulepath].gsub(':','|')}"),"") %>'
 
 <VirtualHost <%= @ip_def -%>:<%= @vhost_port -%>>
 
@@ -27,8 +27,19 @@
   <Directory <%= @directoryroot %>>
     Options <%= scope.function_always_array([@dir_options]).join(' ')  %>
     AllowOverride All
-    Order allow,deny
-    Allow from All
+    <% if @authoptions %>
+      <%= @authoptions %>
+    <% else %>
+    <IfModule mod_authz_core.c>
+      # Apache 2.4
+      Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+      # Apache 2.2 
+      Order allow,deny
+      Allow from All
+    </IfModule>
+    <% end %>
   </Directory>
 
 <% if @vhost_config and ! @vhost_config.empty? -%>

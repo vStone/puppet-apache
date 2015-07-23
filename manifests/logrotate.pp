@@ -29,7 +29,7 @@
 class apache::logrotate (
   $logrotate_d = $::apache::params::logrotate_d,
   $mask        = undef,
-  $options     = ['missingok','notifempty','sharedscripts','delaycompress'],
+  $options     = ['missingok','notifempty','sharedscripts','compress','delaycompress'],
   $reload_command = $::apache::params::service_reload_command
 ) {
   require apache::params

@@ -59,8 +59,6 @@ define apache::confd::symfile_concat (
   $order_linkonly   = true
 ) {
 
-  require concat::setup
-
   ## Sanitize the ensure parameter.
   ## @TODO: Add purge support.
   $enabled = $ensure ? {

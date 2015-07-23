@@ -23,6 +23,7 @@ define apache::vhost (
   $mods           = undef,
   $linklogdir     = true,
   $diroptions     = undef,
+  $authoptions    = undef,
   $owner          = undef,
   $group          = undef,
   $logformat      = undef,
